@@ -18,6 +18,8 @@ db.exec(`
     password_hash TEXT NOT NULL,
     nickname TEXT NOT NULL,
     role TEXT DEFAULT 'user',
+    status TEXT DEFAULT 'pending',
+    is_adult INTEGER DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   );
 
@@ -66,6 +68,18 @@ db.exec(`
 
 console.log('[SQLite DB] Initialized database at', DB_PATH);
 
+// Migrations for existing DBs
+try { db.exec("ALTER TABLE users ADD COLUMN status TEXT DEFAULT 'pending'"); } catch (e) {}
+try { db.exec("ALTER TABLE users ADD COLUMN is_adult INTEGER DEFAULT 0"); } catch (e) {}
+
+// Ensure first registered user is admin and approved
+try {
+  const firstUser = db.prepare('SELECT id FROM users ORDER BY id ASC LIMIT 1').get();
+  if (firstUser) {
+    db.prepare("UPDATE users SET role = 'admin', status = 'approved', is_adult = 1 WHERE id = ?").run(firstUser.id);
+  }
+} catch (e) {}
+
 // Auth Methods
 function createUser(username, plainPassword, nickname) {
   const cleanUsername = String(username || '').trim();
@@ -82,16 +96,24 @@ function createUser(username, plainPassword, nickname) {
     throw new Error('이미 사용 중인 아이디입니다.');
   }
 
+  const userCount = db.prepare('SELECT COUNT(*) as cnt FROM users').get().cnt;
+  const isAdmin = userCount === 0 || cleanUsername.toLowerCase() === 'admin';
+  const role = isAdmin ? 'admin' : 'user';
+  const status = isAdmin ? 'approved' : 'pending';
+  const isAdult = isAdmin ? 1 : 0;
+
   const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(String(plainPassword), salt);
 
-  const stmt = db.prepare('INSERT INTO users (username, password_hash, nickname) VALUES (?, ?, ?)');
-  const info = stmt.run(cleanUsername, hash, cleanNickname);
+  const stmt = db.prepare('INSERT INTO users (username, password_hash, nickname, role, status, is_adult) VALUES (?, ?, ?, ?, ?, ?)');
+  const info = stmt.run(cleanUsername, hash, cleanNickname, role, status, isAdult);
   return {
     id: info.lastInsertRowid,
     username: cleanUsername,
     nickname: cleanNickname,
-    role: 'user'
+    role,
+    status,
+    is_adult: isAdult
   };
 }
 
@@ -111,13 +133,42 @@ function authenticateUser(username, plainPassword) {
     id: user.id,
     username: user.username,
     nickname: user.nickname,
-    role: user.role
+    role: user.role,
+    status: user.status || 'pending',
+    is_adult: user.is_adult ? 1 : 0
   };
 }
 
 function getUserById(id) {
-  const user = db.prepare('SELECT id, username, nickname, role, created_at FROM users WHERE id = ?').get(id);
+  const user = db.prepare('SELECT id, username, nickname, role, status, is_adult, created_at FROM users WHERE id = ?').get(id);
   return user || null;
+}
+
+// Admin User Management
+function getAllUsers() {
+  return db.prepare('SELECT id, username, nickname, role, status, is_adult, created_at FROM users ORDER BY created_at DESC').all();
+}
+
+function updateUserStatus(userId, status, isAdult) {
+  const fields = [];
+  const vals = [];
+  if (status !== undefined) {
+    fields.push('status = ?');
+    vals.push(status);
+  }
+  if (isAdult !== undefined) {
+    fields.push('is_adult = ?');
+    vals.push(isAdult ? 1 : 0);
+  }
+  if (fields.length > 0) {
+    vals.push(userId);
+    db.prepare(`UPDATE users SET ${fields.join(', ')} WHERE id = ?`).run(...vals);
+  }
+  return getUserById(userId);
+}
+
+function deleteUser(userId) {
+  db.prepare('DELETE FROM users WHERE id = ?').run(userId);
 }
 
 // Room & Message Management
@@ -329,6 +380,9 @@ module.exports = {
   createUser,
   authenticateUser,
   getUserById,
+  getAllUsers,
+  updateUserStatus,
+  deleteUser,
   getUserRooms,
   getRoom,
   saveRoom,

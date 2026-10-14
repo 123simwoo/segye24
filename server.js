@@ -1810,6 +1810,49 @@ const server = http.createServer(async (req, res) => {
     return sendJson(res, 200, { ok: true, user });
   }
 
+  // --- A-2. ADMIN USER APPROVAL & ADULT PERMISSION ENDPOINTS ---
+  // GET /ko/api/admin/users
+  if (req.method === 'GET' && pathname === '/ko/api/admin/users') {
+    const user = getAuthUser(req);
+    if (!user || user.role !== 'admin') {
+      return sendJson(res, 403, { ok: false, error: '관리자(Admin) 권한이 필요합니다.' });
+    }
+    const users = dbLayer.getAllUsers();
+    return sendJson(res, 200, { ok: true, users });
+  }
+
+  // POST /ko/api/admin/users/:id/status
+  const adminUserMatch = pathname.match(/^\/ko\/api\/admin\/users\/(\d+)\/status$/);
+  if (req.method === 'POST' && adminUserMatch) {
+    const user = getAuthUser(req);
+    if (!user || user.role !== 'admin') {
+      return sendJson(res, 403, { ok: false, error: '관리자(Admin) 권한이 필요합니다.' });
+    }
+    try {
+      const targetId = parseInt(adminUserMatch[1], 10);
+      const body = await parseBody(req);
+      const updated = dbLayer.updateUserStatus(targetId, body.status, body.isAdult);
+      return sendJson(res, 200, { ok: true, user: updated });
+    } catch (e) {
+      return sendJson(res, 400, { ok: false, error: e.message });
+    }
+  }
+
+  // DELETE /ko/api/admin/users/:id
+  const adminDelMatch = pathname.match(/^\/ko\/api\/admin\/users\/(\d+)$/);
+  if (req.method === 'DELETE' && adminDelMatch) {
+    const user = getAuthUser(req);
+    if (!user || user.role !== 'admin') {
+      return sendJson(res, 403, { ok: false, error: '관리자(Admin) 권한이 필요합니다.' });
+    }
+    const targetId = parseInt(adminDelMatch[1], 10);
+    if (targetId === user.id) {
+      return sendJson(res, 400, { ok: false, error: '현재 로그인 중인 본인 관리자 계정은 삭제할 수 없습니다.' });
+    }
+    dbLayer.deleteUser(targetId);
+    return sendJson(res, 200, { ok: true, deleted: targetId });
+  }
+
   // --- B. USER ROOMS & CONVERSATION SYNC (Per-User Isolation) ---
   // GET /ko/api/rooms?characterId=...
   if (req.method === 'GET' && pathname === '/ko/api/rooms') {
@@ -1863,6 +1906,18 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'POST' && pathname === '/ko/api/characters/create') {
     try {
       const body = await parseBody(req);
+
+      // 19+ Adult Character Creation Gatekeeping
+      if (body.isAdult) {
+        const authUser = getAuthUser(req);
+        if (!authUser || authUser.status !== 'approved' || !authUser.is_adult) {
+          return sendJson(res, 403, {
+            error: '🔞 19세 이상 캐릭터 설정 및 생성은 관리자 승인을 받은 정회원만 가능합니다.',
+            code: 'ADULT_CREATION_DENIED'
+          });
+        }
+      }
+
       const id = body.characterId || `custom-${Date.now()}`;
       const existing = store.characters[id] || SEGYE24_CHARACTER;
       const updated = {
@@ -2055,6 +2110,18 @@ const server = http.createServer(async (req, res) => {
       const body = await parseBody(req);
       const charId = body.characterId || "segye-24-3c209e4d-custom";
       const character = store.characters[charId] || SEGYE24_CHARACTER;
+
+      // 19+ Adult Character Access Gatekeeping
+      if (character.isAdult) {
+        const authUser = getAuthUser(req);
+        if (!authUser || authUser.status !== 'approved' || !authUser.is_adult) {
+          return sendJson(res, 403, {
+            error: '🔞 19세 이상 캐릭터는 관리자 승인을 받은 정회원만 이용할 수 있습니다.',
+            code: 'ADULT_ACCESS_RESTRICTED'
+          });
+        }
+      }
+
       character.chatCount = (character.chatCount || 0) + 1;
       const result = await generateSimulationReply({
         character,
@@ -2129,6 +2196,18 @@ const server = http.createServer(async (req, res) => {
       const body = await parseBody(req);
       const charId = body.characterId || "segye-24-3c209e4d-custom";
       const character = store.characters[charId] || SEGYE24_CHARACTER;
+
+      // 19+ Adult Character Access Gatekeeping
+      if (character.isAdult) {
+        const authUser = getAuthUser(req);
+        if (!authUser || authUser.status !== 'approved' || !authUser.is_adult) {
+          return sendJson(res, 403, {
+            error: '🔞 19세 이상 캐릭터는 관리자 승인을 받은 정회원만 이용할 수 있습니다.',
+            code: 'ADULT_ACCESS_RESTRICTED'
+          });
+        }
+      }
+
       const opening = await generateCustomOpeningScene({
         character,
         customSituation: body.customSituation || "새벽 3시, 지하 PC방 카운터 앞",

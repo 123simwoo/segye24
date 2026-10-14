@@ -31,6 +31,8 @@
           </button>
           <div id="authUserBadge" style="display:none; align-items:center; gap:0.45rem;">
             <span style="font-size:0.8rem; font-weight:700; color:#f472b6;" id="authUserName">닉네임</span>
+            <span id="authUserStatusBadge" style="font-size:0.7rem; padding:0.15rem 0.45rem; border-radius:999px;"></span>
+            <button class="tab-btn" id="adminUsersBtn" onclick="openAdminUsersModal()" style="display:none; padding:0.35rem 0.65rem; font-size:0.75rem; border-color:rgba(234,179,8,0.5); color:#eab308; background:rgba(234,179,8,0.12);">👑 회원 승인 관리</button>
             <button class="tab-btn" onclick="logoutUser()" style="padding:0.35rem 0.65rem; font-size:0.75rem;">로그아웃</button>
           </div>
         </div>
@@ -365,6 +367,15 @@
           </div>
         </div>
         <div class="details-grid">
+          <div class="detail-box full" style="background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.28); border-radius:0.55rem; padding:0.75rem 0.95rem;">
+            <label style="display:flex; align-items:center; gap:0.55rem; cursor:pointer; font-weight:700; color:#f87171;">
+              <input type="checkbox" id="editIsAdult" style="width:18px; height:18px; accent-color:#ef4444;" />
+              <span>🔞 19세 이상 성인 전용 캐릭터로 설정 (심야/무검열 수위 대화 허용)</span>
+            </label>
+            <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.35rem; margin-left:1.7rem; line-height:1.4;">
+              * 체크 시 관리자 가입 승인 및 성인 권한(<code>is_adult</code>)을 부여받은 정회원만 이 캐릭터를 수정하거나 대화를 나눌 수 있습니다.
+            </div>
+          </div>
           <div class="detail-box">
             <div class="detail-label">캐릭터 이름 (`name`)</div>
             <input type="text" id="editName" class="input-field" style="width:100%;" />
@@ -544,6 +555,10 @@
           <input type="password" id="authInputPassword" class="input-field" style="width:100%; font-size:0.85rem;" placeholder="비밀번호 4자 이상" onkeydown="if(event.key==='Enter') submitAuthForm()" />
         </div>
 
+        <div id="authRegisterNotice" style="display:none; font-size:0.75rem; color:#f59e0b; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); border-radius:0.4rem; padding:0.5rem 0.65rem; line-height:1.45;">
+          🛡️ <strong>가입 안내:</strong> 신규 회원은 관리자의 가입 승인 후 19세 이상 캐릭터 설정 및 성인 전용 기능이 활성화됩니다.
+        </div>
+
         <div id="authStatusMsg" style="font-size:0.76rem; min-height:1.2rem; display:none;"></div>
       </div>
 
@@ -658,6 +673,50 @@
       </div>
       <div style="display:flex; justify-content:flex-end;">
         <button class="tab-btn" onclick="closeCommandModals()">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN USER APPROVAL & ADULT MANAGEMENT MODAL -->
+  <div class="modal-backdrop" id="adminUsersModal" style="display:none;">
+    <div class="modal-card" style="max-width:860px; width:95vw; max-height:88vh; display:flex; flex-direction:column; gap:0.9rem;">
+      <div class="section-title" style="margin-bottom:0; display:flex; justify-content:space-between; align-items:center;">
+        <div style="display:flex; align-items:center; gap:0.6rem;">
+          <span style="font-size:1.1rem; font-weight:800; color:#eab308;">👑 회원 가입 승인 및 19금 권한 관리</span>
+          <span id="adminUserCountBadge" style="font-size:0.75rem; padding:0.15rem 0.5rem; background:rgba(234,179,8,0.18); color:#facc15; border-radius:999px; font-weight:700;">0명</span>
+        </div>
+        <div style="display:flex; gap:0.4rem;">
+          <button type="button" class="tab-btn" style="font-size:0.76rem;" onclick="loadAdminUsers()">🔄 새로고침</button>
+          <button type="button" class="tab-btn" onclick="closeAdminUsersModal()">닫기 &times;</button>
+        </div>
+      </div>
+
+      <div style="background:rgba(234,179,8,0.08); border:1px solid rgba(234,179,8,0.25); border-radius:0.5rem; padding:0.65rem 0.9rem; font-size:0.78rem; color:var(--text-secondary); line-height:1.5;">
+        💡 <strong>가입 승인 안내:</strong> 신규 회원은 보안 및 성인 규정을 위해 가입 시 <strong>대기(pending)</strong> 상태로 등록됩니다. 관리자가 <strong>[✅ 정회원+19금 승인]</strong>을 부여해야 19세 이상 캐릭터 설정 및 무검열 심야 대화가 해금됩니다.
+      </div>
+
+      <div style="flex:1; overflow-y:auto; border:1px solid var(--border-subtle); border-radius:0.55rem; background:rgba(0,0,0,0.3); min-height:220px;">
+        <table style="width:100%; border-collapse:collapse; font-size:0.82rem; text-align:left;">
+          <thead>
+            <tr style="background:rgba(255,255,255,0.04); border-bottom:1px solid var(--border-subtle); color:var(--text-secondary);">
+              <th style="padding:0.6rem 0.75rem;">ID</th>
+              <th style="padding:0.6rem 0.75rem;">아이디</th>
+              <th style="padding:0.6rem 0.75rem;">닉네임</th>
+              <th style="padding:0.6rem 0.75rem;">등급</th>
+              <th style="padding:0.6rem 0.75rem;">가입 승인</th>
+              <th style="padding:0.6rem 0.75rem;">19금 성인</th>
+              <th style="padding:0.6rem 0.75rem; text-align:right;">승인 및 권한 관리</th>
+            </tr>
+          </thead>
+          <tbody id="adminUserTableBody">
+            <!-- Populated via loadAdminUsers() -->
+          </tbody>
+        </table>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.76rem; color:var(--text-muted);">
+        <span id="adminNoticeMsg"></span>
+        <button type="button" class="tab-btn" onclick="closeAdminUsersModal()">닫기</button>
       </div>
     </div>
   </div>

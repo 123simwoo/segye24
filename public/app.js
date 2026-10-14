@@ -166,7 +166,8 @@ function renderProfile(char) {
 
   // Tags
   const tagsEl = document.getElementById("charTags");
-  tagsEl.innerHTML = (char.tags || [])
+  const adultBadge = char.isAdult ? '<span class="tag-chip" style="background:rgba(239,68,68,0.22); color:#f87171; border:1px solid rgba(239,68,68,0.45); font-weight:800;">🔞 19+ 성인전용</span>' : '';
+  tagsEl.innerHTML = adultBadge + (char.tags || [])
     .map(t => `<span class="tag-chip">${t.startsWith("#") ? escapeHtml(t) : "#" + escapeHtml(t)}</span>`)
     .join("");
 
@@ -397,6 +398,13 @@ function syncActiveRoomToUI() {
 
 function startChatWithScenario() {
   if (!currentCharacter) return;
+  if (currentCharacter.isAdult) {
+    if (!currentUser || currentUser.status !== "approved" || !currentUser.is_adult) {
+      alert("🔞 이 캐릭터는 19세 이상 성인 전용입니다. 관리자 가입 승인을 받은 정회원만 이용할 수 있습니다.");
+      if (!currentUser) openAuthModal("login");
+      return;
+    }
+  }
   const scenarios = currentCharacter._allScenarios || [];
   const target = scenarios.find(s => s.id === selectedScenarioId) || scenarios[0];
   const startAff = selectedScenarioId === 1 ? 30 : selectedScenarioId === 2 ? 25 : selectedScenarioId === 3 ? 35 : 15;
@@ -414,6 +422,13 @@ function startChatWithScenario() {
 
 // New Custom Room Modal
 function openNewRoomModal() {
+  if (currentCharacter?.isAdult) {
+    if (!currentUser || currentUser.status !== "approved" || !currentUser.is_adult) {
+      alert("🔞 이 캐릭터는 19세 이상 성인 전용입니다. 관리자 가입 승인을 받은 정회원만 이용할 수 있습니다.");
+      if (!currentUser) openAuthModal("login");
+      return;
+    }
+  }
   document.getElementById("newRoomModal").style.display = "flex";
 }
 
@@ -428,6 +443,14 @@ function fillCustomSituation(situationText, startAff) {
 
 async function createNewCustomRoom() {
   if (!currentCharacter) return;
+  if (currentCharacter.isAdult) {
+    if (!currentUser || currentUser.status !== "approved" || !currentUser.is_adult) {
+      alert("🔞 이 캐릭터는 19세 이상 성인 전용입니다. 관리자 가입 승인을 받은 정회원만 이용할 수 있습니다.");
+      if (!currentUser) openAuthModal("login");
+      return;
+    }
+  }
+
   const btn = document.getElementById("createRoomBtn");
   const customSituation = document.getElementById("modalCustomSituation").value.trim();
   const userName = document.getElementById("modalUserName").value.trim() || "단골손님";
@@ -463,6 +486,10 @@ async function createNewCustomRoom() {
       })
     });
     const data = await res.json();
+    if (!res.ok) {
+      alert(data.error || "새로운 대화 생성에 실패했습니다.");
+      return;
+    }
     if (data.apiError) {
       updateApiStatusUI(false, `⚠️ API 호출 실패 (내장 엔진으로 자동 대체됨): ${data.apiError}`);
     } else if (data.engine && !data.engine.includes("내장")) {
@@ -600,6 +627,14 @@ async function sendChatMessage() {
   const room = getActiveRoom();
   if (!room || !currentCharacter) return;
 
+  if (currentCharacter.isAdult) {
+    if (!currentUser || currentUser.status !== "approved" || !currentUser.is_adult) {
+      alert("🔞 이 캐릭터는 19세 이상 성인 전용입니다. 관리자 가입 승인을 받은 정회원만 이용할 수 있습니다.");
+      if (!currentUser) openAuthModal("login");
+      return;
+    }
+  }
+
   const input = document.getElementById("chatInput");
   const sendBtn = document.getElementById("sendMsgBtn");
   const text = input.value.trim();
@@ -651,6 +686,12 @@ async function sendChatMessage() {
     });
 
     const data = await res.json();
+    if (!res.ok) {
+      alert(data.error || "대화 응답 생성에 실패했습니다.");
+      room.messages.pop();
+      renderChatMessages();
+      return;
+    }
     if (data.apiError) {
       updateApiStatusUI(false, `⚠️ API 호출 실패 (내장 엔진으로 자동 대체됨): ${data.apiError}`);
     } else if (data.engine && !data.engine.includes("내장")) {
@@ -965,6 +1006,14 @@ async function submitComment() {
 }
 
 function switchView(view) {
+  if (view === "chat" && currentCharacter?.isAdult) {
+    if (!currentUser || currentUser.status !== "approved" || !currentUser.is_adult) {
+      alert("🔞 이 캐릭터는 19세 이상 성인 전용입니다. 관리자 가입 승인을 받은 정회원만 이용할 수 있습니다.");
+      if (!currentUser) openAuthModal("login");
+      return;
+    }
+  }
+
   document.getElementById("profileView").style.display = view === "profile" ? "grid" : "none";
   document.getElementById("chatView").style.display = view === "chat" ? "grid" : "none";
   document.getElementById("builderView").style.display = view === "builder" ? "block" : "none";
@@ -975,6 +1024,10 @@ function switchView(view) {
 }
 
 function populateBuilder(char) {
+  const adultCheck = document.getElementById("editIsAdult");
+  if (adultCheck) {
+    adultCheck.checked = Boolean(char.isAdult);
+  }
   document.getElementById("editName").value = char.name || "";
   document.getElementById("editLocation").value = char.characterDetails?.location || char.location || "";
   document.getElementById("editDescription").value = char.description || "";
@@ -985,9 +1038,21 @@ function populateBuilder(char) {
 
 async function saveCharacterBuilder() {
   if (!currentCharacter) return;
+  const isAdult = document.getElementById("editIsAdult")?.checked || false;
+
+  // 19+ Adult Character Access Check
+  if (isAdult) {
+    if (!currentUser || currentUser.status !== "approved" || !currentUser.is_adult) {
+      alert("🔞 19세 이상 성인 전용 캐릭터 설정 및 저장은 관리자 승인을 받은 정회원만 가능합니다.");
+      if (!currentUser) openAuthModal("login");
+      return;
+    }
+  }
+
   const payload = {
     ...currentCharacter,
     characterId: currentCharacterId,
+    isAdult,
     name: document.getElementById("editName").value.trim(),
     location: document.getElementById("editLocation").value.trim(),
     description: document.getElementById("editDescription").value,
@@ -1001,15 +1066,30 @@ async function saveCharacterBuilder() {
     }
   };
 
-  const res = await fetch("/ko/api/characters/create", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
-  });
-  currentCharacter = await res.json();
-  renderProfile(currentCharacter);
-  initRoomsForCharacter(currentCharacter);
-  switchView("profile");
+  try {
+    const res = await fetch("/ko/api/characters/create", {
+      method: "POST",
+      headers: {
+        ...getAuthHeaders(),
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.error || "캐릭터 저장에 실패했습니다.");
+      return;
+    }
+
+    currentCharacter = data;
+    renderProfile(currentCharacter);
+    initRoomsForCharacter(currentCharacter);
+    alert("✅ 캐릭터 설정이 성공적으로 저장되었습니다!");
+    switchView("profile");
+  } catch (err) {
+    alert(`캐릭터 저장 오류: ${err.message}`);
+  }
 }
 
 function exportCharacterJson() {
@@ -1404,6 +1484,7 @@ function switchAuthTab(tab) {
   const loginTabBtn = document.getElementById("authTabLoginBtn");
   const registerTabBtn = document.getElementById("authTabRegisterBtn");
   const nicknameRow = document.getElementById("authNicknameRow");
+  const registerNotice = document.getElementById("authRegisterNotice");
   const submitBtn = document.getElementById("authSubmitBtn");
   const modalTitle = document.getElementById("authModalTitle");
   const status = document.getElementById("authStatusMsg");
@@ -1413,12 +1494,14 @@ function switchAuthTab(tab) {
     loginTabBtn?.classList.remove("active");
     registerTabBtn?.classList.add("active");
     if (nicknameRow) nicknameRow.style.display = "block";
+    if (registerNotice) registerNotice.style.display = "block";
     if (submitBtn) submitBtn.textContent = "회원가입 완료 & 대화 시작 →";
     if (modalTitle) modalTitle.textContent = "✨ 신규 계정 가입";
   } else {
     registerTabBtn?.classList.remove("active");
     loginTabBtn?.classList.add("active");
     if (nicknameRow) nicknameRow.style.display = "none";
+    if (registerNotice) registerNotice.style.display = "none";
     if (submitBtn) submitBtn.textContent = "로그인 →";
     if (modalTitle) modalTitle.textContent = "👤 로그인";
   }
@@ -1473,12 +1556,15 @@ async function submitAuthForm() {
     localStorage.setItem("segye24_token", data.token);
     currentUser = data.user;
     renderAuthUserUI();
-    showAuthStatus(`환영합니다, ${data.user.nickname}님!`, "success");
+    const welcomeMsg = (currentAuthTab === "register" && data.user.status === "pending")
+      ? `가입 완료! 현재 관리자 승인 대기 상태입니다. (${data.user.nickname}님)`
+      : `환영합니다, ${data.user.nickname}님!`;
+    showAuthStatus(welcomeMsg, "success");
 
     setTimeout(async () => {
       closeAuthModal();
       await loadUserRooms();
-    }, 400);
+    }, 500);
   } catch (err) {
     showAuthStatus(`네트워크 오류: ${err.message}`, "error");
   } finally {
@@ -1491,6 +1577,8 @@ function renderAuthUserUI() {
   const loginBtn = document.getElementById("authLoginBtn");
   const badge = document.getElementById("authUserBadge");
   const nameEl = document.getElementById("authUserName");
+  const statusBadge = document.getElementById("authUserStatusBadge");
+  const adminBtn = document.getElementById("adminUsersBtn");
   const personaInput = document.getElementById("userPersonaName");
 
   if (currentUser) {
@@ -1500,9 +1588,46 @@ function renderAuthUserUI() {
     if (personaInput) {
       personaInput.value = currentUser.nickname;
     }
+
+    // Status & 19+ Permission Badge
+    if (statusBadge) {
+      statusBadge.style.display = "inline-block";
+      if (currentUser.role === "admin") {
+        statusBadge.textContent = "👑 관리자 (19금 해금)";
+        statusBadge.style.background = "rgba(234, 179, 8, 0.18)";
+        statusBadge.style.color = "#facc15";
+        statusBadge.style.border = "1px solid rgba(234, 179, 8, 0.4)";
+      } else if (currentUser.status === "approved" && currentUser.is_adult) {
+        statusBadge.textContent = "🔞 정회원 (19금 해금)";
+        statusBadge.style.background = "rgba(16, 185, 129, 0.18)";
+        statusBadge.style.color = "#34d399";
+        statusBadge.style.border = "1px solid rgba(16, 185, 129, 0.4)";
+      } else if (currentUser.status === "approved") {
+        statusBadge.textContent = "✅ 일반회원";
+        statusBadge.style.background = "rgba(56, 189, 248, 0.18)";
+        statusBadge.style.color = "#38bdf8";
+        statusBadge.style.border = "1px solid rgba(56, 189, 248, 0.4)";
+      } else if (currentUser.status === "pending") {
+        statusBadge.textContent = "⏳ 승인 대기중";
+        statusBadge.style.background = "rgba(245, 158, 11, 0.18)";
+        statusBadge.style.color = "#fbbf24";
+        statusBadge.style.border = "1px solid rgba(245, 158, 11, 0.4)";
+      } else if (currentUser.status === "rejected") {
+        statusBadge.textContent = "🚫 가입 거절됨";
+        statusBadge.style.background = "rgba(239, 68, 68, 0.18)";
+        statusBadge.style.color = "#f87171";
+        statusBadge.style.border = "1px solid rgba(239, 68, 68, 0.4)";
+      }
+    }
+
+    // Admin Panel Button Toggle
+    if (adminBtn) {
+      adminBtn.style.display = currentUser.role === "admin" ? "inline-block" : "none";
+    }
   } else {
     if (loginBtn) loginBtn.style.display = "inline-block";
     if (badge) badge.style.display = "none";
+    if (adminBtn) adminBtn.style.display = "none";
   }
 }
 
@@ -1512,6 +1637,147 @@ function logoutUser() {
   renderAuthUserUI();
   if (currentCharacter) {
     initRoomsForCharacter(currentCharacter);
+  }
+}
+
+// --- ADMIN USER APPROVAL & ADULT MANAGEMENT FUNCTIONS ---
+function openAdminUsersModal() {
+  if (!currentUser || currentUser.role !== "admin") {
+    alert("👑 관리자(Admin) 권한이 필요한 메뉴입니다.");
+    return;
+  }
+  const modal = document.getElementById("adminUsersModal");
+  if (modal) {
+    modal.style.display = "flex";
+    loadAdminUsers();
+  }
+}
+
+function closeAdminUsersModal() {
+  const modal = document.getElementById("adminUsersModal");
+  if (modal) modal.style.display = "none";
+}
+
+async function loadAdminUsers() {
+  const tbody = document.getElementById("adminUserTableBody");
+  const countBadge = document.getElementById("adminUserCountBadge");
+  const notice = document.getElementById("adminNoticeMsg");
+  if (!tbody) return;
+
+  tbody.innerHTML = `<tr><td colspan="7" style="padding:1.5rem; text-align:center; color:var(--text-muted);">회원 목록을 불러오는 중...</td></tr>`;
+
+  try {
+    const res = await fetch("/ko/api/admin/users", {
+      headers: getAuthHeaders()
+    });
+    const data = await res.json();
+    if (!res.ok || !data.ok) {
+      tbody.innerHTML = `<tr><td colspan="7" style="padding:1.5rem; text-align:center; color:#f43f5e;">목록 로드 실패: ${escapeHtml(data.error || "권한 오류")}</td></tr>`;
+      return;
+    }
+
+    const users = data.users || [];
+    if (countBadge) countBadge.textContent = `${users.length}명`;
+    if (notice) notice.textContent = `총 ${users.length}명의 회원이 등록되어 있습니다.`;
+
+    if (users.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" style="padding:1.5rem; text-align:center; color:var(--text-muted);">등록된 회원이 없습니다.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = users.map(u => {
+      const isSelf = currentUser && currentUser.id === u.id;
+      const roleHtml = u.role === "admin"
+        ? '<span style="color:#eab308; font-weight:700;">👑 관리자</span>'
+        : '<span style="color:var(--text-secondary);">일반회원</span>';
+
+      let statusBadge = "";
+      if (u.status === "approved") {
+        statusBadge = '<span style="background:rgba(16,185,129,0.18); color:#34d399; padding:0.18rem 0.5rem; border-radius:999px; font-size:0.75rem; font-weight:600;">✅ 승인됨</span>';
+      } else if (u.status === "rejected") {
+        statusBadge = '<span style="background:rgba(239,68,68,0.18); color:#f87171; padding:0.18rem 0.5rem; border-radius:999px; font-size:0.75rem; font-weight:600;">🚫 거절됨</span>';
+      } else {
+        statusBadge = '<span style="background:rgba(245,158,11,0.18); color:#fbbf24; padding:0.18rem 0.5rem; border-radius:999px; font-size:0.75rem; font-weight:600;">⏳ 대기중</span>';
+      }
+
+      const adultHtml = u.is_adult
+        ? '<span style="color:#f87171; font-weight:700;">🔞 허용</span>'
+        : '<span style="color:var(--text-muted);">🔒 미허용</span>';
+
+      let actionsHtml = "";
+      if (u.role === "admin") {
+        actionsHtml = '<span style="color:var(--text-muted); font-size:0.74rem;">최고관리자 (계정 보호)</span>';
+      } else {
+        actionsHtml = `
+          <div style="display:flex; justify-content:flex-end; gap:0.3rem; flex-wrap:wrap;">
+            <button class="tab-btn" style="padding:0.25rem 0.45rem; font-size:0.72rem; border-color:rgba(16,185,129,0.5); color:#34d399;" onclick="updateUserApproval(${u.id}, 'approved', 1)" title="정회원 및 19세 이상 성인 권한 부여">✅ 19금 승인</button>
+            <button class="tab-btn" style="padding:0.25rem 0.45rem; font-size:0.72rem; border-color:rgba(56,189,248,0.5); color:#38bdf8;" onclick="updateUserApproval(${u.id}, 'approved', 0)" title="일반 회원 승인 (19금 미허용)">🟢 일반 승인</button>
+            <button class="tab-btn" style="padding:0.25rem 0.45rem; font-size:0.72rem; border-color:rgba(245,158,11,0.5); color:#fbbf24;" onclick="updateUserApproval(${u.id}, 'pending', 0)" title="가입 대기 상태로 변경">⏳ 대기</button>
+            <button class="tab-btn" style="padding:0.25rem 0.45rem; font-size:0.72rem; border-color:rgba(239,68,68,0.5); color:#f87171;" onclick="updateUserApproval(${u.id}, 'rejected', 0)" title="가입 거절 처리">🚫 거절</button>
+            <button class="tab-btn" style="padding:0.25rem 0.45rem; font-size:0.72rem; border-color:rgba(239,68,68,0.4); color:#f87171;" onclick="deleteAdminUser(${u.id}, '${escapeHtml(u.username)}')" title="회원 삭제">🗑️</button>
+          </div>
+        `;
+      }
+
+      return `
+        <tr style="border-bottom:1px solid rgba(255,255,255,0.05); ${isSelf ? 'background:rgba(234,179,8,0.05);' : ''}">
+          <td style="padding:0.6rem 0.75rem; color:var(--text-muted); font-size:0.75rem;">#${u.id}</td>
+          <td style="padding:0.6rem 0.75rem; font-weight:700;">${escapeHtml(u.username)} ${isSelf ? '<span style="font-size:0.7rem; color:#facc15;">(나)</span>' : ''}</td>
+          <td style="padding:0.6rem 0.75rem;">${escapeHtml(u.nickname || "-")}</td>
+          <td style="padding:0.6rem 0.75rem;">${roleHtml}</td>
+          <td style="padding:0.6rem 0.75rem;">${statusBadge}</td>
+          <td style="padding:0.6rem 0.75rem;">${adultHtml}</td>
+          <td style="padding:0.6rem 0.75rem; text-align:right;">${actionsHtml}</td>
+        </tr>
+      `;
+    }).join("");
+  } catch (err) {
+    tbody.innerHTML = `<tr><td colspan="7" style="padding:1.5rem; text-align:center; color:#f43f5e;">오류: ${err.message}</td></tr>`;
+  }
+}
+
+async function updateUserApproval(userId, status, isAdult) {
+  try {
+    const res = await fetch(`/ko/api/admin/users/${userId}/status`, {
+      method: "POST",
+      headers: {
+        ...getAuthHeaders(),
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ status, isAdult })
+    });
+    const data = await res.json();
+    if (!res.ok || !data.ok) {
+      alert(`상태 변경 실패: ${data.error || "오류가 발생했습니다."}`);
+      return;
+    }
+    if (currentUser && currentUser.id === userId) {
+      currentUser = data.user;
+      renderAuthUserUI();
+    }
+    await loadAdminUsers();
+  } catch (err) {
+    alert(`상태 변경 네트워크 오류: ${err.message}`);
+  }
+}
+
+async function deleteAdminUser(userId, username) {
+  if (!confirm(`정말로 회원 [${username}] 계정을 완전히 삭제하시겠습니까?`)) {
+    return;
+  }
+  try {
+    const res = await fetch(`/ko/api/admin/users/${userId}`, {
+      method: "DELETE",
+      headers: getAuthHeaders()
+    });
+    const data = await res.json();
+    if (!res.ok || !data.ok) {
+      alert(`회원 삭제 실패: ${data.error || "오류가 발생했습니다."}`);
+      return;
+    }
+    await loadAdminUsers();
+  } catch (err) {
+    alert(`회원 삭제 네트워크 오류: ${err.message}`);
   }
 }
 
