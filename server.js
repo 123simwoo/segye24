@@ -726,7 +726,7 @@ async function callUniversalLLM({ systemPrompt, history, userMessage, apiKey, pr
       const resp = await fetch(`${endpoint}/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        signal: AbortSignal.timeout(60000),
+        signal: AbortSignal.timeout(180000), // 3 minutes for first-time VRAM loading
         body: JSON.stringify({
           model: modelName,
           messages: [
@@ -2034,7 +2034,7 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'GET' && pathname === '/ko/api/chat/ollama-models') {
     try {
       const endpoint = (parsedUrl.query.endpoint || store.savedOllamaEndpoint || 'http://127.0.0.1:11434').replace(/\/+$/, '');
-      const resp = await fetch(`${endpoint}/api/tags`, { signal: AbortSignal.timeout(5000) });
+      const resp = await fetch(`${endpoint}/api/tags`, { signal: AbortSignal.timeout(15000) });
       if (!resp.ok) {
         return sendJson(res, resp.status, { ok: false, error: `Ollama 응답 코드 ${resp.status}` });
       }
