@@ -333,8 +333,17 @@ async function initRoomsForCharacter(char) {
 function buildRoomFromScenario(char, scenario, startAffection = 15) {
   const stageMeta = getStageMeta(startAffection);
   const imgMatch = (scenario?.initialAction || "").match(/img:(?:\[([^\]]+)\]|([^[\]\n]+))/);
-  const firstImgKey = imgMatch ? (imgMatch[1] || imgMatch[2]).trim() : Object.keys(char.profileImages || {})[0];
+  const imgDict = char.profileImages || char.situationalImages || {};
+  const firstImgKey = imgMatch ? (imgMatch[1] || imgMatch[2]).trim() : Object.keys(imgDict)[0];
   const combinedText = `${scenario?.initialAction || ""}\n\n${scenario?.initialMessage || ""}`;
+
+  const branches = scenario?.branches || char?.branches || (scenario?.replySuggestions ? scenario.replySuggestions.map((s, idx) => ({
+    id: String.fromCharCode(65 + idx),
+    type: idx === 0 ? "romantic" : idx === 1 ? "care" : "playful",
+    badge: idx === 0 ? "💖 직구 / 진심" : idx === 1 ? "🌿 다정 / 배려" : "⚡ 장난 / 도발",
+    title: idx === 0 ? "진솔한 고백" : idx === 1 ? "따뜻한 배려" : "장난스러운 도발",
+    text: typeof s === "string" ? s : (s.text || String(s))
+  })) : []);
 
   return {
     roomId: `room-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
@@ -347,6 +356,7 @@ function buildRoomFromScenario(char, scenario, startAffection = 15) {
     currentSceneKey: firstImgKey,
     currentTimePlace: `새벽 03:00 · ${char.location}`,
     currentMood: stageMeta.name,
+    branches,
     replySuggestions: scenario?.replySuggestions || char.replySuggestions || [],
     messages: [
       {
@@ -360,7 +370,8 @@ function buildRoomFromScenario(char, scenario, startAffection = 15) {
         prevAffection: startAffection,
         delta: 0,
         affectionReason: "대화 시작 초기 상태",
-        innerThought: "오늘도 피곤한 새벽이네... 조용히 자리만 앉았다 갔으면 좋겠다."
+        innerThought: "오늘도 피곤한 새벽이네... 조용히 자리만 앉았다 갔으면 좋겠다.",
+        branches
       }
     ]
   };
@@ -384,8 +395,9 @@ function renderRoomList() {
             <span>💗 호감도 ${room.affection}%</span>
             <span>${escapeHtml(stageMeta.name.split(":")[0])}</span>
           </div>
-          <div style="font-size:0.72rem; color:var(--text-secondary); margin-top:0.2rem;">
-            대화 ${room.messages.length}턴 · 호칭: ${escapeHtml(room.userName)}
+          <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.72rem; color:var(--text-secondary); margin-top:0.2rem;">
+            <span>대화 ${room.messages.length}턴 · 호칭: ${escapeHtml(room.userName)}</span>
+            ${room.branches?.length ? `<span style="color:#f472b6; font-size:0.68rem; font-weight:700;">🎭 분기점 지원</span>` : ''}
           </div>
         </div>
       `;
@@ -408,7 +420,7 @@ function syncActiveRoomToUI() {
   document.getElementById("userPersonaName").value = room.userName || (currentUser?.nickname) || "단골손님";
 
   renderChatMessages();
-  renderSuggestions(room.replySuggestions || []);
+  renderSuggestions(room.branches, room.replySuggestions || []);
   updateHud();
   renderKeywordBooks();
 }
@@ -545,6 +557,7 @@ async function createNewCustomRoom() {
       currentSceneKey: data.imageKey,
       currentTimePlace: data.timePlace || customSituation.slice(0, 20),
       currentMood: data.mood || "새로운 만남",
+      branches: data.branches || [],
       replySuggestions: data.replySuggestions || [],
       messages: [
         {
@@ -560,7 +573,8 @@ async function createNewCustomRoom() {
           affectionReason: "사용자 커스텀 상황으로 새로운 대화 시작",
           innerThought: data.innerThought,
           engine: data.engine || "내장 시뮬레이션 엔진",
-          apiError: data.apiError || null
+          apiError: data.apiError || null,
+          branches: data.branches || []
         }
       ]
     };
@@ -605,6 +619,7 @@ function renderChatMessages() {
       const dialogueText = hasDialogue ? lastPart : "";
 
       const deltaVal = Number(m.delta || 0);
+      const isDerailPenalty = Boolean(m.isDerailing || deltaVal < 0);
       const deltaSign = deltaVal > 0 ? `▲ +${deltaVal}%` : deltaVal < 0 ? `▼ ${deltaVal}%` : `변동 없음 (0%)`;
       const deltaClass = deltaVal >= 0 ? "up" : "down";
       const stageMeta = getStageMeta(m.affection ?? room.affection);
@@ -613,30 +628,47 @@ function renderChatMessages() {
       return `
         <div class="msg-row assistant">
           <img class="msg-avatar" src="${escapeHtml(avatarUrl)}" alt="Avatar" />
-          <div class="msg-card">
+          <div class="msg-card ${isDerailPenalty ? 'penalty-card-border' : ''}">
             <div class="narrator-block">
-              ${formatBabeChatText(actionText, currentCharacter.profileImages, currentCharacter.name, userName, {
+              ${formatBabeChatText(actionText, currentCharacter.profileImages || currentCharacter.situationalImages, currentCharacter.name, userName, {
                 sceneTitle: m.sceneTitle,
                 timePlace: m.timePlace,
                 mood: m.mood
               })}
             </div>
-            ${dialogueText ? `<div class="dialogue-bubble">${formatBabeChatText(dialogueText, currentCharacter.profileImages, currentCharacter.name, userName)}</div>` : ""}
+            ${dialogueText ? `<div class="dialogue-bubble ${isDerailPenalty ? 'penalty-dialogue' : ''}">${formatBabeChatText(dialogueText, currentCharacter.profileImages || currentCharacter.situationalImages, currentCharacter.name, userName)}</div>` : ""}
 
-            <!-- Turn Simulation Status Window (호감도 변화 + 속마음 + 상황 정보 + 엔진 배지) -->
-            <div class="turn-status-card">
+            <!-- Turn Simulation Status Window (호감도 변화 + 속마음 + 상황 정보 + 페널티 경고) -->
+            <div class="turn-status-card ${isDerailPenalty ? 'penalty-status-border' : ''}">
               <div class="turn-status-header">
                 <div style="display:flex; align-items:center; gap:0.45rem; flex-wrap:wrap;">
                   <span style="font-weight:800; color:#f472b6;">💗 호감도: ${m.prevAffection ?? m.affection}% &rarr; ${m.affection}%</span>
-                  <span class="delta-badge ${deltaClass}">${deltaSign}</span>
+                  <span class="delta-badge ${deltaClass}">${deltaSign}${isDerailPenalty ? " [몰입 패널티]" : ""}</span>
                   ${m.engine ? `<span style="font-size:0.68rem; padding:0.1rem 0.45rem; border-radius:999px; background:${isLiveApi ? "rgba(56,189,248,0.18)" : "rgba(148,163,184,0.15)"}; color:${isLiveApi ? "#38bdf8" : "#94a3b8"}; font-weight:700;">${isLiveApi ? "⚡ " : ""}${escapeHtml(m.engine)}</span>` : ""}
                 </div>
                 <span style="color:var(--accent-cyan); font-weight:700;">${escapeHtml(stageMeta.name)}</span>
               </div>
-              <div style="color:var(--text-secondary); font-size:0.77rem;">
-                📌 <strong>반응 변화 요인:</strong> ${escapeHtml(m.affectionReason || "대화에 따른 감정 변화")}
-              </div>
-              ${m.innerThought ? `<div class="inner-thought-line">💭 <strong>${escapeHtml(currentCharacter.name.replace(" 24", ""))}의 속마음:</strong> "${escapeHtml(m.innerThought)}"</div>` : ""}
+
+              ${isDerailPenalty ? `
+                <div class="derailment-penalty-card">
+                  <div class="penalty-title-row">
+                    <span class="penalty-alert-badge">⚠️ 에피소드 이탈 패널티</span>
+                    <span class="penalty-delta-val">${deltaVal}%</span>
+                  </div>
+                  <div class="penalty-reason-text">
+                    ${escapeHtml(m.derailmentReason || m.affectionReason || "작품의 서사 및 현재 진행 중인 상황과 맞지 않는 뜬금없는 대화로 인해 호감도 패널티가 적용되었습니다.")}
+                  </div>
+                  <div class="penalty-guide-tip">
+                    💡 <strong>몰입 가이드:</strong> 작품 캐릭터의 감정선과 에피소드 상황에 맞는 대사/분기를 선택하면 호감도를 다시 회복할 수 있습니다.
+                  </div>
+                </div>
+              ` : `
+                <div style="color:var(--text-secondary); font-size:0.77rem;">
+                  📌 <strong>반응 변화 요인:</strong> ${escapeHtml(m.affectionReason || "대화에 따른 감정 변화")}
+                </div>
+              `}
+
+              ${m.innerThought ? `<div class="inner-thought-line ${isDerailPenalty ? 'penalty-thought' : ''}">💭 <strong>${escapeHtml(currentCharacter.name.replace(" 24", ""))}의 속마음:</strong> "${escapeHtml(m.innerThought)}"</div>` : ""}
               ${m.newlyUnlocked?.length ? `<div style="font-size:0.75rem; color:var(--accent-emerald); font-weight:700;">🔓 키워드북 해금: ${m.newlyUnlocked.map(escapeHtml).join(", ")}</div>` : ""}
               ${m.apiError ? `<div style="font-size:0.73rem; color:#fca5a5; margin-top:0.25rem;">⚠️ API 오류 감지 (내장 엔진 응답으로 대체됨): ${escapeHtml(m.apiError)}</div>` : ""}
             </div>
@@ -649,16 +681,87 @@ function renderChatMessages() {
   container.scrollTop = container.scrollHeight;
 }
 
-function renderSuggestions(list) {
+function renderSuggestions(branches, plainSuggestions) {
   const el = document.getElementById("chatSuggestions");
-  el.innerHTML = (list || [])
-    .map(s => `<button class="suggest-chip" onclick="sendSuggested(${JSON.stringify(s).replace(/"/g, "&quot;")})">${escapeHtml(s)}</button>`)
-    .join("");
+  if (!el) return;
+
+  let items = [];
+  if (Array.isArray(branches) && branches.length > 0) {
+    items = branches;
+  } else if (Array.isArray(plainSuggestions) && plainSuggestions.length > 0) {
+    const types = ["romantic", "care", "playful"];
+    const badges = ["💖 직구 / 진심", "🌿 다정 / 배려", "⚡ 장난 / 도발"];
+    const titles = ["솔직한 마음 표현", "다정하게 챙겨주기", "장난스러운 티키타카"];
+    items = plainSuggestions.slice(0, 3).map((s, idx) => ({
+      id: String.fromCharCode(65 + idx),
+      type: types[idx] || "romantic",
+      badge: badges[idx] || "💬 선택지",
+      title: titles[idx] || "선택",
+      text: typeof s === "string" ? s : (s.text || String(s))
+    }));
+  }
+
+  if (items.length === 0) {
+    el.innerHTML = "";
+    el.style.display = "none";
+    return;
+  }
+
+  el.style.display = "block";
+  el.innerHTML = `
+    <div class="branch-selection-container">
+      <div class="branch-header-row">
+        <div class="branch-title-wrap">
+          <span class="branch-icon">🎭</span>
+          <span class="branch-title">스토리 분기 선택지 (Interactive Branches)</span>
+        </div>
+        <span class="branch-hint">선택지를 클릭하면 해당 분기로 즉시 진행됩니다 (✏️ 버튼으로 수정 가능)</span>
+      </div>
+      <div class="branch-cards-grid">
+        ${items.map(b => {
+          const typeClass = b.type || "romantic";
+          const defaultBadge = typeClass === "romantic" ? "💖 직구 / 진심" : typeClass === "care" ? "🌿 다정 / 배려" : "⚡ 장난 / 도발";
+          const badgeText = b.badge || defaultBadge;
+          const cardTitle = b.title || (typeClass === "romantic" ? "진솔한 마음" : typeClass === "care" ? "따뜻한 배려" : "장난 / 도발");
+          const branchText = typeof b === "string" ? b : (b.text || "");
+
+          return `
+            <div class="branch-card ${escapeHtml(typeClass)}" onclick="chooseBranchCard(${JSON.stringify(branchText).replace(/"/g, '&quot;')})">
+              <div class="branch-card-header">
+                <span class="branch-badge ${escapeHtml(typeClass)}">${escapeHtml(badgeText)}</span>
+                <span class="branch-card-tag">${escapeHtml(cardTitle)}</span>
+              </div>
+              <div class="branch-card-body">
+                "${escapeHtml(branchText)}"
+              </div>
+              <div class="branch-card-footer">
+                <span class="branch-go-action">▶ 이 분기로 진행</span>
+                <button type="button" class="branch-edit-action" title="대사 수정 후 전송" onclick="event.stopPropagation(); editBranchCard(${JSON.stringify(branchText).replace(/"/g, '&quot;')})">✏️ 수정</button>
+              </div>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function chooseBranchCard(text) {
+  const input = document.getElementById("chatInput");
+  if (!input) return;
+  input.value = text;
+  sendChatMessage();
+}
+
+function editBranchCard(text) {
+  const input = document.getElementById("chatInput");
+  if (!input) return;
+  input.value = text;
+  input.focus();
 }
 
 function sendSuggested(text) {
-  document.getElementById("chatInput").value = text;
-  sendChatMessage();
+  chooseBranchCard(text);
 }
 
 async function sendChatMessage() {
@@ -751,6 +854,7 @@ async function sendChatMessage() {
     room.currentSceneKey = data.imageKey || room.currentSceneKey;
     room.currentTimePlace = data.timePlace || room.currentTimePlace;
     room.currentMood = data.mood || room.currentMood;
+    room.branches = data.branches || [];
     room.replySuggestions = data.replySuggestions || [];
 
     room.messages.push({
@@ -765,6 +869,9 @@ async function sendChatMessage() {
       delta: data.delta ?? 0,
       affectionReason: data.affectionReason,
       innerThought: data.innerThought,
+      isDerailing: data.isDerailing,
+      derailmentReason: data.derailmentReason,
+      branches: data.branches || [],
       newlyUnlocked: data.newlyUnlocked || [],
       engine: data.engine || "내장 시뮬레이션 엔진",
       apiError: data.apiError || null
@@ -772,7 +879,7 @@ async function sendChatMessage() {
 
     renderRoomList();
     renderChatMessages();
-    renderSuggestions(room.replySuggestions);
+    renderSuggestions(room.branches, room.replySuggestions);
     updateHud();
     renderKeywordBooks();
   } finally {

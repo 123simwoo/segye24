@@ -608,6 +608,81 @@ body {
   font-size: 0.81rem;
 }
 
+/* Episode Derailment Penalty Alert Box */
+.penalty-card-border {
+  border: 1px solid rgba(239, 68, 68, 0.55) !important;
+  box-shadow: 0 0 16px rgba(239, 68, 68, 0.15);
+}
+
+.penalty-dialogue {
+  border-left: 3px solid #ef4444 !important;
+  background: rgba(30, 20, 25, 0.95) !important;
+  color: #fecaca !important;
+}
+
+.penalty-status-border {
+  border: 1px solid rgba(239, 68, 68, 0.45) !important;
+  background: rgba(35, 18, 22, 0.92) !important;
+}
+
+.derailment-penalty-card {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-radius: 0.6rem;
+  padding: 0.65rem 0.85rem;
+  margin: 0.35rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.penalty-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 800;
+  font-size: 0.82rem;
+  color: #f87171;
+}
+
+.penalty-alert-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(239, 68, 68, 0.2);
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid rgba(239, 68, 68, 0.45);
+}
+
+.penalty-delta-val {
+  color: #ef4444;
+  font-weight: 900;
+  font-size: 0.88rem;
+}
+
+.penalty-reason-text {
+  color: #fca5a5;
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.penalty-guide-tip {
+  font-size: 0.74rem;
+  color: #fde047;
+  background: rgba(234, 179, 8, 0.1);
+  border: 1px solid rgba(234, 179, 8, 0.25);
+  border-radius: 0.4rem;
+  padding: 0.35rem 0.55rem;
+  line-height: 1.4;
+}
+
+.penalty-thought {
+  background: rgba(239, 68, 68, 0.12) !important;
+  color: #fca5a5 !important;
+  border-left: 2px solid #ef4444;
+}
+
 /* Keyword Books Grid */
 .kb-list {
   display: flex;
@@ -798,11 +873,186 @@ body {
 
 .suggestions-bar {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
+  flex-direction: column;
   padding: 0.65rem 1rem;
-  background: #17171b;
+  background: #141418;
   border-top: 1px solid var(--border-subtle);
+}
+
+.branch-selection-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.branch-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.branch-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.branch-icon {
+  font-size: 0.95rem;
+}
+
+.branch-title {
+  background: linear-gradient(135deg, #f472b6 0%, #c084fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+}
+
+.branch-hint {
+  font-size: 0.73rem;
+  color: var(--text-muted);
+}
+
+.branch-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.6rem;
+}
+
+.branch-card {
+  background: #1c1c24;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  padding: 0.75rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+  text-align: left;
+}
+
+.branch-card:hover {
+  transform: translateY(-2px);
+  background: #23232e;
+}
+
+.branch-card.romantic {
+  border-left: 3px solid #ff3b7f;
+}
+.branch-card.romantic:hover {
+  border-color: #ff3b7f;
+  box-shadow: 0 4px 20px rgba(255, 59, 127, 0.28);
+}
+
+.branch-card.care {
+  border-left: 3px solid #10b981;
+}
+.branch-card.care:hover {
+  border-color: #10b981;
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.28);
+}
+
+.branch-card.playful {
+  border-left: 3px solid #a855f7;
+}
+.branch-card.playful:hover {
+  border-color: #a855f7;
+  box-shadow: 0 4px 20px rgba(168, 85, 247, 0.28);
+}
+
+.branch-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.branch-badge {
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 0.12rem 0.5rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.branch-badge.romantic {
+  background: rgba(255, 59, 127, 0.18);
+  color: #ff6b9d;
+  border: 1px solid rgba(255, 59, 127, 0.4);
+}
+
+.branch-badge.care {
+  background: rgba(16, 185, 129, 0.18);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.branch-badge.playful {
+  background: rgba(168, 85, 247, 0.18);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.4);
+}
+
+.branch-card-tag {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #cbd5e1;
+}
+
+.branch-card-body {
+  font-size: 0.85rem;
+  color: #f1f5f9;
+  line-height: 1.45;
+  font-weight: 500;
+  word-break: keep-all;
+}
+
+.branch-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 0.35rem;
+  margin-top: 0.1rem;
+}
+
+.branch-go-action {
+  color: var(--accent-cyan);
+  font-weight: 700;
+  transition: transform 0.12s ease;
+}
+
+.branch-card:hover .branch-go-action {
+  transform: translateX(2px);
+}
+
+.branch-edit-action {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #cbd5e1;
+  border-radius: 0.35rem;
+  padding: 0.12rem 0.45rem;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.branch-edit-action:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border-color: #fff;
 }
 
 .suggest-chip {

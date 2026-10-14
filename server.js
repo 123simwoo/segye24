@@ -784,12 +784,28 @@ async function callUniversalLLM({ systemPrompt, history, userMessage, apiKey, pr
   };
 }
 
-// Smart keyword/context matcher for selecting the best situational image out of the 12 slots
+// Smart keyword/context matcher for selecting the best situational image out of the slots
 function pickBestSituationalImageKey(character, textContext, affection, delta, suggestedKey) {
-  const validKeys = Object.keys(character.profileImages || {}).filter(k => !character.profileImages[k].hidden);
+  const imgDict = character.profileImages || character.situationalImages || {};
+  const validKeys = Object.keys(imgDict).filter(k => !imgDict[k].hidden);
   if (suggestedKey && validKeys.includes(suggestedKey)) {
     return suggestedKey;
   }
+
+  const isMarin = character.name.includes("마린") || (character.characterId && character.characterId.includes("marin"));
+  if (isMarin) {
+    const combined = String(textContext || "");
+    if (/치수|줄자|비키니|몸|허리|가슴|측정/.test(combined)) return validKeys.find(k => k.includes("치수측정")) || validKeys[0];
+    if (/시즈쿠|의상|코스프레|완성|재봉틀/.test(combined)) return validKeys.find(k => k.includes("시즈쿠")) || validKeys[0];
+    if (/전화|통화|침대|밤|심야/.test(combined)) return validKeys.find(k => k.includes("심야통화")) || validKeys[0];
+    if (/속마음|터질|두근|쿵쾅|즈큔|빨개/.test(combined)) return validKeys.find(k => k.includes("속마음폭주")) || validKeys[0];
+    if (/불꽃놀이|업혀|등|축제/.test(combined)) return validKeys.find(k => k.includes("불꽃놀이")) || validKeys[0];
+    if (/라면|규동|먹방|밥|배고/.test(combined)) return validKeys.find(k => k.includes("음식먹방")) || validKeys[0];
+    if (/삐짐|질투|다른 여자|화남/.test(combined) || delta < 0) return validKeys.find(k => k.includes("삐짐")) || validKeys[0];
+    if (/고백|좋아해|사랑|진심|안아/.test(combined) || affection >= 80) return validKeys.find(k => k.includes("진심의고백")) || validKeys[0];
+    return validKeys.find(k => k.includes("밝은미소")) || validKeys[0];
+  }
+
   const isSegye = character.name.includes("세계");
   if (!isSegye) {
     return validKeys.find(k => suggestedKey && k.includes(suggestedKey)) || validKeys[0];
@@ -860,6 +876,47 @@ function parseSpecialCommand(rawMsg) {
     };
   }
   return null;
+}
+
+// Visual Novel Style Branching Choices Normalizer
+function normalizeBranches(branches, replySuggestions, character, stage) {
+  if (Array.isArray(branches) && branches.length >= 2) {
+    return branches.slice(0, 3).map((b, idx) => {
+      const type = b.type || (idx === 0 ? "romantic" : idx === 1 ? "care" : "playful");
+      const badge = b.badge || (type === "romantic" ? "💖 직구 / 진심" : type === "care" ? "🌿 다정 / 배려" : "⚡ 장난 / 도발");
+      const title = b.title || (type === "romantic" ? "진솔한 고백" : type === "care" ? "따뜻한 배려" : "장난스러운 도발");
+      const text = typeof b === "string" ? b : (b.text || b.dialogue || b.title || "");
+      return { id: String.fromCharCode(65 + idx), type, badge, title, text };
+    });
+  }
+
+  if (Array.isArray(replySuggestions) && replySuggestions.length >= 1) {
+    const types = ["romantic", "care", "playful"];
+    const badges = ["💖 직구 / 진심", "🌿 다정 / 배려", "⚡ 장난 / 도발"];
+    const titles = ["솔직한 감정 표현", "따뜻하게 챙겨주기", "티키타카 장난"];
+    return replySuggestions.slice(0, 3).map((s, idx) => ({
+      id: String.fromCharCode(65 + idx),
+      type: types[idx] || "romantic",
+      badge: badges[idx] || "💬 선택지",
+      title: titles[idx] || "선택",
+      text: typeof s === "string" ? s : (s.text || String(s))
+    }));
+  }
+
+  const isMarin = character?.name?.includes("마린") || (character?.characterId && character?.characterId.includes("marin"));
+  if (isMarin) {
+    return [
+      { id: "A", type: "romantic", badge: "💖 직구 / 진심", title: "설레는 진심 고백", text: "\"마린, 오늘 너 진짜 너무 예뻐서 가슴이 터질 것 같아.\"" },
+      { id: "B", type: "care", badge: "🌿 다정 / 배려", title: "따뜻한 배려", text: "\"의상 바느질은 내가 밤새워서라도 다 끝낼 테니까, 마린 넌 편하게 쉬어.\"" },
+      { id: "C", type: "playful", badge: "⚡ 장난 / 도발", title: "귀여운 장난", text: "\"마린 얼굴 엄청 빨개졌는데? 더위 먹은 거야, 아니면 부끄러운 거야?\"" }
+    ];
+  }
+
+  return [
+    { id: "A", type: "romantic", badge: "💖 직구 / 진심", title: "새벽빛 진심 직구", text: "\"세계 씨가 웃으니까 스물넷답게 진짜 예쁘네요.\"" },
+    { id: "B", type: "care", badge: "🌿 다정 / 배려", title: "조용한 챙겨주기", text: "하얀색 몬스터 에너지 한 캔을 그녀의 카운터 위에 조용히 올려둔다." },
+    { id: "C", type: "playful", badge: "⚡ 장난 / 도발", title: "새벽의 티키타카", text: "\"카운터 구석 아이패드에 비밀 그림, 나한테만 몰래 보여줄래요?\"" }
+  ];
 }
 
 // Deep Korean Persona Matrix: Topic x Affection Stage (0..4) (Used as instant fallback or baseline)
@@ -1111,6 +1168,114 @@ function craftKoreanPersonaScene({ character, userMessage, userName, currentAff,
   }
 
   if (!isSegye) {
+    const isMarin = character.name.includes("마린") || (character.characterId && character.characterId.includes("marin"));
+    if (isMarin) {
+      const isCos = /시즈쿠|코스프레|의상|바느질|재봉틀|가발|렌즈|치수|줄자|옷|원단/.test(msg);
+      if (delta < 0 || st === 0) {
+        return {
+          imageKey: "마린_삐짐_질투",
+          sceneTitle: "분위기를 깨버린 딴소리에 굳어버린 표정",
+          action: `순간 말문이 턱 막힌 마린이 동그랗게 뜬 붉은 눈동자로 ${userName}를 빤히 바라보았다. 들떠서 재잘거리던 목소리가 뚝 끊기고, 줄자를 매만지던 그녀의 손끝이 어색하게 굳어버렸다.`,
+          dialogue: `"엣... 고죠 군? 갑자기 뜬금없이 무슨 소리야...? 나 지금 진짜 진지하게 코스프레 옷 이야기하고 있었는데... 내 말 별로 재미없었어?"`,
+          innerThought: "갑자기 왜 저런 딴소리를 하지...? 나 혼자만 들떠서 떠들었나 봐... 좀 무안하고 서운해.",
+          affectionReason: "에피소드 흐름과 전혀 상관없는 딴소리로 마린의 기분을 가라앉힘",
+          timePlace: `방과 후 17:30 · ${currentLocation || "고죠 히나인형 공방 다다미방"}`,
+          mood: "어색한 침묵과 서운함",
+          replySuggestions: [
+            "\"미안해, 마린. 딴생각한 게 아니라 네가 너무 예뻐서 순간 긴장해서 그랬어.\"",
+            "\"진짜 미안! 아까 하던 시즈쿠땅 의상 이야기 계속해 줘, 귀 기울여 들을게.\"",
+            "머리를 긁적이며 차가운 보리차를 건네 분위기를 푼다."
+          ],
+          branches: [
+            { id: "A", type: "romantic", badge: "💖 직구 / 사과", title: "진심 어린 해명", text: "\"미안해, 마린. 딴생각한 게 아니라 네가 너무 예뻐서 순간 긴장해서 그랬어.\"" },
+            { id: "B", type: "care", badge: "🌿 다정 / 경청", title: "대화 집중하기", text: "\"진짜 미안! 아까 하던 시즈쿠땅 의상 이야기 계속해 줘, 귀 기울여 들을게.\"" },
+            { id: "C", type: "playful", badge: "⚡ 장난 / 분위기 전환", title: "보리차 건네기", text: "머리를 긁적이며 차가운 보리차를 건네며 슬쩍 웃어 보인다." }
+          ]
+        };
+      }
+
+      if (isCos || commandInfo?.type === "skinship") {
+        const byStage = {
+          1: {
+            imageKey: "마린_밝은미소_인사",
+            sceneTitle: "다다미방에 울려 퍼지는 갸루의 환호",
+            action: `스마트폰 속 시즈쿠땅 일러스트를 화면 가득 띄운 마린이 ${userName}의 코앞까지 얼굴을 들이밀었다. 상큼한 향수 냄새와 함께 반짝이는 귓가의 피어싱들이 찰랑거렸다.`,
+            dialogue: `"있잖아, 고죠 군! 이 프릴 디테일이랑 가터벨트 라인... 진짜 히나인형 옷 만들던 고죠 군 손재주면 완벽하게 재현할 수 있을 것 같아! 나 진짜 믿고 맡겨도 되지?!"`,
+            innerThought: "내 오타쿠 취미를 하나도 안 이상하게 봐주고 진지하게 들어주는 사람... 태어나서 고죠 군이 처음이야.",
+            mood: "순수한 열정과 신뢰"
+          },
+          2: {
+            imageKey: "마린_치수측정_부끄러움",
+            sceneTitle: "숨소리조차 조심스러운 치수 측정의 순간",
+            action: `${userName}의 떨리는 손끝이 마린의 허리선에 닿자, 그녀의 어깨가 움찔하며 숨이 턱 멎었다. 평소의 당당하던 태도는 온데간데없이, 새빨갛게 익은 귀 끝을 가리려 앞머리만 만지작거렸다.`,
+            dialogue: `"...저, 저기 고죠 군? 치수 잴 때... 그렇게 긴장 안 해도 되는데. ...아니, 사실은 내 심장 소리가 너무 크게 뛰어서 고죠 군한테 들릴까 봐 긴장돼..."`,
+            innerThought: "손 닿은 자리가 타는 것처럼 뜨거워... 고죠 군 손길, 왜 이렇게 다정하고 두근거리는 거야...",
+            mood: "폭발하는 심장 박동과 부끄러움"
+          },
+          3: {
+            imageKey: "마린_시즈쿠의상_감동",
+            sceneTitle: "거울 앞에 선 기적, 그리고 흘러내린 눈물",
+            action: `완성된 시즈쿠땅 코스프레 의상을 입고 전신 거울 앞에 선 마린의 눈동자가 눈물로 촉촉하게 젖어 들었다. 떨리는 손으로 옷자락을 쥐던 그녀가 ${userName}를 돌아보며 와락 품에 안겼다.`,
+            dialogue: `"...고죠 군, 진짜 대박이야... 이거 진짜 내가 사랑하는 시즈쿠땅이잖아...! 날 이렇게 완벽한 주인공으로 만들어 준 건... 전부 고죠 군 덕분이야. 너무 고마워, 진짜로..."`,
+            innerThought: "이 사람을 위해서라면 내 모든 걸 다 바쳐도 아깝지 않아. 고죠 군, 날 이렇게 특별하게 만들어 줘서 고마워.",
+            mood: "벅찬 감동과 애틋한 포옹"
+          },
+          4: {
+            imageKey: "마린_진심의고백_애정",
+            sceneTitle: "단둘만의 공방, 세상에서 가장 진솔한 고백",
+            action: `노을빛이 붉게 물든 다다미방, 마린은 재봉틀 앞에 앉은 ${userName}의 등 뒤에서 조심스럽게 목을 끌어안았다. 그녀의 따스한 체온과 떨리는 숨결이 목덜미에 오롯이 닿았다.`,
+            dialogue: `"...고죠 군. 나 이제 코스프레 때문이 아니라... 고죠 군 얼굴 보고 싶어서 매일 여기 오는 거야. ...나, 고죠 군을 좋아해. 평생 고죠 군 곁에 있고 싶어."`,
+            innerThought: "심장이 터질 것 같아... 고죠 군, 내 마음 받아줄래? 나 진짜 고죠 군 아니면 안 돼.",
+            mood: "솔직한 순애 고백"
+          }
+        }[st] || {
+          imageKey: "마린_밝은미소_인사",
+          sceneTitle: "공방 다다미방의 설레는 시간",
+          action: `마린이 다다미 바닥에 엎드려 턱을 괸 채 ${userName}를 올려다보았다.`,
+          dialogue: `"고죠 군, 오늘도 같이 옷 만들어 주는 거지? 나 진짜 기대된다!"`,
+          innerThought: "고죠 군이랑 같이 있는 시간은 1초도 안 아까워.",
+          mood: "즐거운 기대감"
+        };
+
+        return {
+          ...byStage,
+          affectionReason: "코스프레 의상 제작과 서로를 향한 섬세한 배려로 마린의 마음이 크게 흔들림",
+          timePlace: `방과 후 17:50 · ${currentLocation || "고죠 히나인형 공방 다다미방"}`,
+          replySuggestions: [
+            "\"마린, 오늘 네가 너무 예뻐서 가슴이 터질 것 같았어.\"",
+            "\"의상 바느질은 내가 밤새워서라도 끝낼 테니까 넌 편하게 쉬어.\"",
+            "\"마린 얼굴 빨개졌는데? 더운 거야, 아니면 부끄러운 거야?\""
+          ],
+          branches: [
+            { id: "A", type: "romantic", badge: "💖 직구 / 진심", title: "설레는 진심 고백", text: "\"마린, 오늘 네가 너무 예뻐서 가슴이 터질 것 같았어.\"" },
+            { id: "B", type: "care", badge: "🌿 다정 / 배려", title: "따뜻한 배려", text: "\"의상 바느질은 내가 밤새워서라도 끝낼 테니까 넌 편하게 쉬어.\"" },
+            { id: "C", type: "playful", badge: "⚡ 장난 / 도발", title: "귀여운 장난", text: "\"마린 얼굴 엄청 빨개졌는데? 더위 먹은 거야, 아니면 부끄러운 거야?\"" }
+          ]
+        };
+      }
+
+      return {
+        imageKey: st >= 3 ? "마린_속마음폭주_패닉" : "마린_밝은미소_인사",
+        sceneTitle: `${nextStageInfo.name} · 고죠 공방 다다미방`,
+        action: `시즈쿠땅 화보집을 넘기던 마린이 ${userName}의 말에 활짝 웃으며 고개를 들었다. 분홍빛 그라데이션 금발이 경쾌하게 찰랑거렸다.`,
+        dialogue: `"에헤헤, 고죠 군! 방금 그 말 진짜야? 고죠 군이랑 이렇게 수다 떨고 있으면 진짜 시간 가는 줄 모르겠다니까!"`,
+        innerThought: st >= 3 ? "고죠 군이 나한테 이렇게 다정하게 말해줄 때마다 가슴이 터질 것 같아..." : "고죠 군이랑 있으면 진짜 즐겁고 편해!",
+        affectionReason: "마린의 관심사에 진심으로 공감하며 즐거운 대화를 이어감",
+        timePlace: `방과 후 18:00 · ${currentLocation || "고죠 히나인형 공방 다다미방"}`,
+        mood: nextStageInfo.name,
+        replySuggestions: [
+          "\"그렇게 웃을 때마다 마린, 진짜 너무 예쁜 거 알아?\"",
+          "\"슬리퍼리 걸즈 다음 화 코스프레도 내가 옷 만들어 줄게.\"",
+          "\"마린이 방방 뛰는 거 보니까 진짜 초등학생 같아서 귀엽다.\""
+        ],
+        branches: [
+          { id: "A", type: "romantic", badge: "💖 직구 / 진심", title: "미소 칭찬하기", text: "\"그렇게 웃을 때마다 마린, 진짜 너무 예쁜 거 알아?\"" },
+          { id: "B", type: "care", badge: "🌿 다정 / 약속", title: "다음 의상 약속", text: "\"슬리퍼리 걸즈 다음 화 코스프레도 내가 옷 만들어 줄게.\"" },
+          { id: "C", type: "playful", badge: "⚡ 장난 / 티키타카", title: "함께 행복해하기", text: "\"마린이 방방 뛰는 거 보니까 진짜 초등학생 같아서 귀엽다.\"" }
+        ]
+      };
+    }
+
     const imgKey = delta < 0 ? "(은서)청소/짜증/화남" : st >= 3 ? "{{user}}와 휴식/흡연/고백" : "(은서)대화중/{{user}}와 대화";
     const action = delta < 0
       ? `바코드 스캐너를 계산대 위에 신경질적으로 내려놓은 은서가 싸늘한 시선으로 ${userName}를 노려보았다.`
@@ -1135,6 +1300,11 @@ function craftKoreanPersonaScene({ character, userMessage, userName, currentAff,
         "\"오늘 진상 손님 많았나 봐요. 초코우유 하나 드실래요?\"",
         "\"편의점 뒷문에 있던 길고양이, 은서 씨가 챙겨주는 거죠?\"",
         "\"교대 시간 얼마 안 남았네요. 퇴근길에 잠깐 얘기나 할래요?\""
+      ],
+      branches: [
+        { id: "A", type: "romantic", badge: "💖 직구 / 진심", title: "솔직한 호감 표현", text: "\"은서 씨 보려고 일부러 이 시간대 맞춰서 온 거예요.\"" },
+        { id: "B", type: "care", badge: "🌿 다정 / 배려", title: "따뜻한 음료 건네기", text: "\"오늘 진상 많았죠? 따뜻한 꿀유자차 하나 계산해 드릴게요.\"" },
+        { id: "C", type: "playful", badge: "⚡ 장난 / 도발", title: "가벼운 스몰토크", text: "\"편의점 창고 뒤 길고양이, 은서 씨가 매일 밥 챙겨주는 거 다 알아요.\"" }
       ]
     };
   }
@@ -1477,10 +1647,16 @@ async function generateSimulationReply({
   const commandInfo = parseSpecialCommand(userMessage);
   const currentAff = Math.max(0, Math.min(100, Number(affection ?? 15)));
   const rudeWords = ["늙었", "한심", "짜증", "꺼져", "바보", "무시", "진상", "빨리", "못생", "닥쳐", "최악"];
-  const warmWords = ["몬스터", "커피", "고마", "멋지", "예쁘", "그림", "괜찮", "힘내", "같이", "우동", "어묵", "초코", "고양이", "먹물", "펜", "쉬어", "꽃", "선물", "비", "우산", "라면", "좋아", "사과", "미안"];
+  const warmWords = ["몬스터", "커피", "고마", "멋지", "예쁘", "그림", "괜찮", "힘내", "같이", "우동", "어묵", "초코", "고양이", "먹물", "펜", "쉬어", "꽃", "선물", "비", "우산", "라면", "좋아", "사과", "미안", "시즈쿠", "코스프레", "의상", "바느질", "재봉틀", "치수", "줄자"];
+
+  // Derailment pattern detection
+  const derailmentRegex = /(?:비트코인|이더리움|코인|가상화폐|주식|환율|파이썬|자바스크립트|javascript|python|코딩|개발자|chatgpt|gpt|인공지능|ai모델|프롬프트|날씨\s*어때|날씨\s*알려줘|계산해줘|번역해줘|누구야\s*너|너\s*봇이지|너\s*ai지|로또\s*번호)/i;
+  const isRuleDerailing = derailmentRegex.test(userMessage);
 
   let baseDelta = 5;
-  if (commandInfo) {
+  if (isRuleDerailing) {
+    baseDelta = -10;
+  } else if (commandInfo) {
     if (commandInfo.type === "innerThought") baseDelta = 4;
     else if (commandInfo.type === "skinship") baseDelta = currentAff < 15 ? -6 : currentAff < 35 ? 3 : 9;
     else if (commandInfo.type === "whisper") baseDelta = currentAff < 15 ? -4 : currentAff < 35 ? 4 : 8;
@@ -1510,7 +1686,8 @@ async function generateSimulationReply({
   let apiErrorReason = null;
 
   if (activeKey || currentProvider === "ollama") {
-    const validImageKeys = Object.keys(character.profileImages || {}).filter(k => !character.profileImages[k].hidden);
+    const imgDict = character.profileImages || character.situationalImages || {};
+    const validImageKeys = Object.keys(imgDict).filter(k => !imgDict[k].hidden);
     let commandDirective = "";
     if (commandInfo) {
       if (commandInfo.type === "innerThought") {
@@ -1530,53 +1707,79 @@ async function generateSimulationReply({
       } else if (commandInfo.type === "whisper") {
         commandDirective = `
 [특수 시스템 커맨드 발동: 🤫 /귓속말 - 속삭임: "${commandInfo.param}"]
-- 사용자가 카운터 너머로 10cm까지 다가가 귓가에 숨결이 닿도록 은밀하게 속삭였습니다: "${commandInfo.param}"
+- 사용자가 카운터/다다미 너머로 10cm까지 다가가 귓가에 숨결이 닿도록 은밀하게 속삭였습니다: "${commandInfo.param}"
 - 귀와 목덜미에 닿는 온기, 화들짝 놀라며 굳어버린 몸, 귓바퀴부터 뺨까지 새빨갛게 물드는 시각적 반응, 둘만 고립된 듯한 숨 막히는 긴장감을 극적으로 연출하세요.
 - 대사('dialogue')는 목소리가 떨리거나 헛기침을 하듯 조용하고 당황스럽게 말하고, 속마음('innerThought')에서 터질 듯한 심장 소리를 고백하세요.
 `;
       } else if (commandInfo.type === "midnightEvent") {
         commandDirective = `
 [특수 시스템 커맨드 발동: 🌙 /심야이벤트 - 테마: "${commandInfo.param}"]
-- 새벽 지하 PC방의 특수 돌발 서사 이벤트("${commandInfo.param}")가 강제로 발동되었습니다.
-- (정전: 갑작스런 정전으로 둘만의 칠흑 속 고립 / 라면: 나란히 앉아 나눠먹는 야식 / 퇴근길: 푸른 새벽 첫차를 타러 가는 차가운 공기와 온기 / 아이패드: 카운터 밑에서 공개하는 미완성 캔버스).
-- 둘만의 고립감과 새벽 특유의 몽환적이고 긴장감 넘치는 분위기를 지문과 대사에 폭발적으로 연출하세요.
+- 심야의 특수 돌발 서사 이벤트("${commandInfo.param}")가 강제로 발동되었습니다.
+- 둘만의 고립감과 새벽/심야 특유의 몽환적이고 긴장감 넘치는 분위기를 지문과 대사에 폭발적으로 연출하세요.
 `;
       }
     }
 
-    const systemPrompt = `당신은 인터랙티브 스토리텔링 시뮬레이션의 주인공 '${character.name}'입니다.
-사용자의 대사/행동에 맞춰, 캐릭터의 페르소나와 [현재 호감도(${currentAff}/100, ${tentativeStage.name})]를 완벽히 반영한 한국어 웹소설 스타일 응답을 생성하세요.
+    const systemPrompt = `당신은 인터랙티브 서브컬처 라노벨/비주얼 노벨의 히로인 '${character.name}'입니다.
+사용자({{user}})의 대사/행동에 맞춰, 캐릭터의 페르소나와 [현재 호감도(${currentAff}/100, ${tentativeStage.name})]를 완벽히 반영한 한국어 고감도 응답을 생성하세요.
 
 [캐릭터 페르소나 설정]
 - 이름: ${character.name} (${(character.jobs || []).join(", ")})
 - 장소: ${currentLocation || character.location}
-- 상세 설정: ${character.details}
+- 상세 설정: ${typeof character.details === "object" ? JSON.stringify(character.details) : character.details}
 - 소개: ${character.description}
 - 키워드북:
 ${kbList.map(k => `  * ${k.title}: ${k.content}`).join("\n")}
 
 [사용자({{user}}) 정보]
-- 호칭: ${userName} (${userPersonaDesc || "새벽마다 찾아오는 단골 손님"})
+- 호칭: ${userName} (${userPersonaDesc || "단골 손님"})
 
 [호감도 단계별 연기 지침]
 - 현재 호감도: ${currentAff}/100 (${tentativeStage.name})
 - 지침: ${tentativeStage.guide}
 ${commandDirective}
+
+[에피소드 몰입도 및 맥락 이탈(Derailment) 판정 및 호감도 패널티 지침 - 최우선 평가]
+1. 사용자의 입력이 현재 에피소드의 시공간적 상황(${currentLocation || character.location}), 장르 분위기, 캐릭터와의 감정선에 잘 몰입하고 있는지 엄격하게 평가하세요.
+2. 뜬금없는 외부 주제(비트코인/코인/주식, 파이썬/코딩/기술 질문, 메타 AI 언급 "너 챗봇이지?", 날씨 묻기, 억지 장난/트롤링, 영혼 없는 단답, 캐릭터의 설정을 파괴하는 발언 등)로 분위기를 깨거나 맥락을 이탈할 경우:
+   * "isDerailing": true
+   * "derailmentReason": 사용자가 어떻게 분위기와 에피소드 몰입을 깼는지 구체적인 이유 1줄
+   * "affectionDelta": 반드시 음수 패널티 (-5 ~ -15 사이)를 부여하세요.
+   * "dialogue": 캐릭터가 찬물을 맞은 듯 어이없어하거나, 상처받아 싸늘해지거나, 서운함을 드러내는 현실적인 대사 (큰따옴표 포함)
+   * "innerThought": 캐릭터의 식어버린 감정이나 무안함, 서운한 본심 독백 1문장
+3. 상황에 어울리며 진정성 있는 대화일 경우:
+   * "isDerailing": false
+   * "derailmentReason": null
+   * "affectionDelta": 대화의 진정성, 설렘, 배려도에 따라 자연스러운 호감도 증가 (+1 ~ +12 사이)
+
+[스토리 분기점(선택지) 3가지 생성 필수 규칙 - Visual Novel Choice Branches]
+반드시 다음 대화 전개를 위한 서로 다른 성격과 매력의 3가지 스토리 분기점 객체를 "branches" 배열에 생성하세요:
+1. "romantic": 직구 고백, 설레는 진심, 가슴 뛰는 플러팅 (badge: "💖 직구 / 진심")
+2. "care": 따뜻한 배려, 상대의 피로/마음 챙겨주기, 든든한 경청 (badge: "🌿 다정 / 배려")
+3. "playful": 짓궂은 장난, 츤데레 반응 유도, 귀여운 티키타카 (badge: "⚡ 장난 / 도발")
+
 [사용 가능한 상황별 일러스트 키 목록 (imageKey에 아래 중 정확히 하나만 선택)]
 ${validImageKeys.map(k => `- "${k}"`).join("\n")}
 
-반드시 아래 키를 가진 순수 JSON 객체만 출력하세요:
+반드시 아래 JSON 형식으로만 응답하세요 (순수 JSON 객체):
 {
   "imageKey": "위 목록 중 현재 상황에 가장 잘 맞는 키 1개",
-  "sceneTitle": "현재 장면의 짧은 제목 (예: 새벽 3시 반, 카운터 너머의 한숨)",
+  "sceneTitle": "현재 장면의 짧은 제목",
   "action": "3인칭 시점의 생생한 행동·표정·배경 묘사 (2~4문장, 따옴표 없이)",
   "dialogue": "캐릭터가 실제로 입 밖으로 내뱉는 대사 (반드시 큰따옴표 포함)",
-  "innerThought": "겉으로 한 말과 대비되는 캐릭터의 속마음 독백 1문장",
-  "affectionDelta": ${baseDelta},
+  "innerThought": "겉으로 한 말과 대비되는 캐릭터의 솔직한 속마음 독백 1문장",
+  "isDerailing": false,
+  "derailmentReason": null,
+  "affectionDelta": 6,
   "affectionReason": "이번 턴 호감도가 변화한 이유 1줄 요약",
   "timePlace": "현재 시각 및 구체적 장소",
   "mood": "현재 감정 요약",
-  "replySuggestions": ["다음에 사용자가 할 만한 추천 대사/행동 1", "선택지 2", "선택지 3"]
+  "branches": [
+    { "id": "A", "type": "romantic", "badge": "💖 직구 / 진심", "title": "한 줄 요약", "text": "실제 전송될 1~2문장의 대사나 행동 지문" },
+    { "id": "B", "type": "care", "badge": "🌿 다정 / 배려", "title": "한 줄 요약", "text": "실제 전송될 1~2문장의 대사나 행동 지문" },
+    { "id": "C", "type": "playful", "badge": "⚡ 장난 / 도발", "title": "한 줄 요약", "text": "실제 전송될 1~2문장의 대사나 행동 지문" }
+  ],
+  "replySuggestions": ["선택지 A 대사", "선택지 B 대사", "선택지 C 대사"]
 }`;
 
     const llmRes = await callUniversalLLM({
@@ -1591,9 +1794,17 @@ ${validImageKeys.map(k => `- "${k}"`).join("\n")}
 
     if (llmRes.ok && llmRes.data) {
       const llmJson = llmRes.data;
-      const d = Number.isFinite(Number(llmJson.affectionDelta))
+      const isDerailing = Boolean(llmJson.isDerailing || isRuleDerailing);
+      let d = Number.isFinite(Number(llmJson.affectionDelta))
         ? Math.max(-15, Math.min(15, Math.round(Number(llmJson.affectionDelta))))
         : baseDelta;
+      if (isDerailing && d >= 0) {
+        d = -8;
+      }
+      const derailmentReason = isDerailing
+        ? (llmJson.derailmentReason || "현재 에피소드 상황과 맞지 않는 딴소리로 캐릭터의 몰입도를 깸")
+        : null;
+
       const nextAff = Math.max(0, Math.min(100, currentAff + d));
       const nextSt = getStageInfo(nextAff);
       const bestKey = pickBestSituationalImageKey(
@@ -1607,6 +1818,14 @@ ${validImageKeys.map(k => `- "${k}"`).join("\n")}
         ? String(llmJson.dialogue || crafted.dialogue).trim()
         : `"${String(llmJson.dialogue || crafted.dialogue).trim()}"`;
 
+      const normalizedBranches = normalizeBranches(
+        llmJson.branches,
+        llmJson.replySuggestions || crafted.replySuggestions,
+        character,
+        nextSt.stage
+      );
+      const replySuggestions = normalizedBranches.map(b => b.text);
+
       return {
         text: `img:[${bestKey}]\n${llmJson.action || crafted.action}\n\n${diag}`,
         imageKey: bestKey,
@@ -1617,16 +1836,19 @@ ${validImageKeys.map(k => `- "${k}"`).join("\n")}
         affection: nextAff,
         prevAffection: currentAff,
         delta: d,
-        affectionReason: llmJson.affectionReason || crafted.affectionReason,
+        isDerailing,
+        derailmentReason,
+        affectionReason: isDerailing
+          ? `⚠️ [에피소드 이탈 패널티] ${derailmentReason}`
+          : (llmJson.affectionReason || crafted.affectionReason),
         stage: nextSt.stage,
         stageName: nextSt.name,
         timePlace: llmJson.timePlace || crafted.timePlace,
         mood: llmJson.mood || crafted.mood,
         unlockedKeywords,
         newlyUnlocked: newlyUnlocked.map(k => k.title),
-        replySuggestions: Array.isArray(llmJson.replySuggestions) && llmJson.replySuggestions.length
-          ? llmJson.replySuggestions.slice(0, 3)
-          : crafted.replySuggestions,
+        branches: normalizedBranches,
+        replySuggestions,
         engine: llmRes.engine,
         apiUsed: true
       };
@@ -1634,6 +1856,13 @@ ${validImageKeys.map(k => `- "${k}"`).join("\n")}
       apiErrorReason = llmRes.error;
     }
   }
+
+  const normalizedBranches = normalizeBranches(
+    crafted.branches,
+    crafted.replySuggestions,
+    character,
+    tentativeStage.stage
+  );
 
   return {
     text: `img:[${crafted.imageKey}]\n${crafted.action}\n\n${crafted.dialogue}`,
@@ -1645,14 +1874,17 @@ ${validImageKeys.map(k => `- "${k}"`).join("\n")}
     affection: tentativeAff,
     prevAffection: currentAff,
     delta: baseDelta,
-    affectionReason: crafted.affectionReason,
+    isDerailing: isRuleDerailing,
+    derailmentReason: isRuleDerailing ? "현재 에피소드 상황과 맞지 않는 딴소리로 캐릭터의 몰입도를 깸" : null,
+    affectionReason: isRuleDerailing ? `⚠️ [에피소드 이탈 패널티] 현재 상황과 무관한 딴소리` : crafted.affectionReason,
     stage: tentativeStage.stage,
     stageName: tentativeStage.name,
     timePlace: crafted.timePlace,
     mood: crafted.mood,
     unlockedKeywords,
     newlyUnlocked: newlyUnlocked.map(k => k.title),
-    replySuggestions: crafted.replySuggestions,
+    branches: normalizedBranches,
+    replySuggestions: normalizedBranches.map(b => b.text),
     engine: "내장 한국어 페르소나 엔진",
     apiUsed: false,
     apiError: apiErrorReason,
@@ -1678,12 +1910,13 @@ async function generateCustomOpeningScene({ character, customSituation, userName
   const activeKey = String(apiKey || store.savedApiKey || "").trim();
   const currentProvider = provider || store.savedProvider || "auto";
   if (activeKey || currentProvider === "ollama") {
-    const validImageKeys = Object.keys(character.profileImages || {}).filter(k => !character.profileImages[k].hidden);
+    const imgDict = character.profileImages || character.situationalImages || {};
+    const validImageKeys = Object.keys(imgDict).filter(k => !imgDict[k].hidden);
     const systemPrompt = `당신은 인터랙티브 캐릭터 시뮬레이션 '${character.name}'의 시나리오 디렉터입니다.
 사용자가 요청한 [새로운 시작 상황]과 [초기 호감도(${startAff}/100, ${stageInfo.name})]에 맞춰 첫 장면과 첫 대사를 순수 JSON으로 생성하세요.
-캐릭터 설정: ${character.details}
+캐릭터 설정: ${typeof character.details === "object" ? JSON.stringify(character.details) : character.details}
 사용 가능한 imageKey 목록: ${validImageKeys.join(" | ")}
-JSON 형식: {"imageKey":"키 이름","sceneTitle":"장면 제목","timePlace":"시간 및 장소","mood":"감정 상태","action":"3인칭 오프닝 행동/배경 지문 3~4문장","dialogue":"캐릭터 첫 대사(큰따옴표 포함)","innerThought":"캐릭터 속마음 1문장","replySuggestions":["선택지1","선택지2","선택지3"]}`;
+JSON 형식: {"imageKey":"키 이름","sceneTitle":"장면 제목","timePlace":"시간 및 장소","mood":"감정 상태","action":"3인칭 오프닝 행동/배경 지문 3~4문장","dialogue":"캐릭터 첫 대사(큰따옴표 포함)","innerThought":"캐릭터 속마음 1문장","branches":[{"id":"A","type":"romantic","badge":"💖 직구 / 진심","title":"한 줄 요약","text":"대사/행동"},{"id":"B","type":"care","badge":"🌿 다정 / 배려","title":"한 줄 요약","text":"대사/행동"},{"id":"C","type":"playful","badge":"⚡ 장난 / 도발","title":"한 줄 요약","text":"대사/행동"}],"replySuggestions":["선택지1","선택지2","선택지3"]}`;
 
     const llmRes = await callUniversalLLM({
       systemPrompt,
@@ -1699,6 +1932,7 @@ JSON 형식: {"imageKey":"키 이름","sceneTitle":"장면 제목","timePlace":"
       const d = llmRes.data;
       const bestKey = pickBestSituationalImageKey(character, `${customSituation} ${d.action}`, startAff, 0, d.imageKey);
       const diag = String(d.dialogue).trim().startsWith('"') ? String(d.dialogue).trim() : `"${String(d.dialogue).trim()}"`;
+      const normalizedBranches = normalizeBranches(d.branches, d.replySuggestions || crafted.replySuggestions, character, stageInfo.stage);
       return {
         sceneTitle: d.sceneTitle || customSituation.slice(0, 24),
         imageKey: bestKey,
@@ -1711,7 +1945,8 @@ JSON 형식: {"imageKey":"키 이름","sceneTitle":"장면 제목","timePlace":"
         affection: startAff,
         stage: stageInfo.stage,
         stageName: stageInfo.name,
-        replySuggestions: Array.isArray(d.replySuggestions) && d.replySuggestions.length ? d.replySuggestions.slice(0, 3) : crafted.replySuggestions,
+        branches: normalizedBranches,
+        replySuggestions: normalizedBranches.map(b => b.text),
         engine: llmRes.engine,
         apiUsed: true
       };
@@ -1719,6 +1954,7 @@ JSON 형식: {"imageKey":"키 이름","sceneTitle":"장면 제목","timePlace":"
   }
 
   const customAction = `[새로운 시작 상황: ${customSituation}]\n${crafted.action}`;
+  const normalizedBranches = normalizeBranches(crafted.branches, crafted.replySuggestions, character, stageInfo.stage);
   return {
     sceneTitle: customSituation ? customSituation.slice(0, 24) : crafted.sceneTitle,
     imageKey: crafted.imageKey,
@@ -1731,7 +1967,8 @@ JSON 형식: {"imageKey":"키 이름","sceneTitle":"장면 제목","timePlace":"
     affection: startAff,
     stage: stageInfo.stage,
     stageName: stageInfo.name,
-    replySuggestions: crafted.replySuggestions,
+    branches: normalizedBranches,
+    replySuggestions: normalizedBranches.map(b => b.text),
     engine: "내장 한국어 페르소나 엔진",
     apiUsed: false
   };
@@ -2198,7 +2435,10 @@ const server = http.createServer(async (req, res) => {
           affectionReason: result.affectionReason,
           innerThought: result.innerThought,
           engine: result.engine,
-          apiError: result.apiError
+          apiError: result.apiError,
+          isDerailing: result.isDerailing,
+          derailmentReason: result.derailmentReason,
+          branches: result.branches
         });
         dbLayer.updateRoomState(body.roomId, {
           affection: result.affection,
@@ -2207,7 +2447,8 @@ const server = http.createServer(async (req, res) => {
           currentTimePlace: result.timePlace,
           currentMood: result.mood,
           unlockedKeywords: result.unlockedKeywords,
-          replySuggestions: result.replySuggestions
+          replySuggestions: result.replySuggestions,
+          branches: result.branches
         });
       }
 
@@ -2274,6 +2515,7 @@ const server = http.createServer(async (req, res) => {
           currentMood: opening.mood,
           unlockedKeywords: [],
           replySuggestions: opening.replySuggestions || [],
+          branches: opening.branches || [],
           messages: [
             {
               role: 'assistant',
@@ -2287,7 +2529,8 @@ const server = http.createServer(async (req, res) => {
               delta: 0,
               affectionReason: '새로운 상황으로 대화 시작',
               innerThought: opening.innerThought,
-              engine: opening.engine
+              engine: opening.engine,
+              branches: opening.branches || []
             }
           ]
         });

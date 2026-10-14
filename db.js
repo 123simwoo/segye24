@@ -71,6 +71,10 @@ console.log('[SQLite DB] Initialized database at', DB_PATH);
 // Migrations for existing DBs
 try { db.exec("ALTER TABLE users ADD COLUMN status TEXT DEFAULT 'pending'"); } catch (e) {}
 try { db.exec("ALTER TABLE users ADD COLUMN is_adult INTEGER DEFAULT 0"); } catch (e) {}
+try { db.exec("ALTER TABLE messages ADD COLUMN is_derailing INTEGER DEFAULT 0"); } catch (e) {}
+try { db.exec("ALTER TABLE messages ADD COLUMN derailment_reason TEXT"); } catch (e) {}
+try { db.exec("ALTER TABLE messages ADD COLUMN branches TEXT DEFAULT '[]'"); } catch (e) {}
+try { db.exec("ALTER TABLE rooms ADD COLUMN branches TEXT DEFAULT '[]'"); } catch (e) {}
 
 // Ensure admin exists and promote admin username
 try {
@@ -318,6 +322,10 @@ function updateRoomState(roomId, updateData) {
     fields.push('reply_suggestions = ?');
     values.push(JSON.stringify(updateData.replySuggestions));
   }
+  if (updateData.branches !== undefined) {
+    fields.push('branches = ?');
+    values.push(JSON.stringify(updateData.branches));
+  }
 
   if (fields.length > 0) {
     fields.push('updated_at = CURRENT_TIMESTAMP');
@@ -328,12 +336,13 @@ function updateRoomState(roomId, updateData) {
 }
 
 function addMessageToRoom(roomId, m) {
+  const branchesJson = m.branches ? JSON.stringify(m.branches) : '[]';
   const stmt = db.prepare(`
     INSERT INTO messages (
       room_id, role, text, image_key, scene_title, time_place, mood,
       affection, prev_affection, delta, affection_reason, inner_thought,
-      engine, api_error
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      engine, api_error, is_derailing, derailment_reason, branches
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
   stmt.run(
@@ -350,7 +359,10 @@ function addMessageToRoom(roomId, m) {
     m.affectionReason || null,
     m.innerThought || null,
     m.engine || null,
-    m.apiError || null
+    m.apiError || null,
+    m.isDerailing ? 1 : 0,
+    m.derailmentReason || null,
+    branchesJson
   );
 
   db.prepare('UPDATE rooms SET updated_at = CURRENT_TIMESTAMP WHERE room_id = ?').run(roomId);
@@ -358,21 +370,30 @@ function addMessageToRoom(roomId, m) {
 
 function getRoomMessages(roomId) {
   const rows = db.prepare('SELECT * FROM messages WHERE room_id = ? ORDER BY id ASC').all(roomId);
-  return rows.map(r => ({
-    role: r.role,
-    text: r.text,
-    imageKey: r.image_key,
-    sceneTitle: r.scene_title,
-    timePlace: r.time_place,
-    mood: r.mood,
-    affection: r.affection,
-    prevAffection: r.prev_affection,
-    delta: r.delta,
-    affectionReason: r.affection_reason,
-    innerThought: r.inner_thought,
-    engine: r.engine,
-    apiError: r.api_error
-  }));
+  return rows.map(r => {
+    let branches = [];
+    try {
+      if (r.branches) branches = JSON.parse(r.branches);
+    } catch (e) {}
+    return {
+      role: r.role,
+      text: r.text,
+      imageKey: r.image_key,
+      sceneTitle: r.scene_title,
+      timePlace: r.time_place,
+      mood: r.mood,
+      affection: r.affection,
+      prevAffection: r.prev_affection,
+      delta: r.delta,
+      affectionReason: r.affection_reason,
+      innerThought: r.inner_thought,
+      engine: r.engine,
+      apiError: r.api_error,
+      isDerailing: Boolean(r.is_derailing),
+      derailmentReason: r.derailment_reason || null,
+      branches
+    };
+  });
 }
 
 function deleteRoom(userId, roomId) {

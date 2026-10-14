@@ -4,7 +4,8 @@
   "description": "BabeChat-compatible Character Profile & Simulation Web Service for Segye 24 (세계 24) and Eunseo 24 (은서 24)",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "node test_sim.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
