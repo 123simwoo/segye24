@@ -72,12 +72,16 @@ console.log('[SQLite DB] Initialized database at', DB_PATH);
 try { db.exec("ALTER TABLE users ADD COLUMN status TEXT DEFAULT 'pending'"); } catch (e) {}
 try { db.exec("ALTER TABLE users ADD COLUMN is_adult INTEGER DEFAULT 0"); } catch (e) {}
 
-// Ensure first registered user is admin and approved
+// Ensure admin exists and promote admin username
 try {
-  const firstUser = db.prepare('SELECT id FROM users ORDER BY id ASC LIMIT 1').get();
-  if (firstUser) {
-    db.prepare("UPDATE users SET role = 'admin', status = 'approved', is_adult = 1 WHERE id = ?").run(firstUser.id);
+  const adminExists = db.prepare("SELECT id FROM users WHERE role = 'admin' LIMIT 1").get();
+  if (!adminExists) {
+    const firstUser = db.prepare('SELECT id FROM users ORDER BY id ASC LIMIT 1').get();
+    if (firstUser) {
+      db.prepare("UPDATE users SET role = 'admin', status = 'approved', is_adult = 1 WHERE id = ?").run(firstUser.id);
+    }
   }
+  db.prepare("UPDATE users SET role = 'admin', status = 'approved', is_adult = 1 WHERE LOWER(username) = 'admin'").run();
 } catch (e) {}
 
 // Auth Methods
@@ -375,6 +379,16 @@ function deleteRoom(userId, roomId) {
   db.prepare('DELETE FROM rooms WHERE room_id = ? AND user_id = ?').run(roomId, userId);
 }
 
+function setUserAsAdmin(username) {
+  const clean = String(username || '').trim();
+  const user = db.prepare('SELECT id, username FROM users WHERE username = ? COLLATE NOCASE').get(clean);
+  if (!user) {
+    throw new Error(`사용자 [${clean}]을(를) 찾을 수 없습니다.`);
+  }
+  db.prepare("UPDATE users SET role = 'admin', status = 'approved', is_adult = 1 WHERE id = ?").run(user.id);
+  return getUserById(user.id);
+}
+
 module.exports = {
   db,
   createUser,
@@ -383,6 +397,7 @@ module.exports = {
   getAllUsers,
   updateUserStatus,
   deleteUser,
+  setUserAsAdmin,
   getUserRooms,
   getRoom,
   saveRoom,

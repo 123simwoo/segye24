@@ -1582,6 +1582,7 @@ function renderAuthUserUI() {
   const personaInput = document.getElementById("userPersonaName");
 
   if (currentUser) {
+    console.log("Logged in user:", currentUser);
     if (loginBtn) loginBtn.style.display = "none";
     if (badge) badge.style.display = "inline-flex";
     if (nameEl) nameEl.textContent = `${currentUser.nickname}님`;
