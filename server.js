@@ -1903,6 +1903,18 @@ const server = http.createServer(async (req, res) => {
     const charId = decodeURIComponent(charMatch[1]);
     const found = store.characters[charId] || Object.values(store.characters).find(c => c.id === charId);
     if (!found) return sendJson(res, 404, { error: "Character not found" });
+
+    // Admin Only Character Gatekeeping
+    if (found.adminOnly) {
+      const authUser = getAuthUser(req);
+      if (!authUser || authUser.role !== 'admin') {
+        return sendJson(res, 403, {
+          error: '👑 관리자(Admin) 전용 캐릭터입니다. 관리자 계정으로 로그인해 주세요.',
+          code: 'ADMIN_ACCESS_RESTRICTED'
+        });
+      }
+    }
+
     return sendJson(res, 200, found);
   }
 
@@ -2115,6 +2127,17 @@ const server = http.createServer(async (req, res) => {
       const charId = body.characterId || "segye-24-3c209e4d-custom";
       const character = store.characters[charId] || SEGYE24_CHARACTER;
 
+      // Admin Only Character Access Gatekeeping
+      if (character.adminOnly) {
+        const authUser = getAuthUser(req);
+        if (!authUser || authUser.role !== 'admin') {
+          return sendJson(res, 403, {
+            error: '👑 관리자(Admin) 전용 캐릭터입니다. 관리자 계정으로 로그인해 주세요.',
+            code: 'ADMIN_ACCESS_RESTRICTED'
+          });
+        }
+      }
+
       // 19+ Adult Character Access Gatekeeping
       if (character.isAdult) {
         const authUser = getAuthUser(req);
@@ -2200,6 +2223,17 @@ const server = http.createServer(async (req, res) => {
       const body = await parseBody(req);
       const charId = body.characterId || "segye-24-3c209e4d-custom";
       const character = store.characters[charId] || SEGYE24_CHARACTER;
+
+      // Admin Only Character Access Gatekeeping
+      if (character.adminOnly) {
+        const authUser = getAuthUser(req);
+        if (!authUser || authUser.role !== 'admin') {
+          return sendJson(res, 403, {
+            error: '👑 관리자(Admin) 전용 캐릭터입니다. 관리자 계정으로 로그인해 주세요.',
+            code: 'ADMIN_ACCESS_RESTRICTED'
+          });
+        }
+      }
 
       // 19+ Adult Character Access Gatekeeping
       if (character.isAdult) {

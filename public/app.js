@@ -137,18 +137,34 @@ function formatBabeChatText(rawText, profileImages, charName, userName, sceneMet
 }
 
 async function loadCharacter(charId) {
-  currentCharacterId = charId;
-  document.querySelectorAll(".char-pill").forEach(btn => {
-    btn.classList.toggle("active", btn.dataset.char === charId);
-  });
+  try {
+    const res = await fetch(`/ko/api/characters/${encodeURIComponent(charId)}`, {
+      headers: getAuthHeaders()
+    });
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      if (errData.code === "ADMIN_ACCESS_RESTRICTED") {
+        alert("👑 이 캐릭터는 최고 관리자(Admin) 전용 캐릭터입니다. 관리자 계정으로 로그인해 주세요.");
+        if (!currentUser) openAuthModal("login");
+        return;
+      }
+      alert(errData.error || "캐릭터 정보를 불러올 수 없습니다.");
+      return;
+    }
 
-  const res = await fetch(`/ko/api/characters/${encodeURIComponent(charId)}`);
-  currentCharacter = await res.json();
+    currentCharacterId = charId;
+    document.querySelectorAll(".char-pill").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.char === charId);
+    });
 
-  renderProfile(currentCharacter);
-  populateBuilder(currentCharacter);
-  await loadComments(charId);
-  initRoomsForCharacter(currentCharacter);
+    currentCharacter = await res.json();
+    renderProfile(currentCharacter);
+    populateBuilder(currentCharacter);
+    await loadComments(charId);
+    initRoomsForCharacter(currentCharacter);
+  } catch (err) {
+    console.error("loadCharacter error:", err);
+  }
 }
 
 function renderProfile(char) {
@@ -166,8 +182,9 @@ function renderProfile(char) {
 
   // Tags
   const tagsEl = document.getElementById("charTags");
+  const adminBadge = char.adminOnly ? '<span class="tag-chip" style="background:rgba(234,179,8,0.22); color:#facc15; border:1px solid rgba(234,179,8,0.5); font-weight:800;">👑 관리자 전용</span>' : '';
   const adultBadge = char.isAdult ? '<span class="tag-chip" style="background:rgba(239,68,68,0.22); color:#f87171; border:1px solid rgba(239,68,68,0.45); font-weight:800;">🔞 19+ 성인전용</span>' : '';
-  tagsEl.innerHTML = adultBadge + (char.tags || [])
+  tagsEl.innerHTML = adminBadge + adultBadge + (char.tags || [])
     .map(t => `<span class="tag-chip">${t.startsWith("#") ? escapeHtml(t) : "#" + escapeHtml(t)}</span>`)
     .join("");
 
@@ -398,6 +415,13 @@ function syncActiveRoomToUI() {
 
 function startChatWithScenario() {
   if (!currentCharacter) return;
+  if (currentCharacter.adminOnly) {
+    if (!currentUser || currentUser.role !== "admin") {
+      alert("👑 이 캐릭터는 최고 관리자(Admin) 전용 캐릭터입니다. 관리자 계정으로 로그인해 주세요.");
+      if (!currentUser) openAuthModal("login");
+      return;
+    }
+  }
   if (currentCharacter.isAdult) {
     if (!currentUser || currentUser.status !== "approved" || !currentUser.is_adult) {
       alert("🔞 이 캐릭터는 19세 이상 성인 전용입니다. 관리자 가입 승인을 받은 정회원만 이용할 수 있습니다.");
@@ -422,6 +446,13 @@ function startChatWithScenario() {
 
 // New Custom Room Modal
 function openNewRoomModal() {
+  if (currentCharacter?.adminOnly) {
+    if (!currentUser || currentUser.role !== "admin") {
+      alert("👑 이 캐릭터는 최고 관리자(Admin) 전용 캐릭터입니다. 관리자 계정으로 로그인해 주세요.");
+      if (!currentUser) openAuthModal("login");
+      return;
+    }
+  }
   if (currentCharacter?.isAdult) {
     if (!currentUser || currentUser.status !== "approved" || !currentUser.is_adult) {
       alert("🔞 이 캐릭터는 19세 이상 성인 전용입니다. 관리자 가입 승인을 받은 정회원만 이용할 수 있습니다.");
@@ -443,6 +474,13 @@ function fillCustomSituation(situationText, startAff) {
 
 async function createNewCustomRoom() {
   if (!currentCharacter) return;
+  if (currentCharacter.adminOnly) {
+    if (!currentUser || currentUser.role !== "admin") {
+      alert("👑 이 캐릭터는 최고 관리자(Admin) 전용 캐릭터입니다. 관리자 계정으로 로그인해 주세요.");
+      if (!currentUser) openAuthModal("login");
+      return;
+    }
+  }
   if (currentCharacter.isAdult) {
     if (!currentUser || currentUser.status !== "approved" || !currentUser.is_adult) {
       alert("🔞 이 캐릭터는 19세 이상 성인 전용입니다. 관리자 가입 승인을 받은 정회원만 이용할 수 있습니다.");
@@ -626,6 +664,14 @@ function sendSuggested(text) {
 async function sendChatMessage() {
   const room = getActiveRoom();
   if (!room || !currentCharacter) return;
+
+  if (currentCharacter.adminOnly) {
+    if (!currentUser || currentUser.role !== "admin") {
+      alert("👑 이 캐릭터는 최고 관리자(Admin) 전용 캐릭터입니다. 관리자 계정으로 로그인해 주세요.");
+      if (!currentUser) openAuthModal("login");
+      return;
+    }
+  }
 
   if (currentCharacter.isAdult) {
     if (!currentUser || currentUser.status !== "approved" || !currentUser.is_adult) {
@@ -1006,6 +1052,14 @@ async function submitComment() {
 }
 
 function switchView(view) {
+  if (view === "chat" && currentCharacter?.adminOnly) {
+    if (!currentUser || currentUser.role !== "admin") {
+      alert("👑 이 캐릭터는 최고 관리자(Admin) 전용 캐릭터입니다. 관리자 계정으로 로그인해 주세요.");
+      if (!currentUser) openAuthModal("login");
+      return;
+    }
+  }
+
   if (view === "chat" && currentCharacter?.isAdult) {
     if (!currentUser || currentUser.status !== "approved" || !currentUser.is_adult) {
       alert("🔞 이 캐릭터는 19세 이상 성인 전용입니다. 관리자 가입 승인을 받은 정회원만 이용할 수 있습니다.");
@@ -1625,10 +1679,18 @@ function renderAuthUserUI() {
     if (adminBtn) {
       adminBtn.style.display = currentUser.role === "admin" ? "inline-block" : "none";
     }
+
+    // Admin Only Character Switcher Pill
+    const marinPill = document.getElementById("charPillMarin");
+    if (marinPill) {
+      marinPill.style.display = currentUser.role === "admin" ? "inline-block" : "none";
+    }
   } else {
     if (loginBtn) loginBtn.style.display = "inline-block";
     if (badge) badge.style.display = "none";
     if (adminBtn) adminBtn.style.display = "none";
+    const marinPill = document.getElementById("charPillMarin");
+    if (marinPill) marinPill.style.display = "none";
   }
 }
 
@@ -1636,7 +1698,9 @@ function logoutUser() {
   localStorage.removeItem("segye24_token");
   currentUser = null;
   renderAuthUserUI();
-  if (currentCharacter) {
+  if (currentCharacterId === "kitagawa-marin-bisque-doll") {
+    loadCharacter("segye-24-3c209e4d-custom");
+  } else if (currentCharacter) {
     initRoomsForCharacter(currentCharacter);
   }
 }
