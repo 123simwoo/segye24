@@ -435,6 +435,8 @@ async function createNewCustomRoom() {
   const initialAffection = Math.max(0, Math.min(100, Number(document.getElementById("modalInitialAffection").value || 25)));
   const apiKey = (document.getElementById("llmApiKey")?.value || localStorage.getItem("segye24_api_key") || "").trim();
   const provider = document.getElementById("llmProvider")?.value || localStorage.getItem("segye24_api_provider") || "auto";
+  const ollamaEndpoint = (document.getElementById("modalOllamaEndpoint")?.value || document.getElementById("hudOllamaEndpoint")?.value || localStorage.getItem("segye24_ollama_endpoint") || "http://127.0.0.1:11434").trim();
+  const ollamaModel = (document.getElementById("modalOllamaModel")?.value || document.getElementById("hudOllamaModel")?.value || localStorage.getItem("segye24_ollama_model") || "qwen2.5:7b").trim();
 
   if (!customSituation) return;
 
@@ -455,7 +457,9 @@ async function createNewCustomRoom() {
         userPersonaDesc,
         initialAffection,
         apiKey,
-        provider
+        provider,
+        ollamaEndpoint,
+        model: provider === "ollama" ? ollamaModel : undefined
       })
     });
     const data = await res.json();
@@ -612,9 +616,17 @@ async function sendChatMessage() {
   try {
     const apiKey = (document.getElementById("llmApiKey")?.value || localStorage.getItem("segye24_api_key") || "").trim();
     const provider = document.getElementById("llmProvider")?.value || localStorage.getItem("segye24_api_provider") || "auto";
+    const ollamaEndpoint = (document.getElementById("modalOllamaEndpoint")?.value || document.getElementById("hudOllamaEndpoint")?.value || localStorage.getItem("segye24_ollama_endpoint") || "http://127.0.0.1:11434").trim();
+    const ollamaModel = (document.getElementById("modalOllamaModel")?.value || document.getElementById("hudOllamaModel")?.value || localStorage.getItem("segye24_ollama_model") || "qwen2.5:7b").trim();
+
     if (apiKey) {
       localStorage.setItem("segye24_api_key", apiKey);
       localStorage.setItem("segye24_api_provider", provider);
+    }
+    if (provider === "ollama") {
+      localStorage.setItem("segye24_api_provider", "ollama");
+      localStorage.setItem("segye24_ollama_endpoint", ollamaEndpoint);
+      localStorage.setItem("segye24_ollama_model", ollamaModel);
     }
 
     const res = await fetch("/ko/api/chat/message", {
@@ -632,7 +644,9 @@ async function sendChatMessage() {
         userPersonaDesc: room.userPersonaDesc,
         currentLocation: room.currentTimePlace,
         apiKey,
-        provider
+        provider,
+        ollamaEndpoint,
+        model: provider === "ollama" ? ollamaModel : undefined
       })
     });
 
@@ -1081,14 +1095,92 @@ function toggleModalKeyVisibility() {
   input.type = input.type === "password" ? "text" : "password";
 }
 
+function onProviderChanged(scope = "modal") {
+  const modalProviderSel = document.getElementById("modalLlmProvider");
+  const hudProviderSel = document.getElementById("llmProvider");
+  const activeVal = scope === "modal" ? modalProviderSel?.value : hudProviderSel?.value;
+
+  if (modalProviderSel && activeVal) modalProviderSel.value = activeVal;
+  if (hudProviderSel && activeVal) hudProviderSel.value = activeVal;
+
+  const isOllama = activeVal === "ollama";
+
+  const modalOllamaBlock = document.getElementById("modalOllamaBlock");
+  const modalApiKeyBlock = document.getElementById("modalApiKeyBlock");
+  const hudOllamaBlock = document.getElementById("hudOllamaBlock");
+  const hudApiKeyBlock = document.getElementById("hudApiKeyBlock");
+  const testBtn = document.getElementById("testApiBtn");
+  const modalTestBtn = document.getElementById("modalTestApiBtn");
+
+  if (modalOllamaBlock) modalOllamaBlock.style.display = isOllama ? "flex" : "none";
+  if (modalApiKeyBlock) modalApiKeyBlock.style.display = isOllama ? "none" : "flex";
+  if (hudOllamaBlock) hudOllamaBlock.style.display = isOllama ? "flex" : "none";
+  if (hudApiKeyBlock) hudApiKeyBlock.style.display = isOllama ? "none" : "flex";
+
+  if (testBtn) testBtn.textContent = isOllama ? "🦙 Ollama 연결 테스트 및 저장" : "🔌 API 키 저장 및 연결 테스트";
+  if (modalTestBtn) modalTestBtn.textContent = isOllama ? "🦙 Ollama 연결 테스트 및 저장" : "🔌 API 키 저장 및 연결 테스트";
+}
+
+async function fetchOllamaInstalledModels(scope = "modal") {
+  const endpointInput = scope === "modal" ? document.getElementById("modalOllamaEndpoint") : document.getElementById("hudOllamaEndpoint");
+  const endpoint = (endpointInput?.value || "http://127.0.0.1:11434").trim();
+
+  try {
+    const res = await fetch(`/ko/api/chat/ollama-models?endpoint=${encodeURIComponent(endpoint)}`);
+    const data = await res.json();
+    if (res.ok && data.ok && Array.isArray(data.models) && data.models.length > 0) {
+      ["modal", "hud"].forEach(s => {
+        const sel = document.getElementById(`${s}OllamaModelSelect`);
+        const txt = document.getElementById(`${s}OllamaModel`);
+        if (sel) {
+          sel.innerHTML = data.models.map(m => `<option value="${escapeHtml(m)}">${escapeHtml(m)}</option>`).join("");
+          sel.style.display = "block";
+          if (txt && txt.value && data.models.includes(txt.value)) {
+            sel.value = txt.value;
+          } else if (txt && data.models[0]) {
+            txt.value = data.models[0];
+            sel.value = data.models[0];
+          }
+        }
+      });
+      alert(`✅ Ollama에서 설치된 모델 ${data.models.length}개를 성공적으로 불러왔습니다!\n목록: ${data.models.join(", ")}`);
+    } else {
+      alert(`⚠️ 모델 목록을 가져올 수 없습니다.\n${data.error || "Ollama가 켜져 있는지 확인하세요."}`);
+    }
+  } catch (err) {
+    alert(`❌ Ollama 서버 연결 오류: ${err.message}`);
+  }
+}
+
+function onOllamaModelSelectChange(scope = "modal") {
+  const sel = document.getElementById(`${scope}OllamaModelSelect`);
+  const txt = document.getElementById(`${scope}OllamaModel`);
+  const otherScope = scope === "modal" ? "hud" : "modal";
+  const otherSel = document.getElementById(`${otherScope}OllamaModelSelect`);
+  const otherTxt = document.getElementById(`${otherScope}OllamaModel`);
+
+  if (sel && txt && sel.value) {
+    txt.value = sel.value;
+    if (otherTxt) otherTxt.value = sel.value;
+    if (otherSel) otherSel.value = sel.value;
+  }
+}
+
 async function modalTestAndSaveApiKey() {
   const modalInput = document.getElementById("modalLlmApiKey");
   const modalProviderSel = document.getElementById("modalLlmProvider");
   const hudInput = document.getElementById("llmApiKey");
   const hudProviderSel = document.getElementById("llmProvider");
 
+  const modalOllamaEndpoint = document.getElementById("modalOllamaEndpoint");
+  const hudOllamaEndpoint = document.getElementById("hudOllamaEndpoint");
+  const modalOllamaModel = document.getElementById("modalOllamaModel");
+  const hudOllamaModel = document.getElementById("hudOllamaModel");
+
   if (hudInput && modalInput) hudInput.value = modalInput.value;
   if (hudProviderSel && modalProviderSel) hudProviderSel.value = modalProviderSel.value;
+  if (hudOllamaEndpoint && modalOllamaEndpoint) hudOllamaEndpoint.value = modalOllamaEndpoint.value;
+  if (hudOllamaModel && modalOllamaModel) hudOllamaModel.value = modalOllamaModel.value;
 
   await testAndSaveApiKey();
 }
@@ -1112,9 +1204,62 @@ async function testAndSaveApiKey() {
   const btn = document.getElementById("testApiBtn");
   const modalBtn = document.getElementById("modalTestApiBtn");
 
-  const apiKey = (input?.value || modalInput?.value || "").trim();
   const provider = (providerSel ? providerSel.value : "auto");
+  const apiKey = (input?.value || modalInput?.value || "").trim();
 
+  const ollamaEndpoint = (document.getElementById("modalOllamaEndpoint")?.value || document.getElementById("hudOllamaEndpoint")?.value || localStorage.getItem("segye24_ollama_endpoint") || "http://127.0.0.1:11434").trim();
+  const ollamaModel = (document.getElementById("modalOllamaModel")?.value || document.getElementById("hudOllamaModel")?.value || localStorage.getItem("segye24_ollama_model") || "qwen2.5:7b").trim();
+
+  // Special Handling for Ollama Local Provider
+  if (provider === "ollama") {
+    [btn, modalBtn].forEach(b => {
+      if (b) {
+        b.disabled = true;
+        b.textContent = "⏳ Ollama 로컬 연결 및 모델 호출 테스트 중...";
+      }
+    });
+
+    try {
+      const res = await fetch("/ko/api/chat/test-key", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          provider: "ollama",
+          ollamaEndpoint,
+          model: ollamaModel
+        })
+      });
+      const data = await res.json();
+
+      if (res.ok && data.ok) {
+        localStorage.setItem("segye24_api_provider", "ollama");
+        localStorage.setItem("segye24_ollama_endpoint", ollamaEndpoint);
+        localStorage.setItem("segye24_ollama_model", ollamaModel);
+        updateApiStatusUI(
+          true,
+          `${data.message}\n로컬 AI 엔진이 저장되었습니다. 모든 대화가 [Ollama (${ollamaModel})] 로컬 모델로 생성됩니다!`,
+          `Ollama (${ollamaModel})`
+        );
+      } else {
+        updateApiStatusUI(
+          false,
+          `❌ Ollama 연결 실패: ${data.error || "알 수 없는 오류"}\n'ollama run ${ollamaModel}' 또는 'ollama serve'가 켜져 있는지 확인해 주세요.`
+        );
+      }
+    } catch (err) {
+      updateApiStatusUI(false, `❌ 네트워크 오류: ${err.message}`);
+    } finally {
+      [btn, modalBtn].forEach(b => {
+        if (b) {
+          b.disabled = false;
+          b.textContent = "🦙 Ollama 연결 테스트 및 저장";
+        }
+      });
+    }
+    return;
+  }
+
+  // Cloud API Providers (Gemini, OpenAI, Claude, etc.)
   if (!apiKey) {
     await clearApiKey();
     return;
@@ -1186,20 +1331,41 @@ async function clearApiKey() {
 async function initApiKeyState() {
   const savedKey = localStorage.getItem("segye24_api_key") || "";
   const savedProvider = localStorage.getItem("segye24_api_provider") || "auto";
+  const savedOllamaEndpoint = localStorage.getItem("segye24_ollama_endpoint") || "http://127.0.0.1:11434";
+  const savedOllamaModel = localStorage.getItem("segye24_ollama_model") || "qwen2.5:7b";
+
   const input = document.getElementById("llmApiKey");
   const modalInput = document.getElementById("modalLlmApiKey");
   const providerSel = document.getElementById("llmProvider");
   const modalProviderSel = document.getElementById("modalLlmProvider");
+
+  const modalOllamaEndpoint = document.getElementById("modalOllamaEndpoint");
+  const hudOllamaEndpoint = document.getElementById("hudOllamaEndpoint");
+  const modalOllamaModel = document.getElementById("modalOllamaModel");
+  const hudOllamaModel = document.getElementById("hudOllamaModel");
 
   if (input && savedKey) input.value = savedKey;
   if (modalInput && savedKey) modalInput.value = savedKey;
   if (providerSel && savedProvider) providerSel.value = savedProvider;
   if (modalProviderSel && savedProvider) modalProviderSel.value = savedProvider;
 
+  if (modalOllamaEndpoint) modalOllamaEndpoint.value = savedOllamaEndpoint;
+  if (hudOllamaEndpoint) hudOllamaEndpoint.value = savedOllamaEndpoint;
+  if (modalOllamaModel) modalOllamaModel.value = savedOllamaModel;
+  if (hudOllamaModel) hudOllamaModel.value = savedOllamaModel;
+
+  onProviderChanged("modal");
+
   try {
     const res = await fetch("/ko/api/chat/key-status");
     const status = await res.json();
-    if (status.hasKey || status.hasSavedKey) {
+    if (status.provider === "ollama") {
+      updateApiStatusUI(
+        true,
+        `✅ Ollama 로컬 모델 자동 활성 중 (${status.ollamaModel || savedOllamaModel})\nJetson Orin/로컬 PC에서 100% 무료·무검열로 실시간 생성 중입니다.`,
+        `Ollama (${status.ollamaModel || savedOllamaModel})`
+      );
+    } else if (status.hasKey || status.hasSavedKey) {
       updateApiStatusUI(
         true,
         `✅ 실시간 LLM API 자동 활성 중 (${status.maskedKey || "저장됨"})\n현재 모든 대화와 속마음이 실제 LLM API로 생성됩니다.`,

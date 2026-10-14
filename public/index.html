@@ -313,9 +313,10 @@
             </div>
 
             <label style="font-size:0.74rem; color:var(--text-secondary); font-weight:600;">지원 API 제공자 (자동 감지 지원)</label>
-            <select id="llmProvider" class="input-field" style="font-size:0.78rem; padding:0.42rem 0.6rem;">
+            <select id="llmProvider" class="input-field" style="font-size:0.78rem; padding:0.42rem 0.6rem;" onchange="onProviderChanged('hud')">
               <option value="auto">🔍 자동 감지 (Gemini 3.1+ Flash / OpenAI / Claude)</option>
               <option value="gemini" selected>✨ Google Gemini (gemini-3.8-flash · 3.1 Flash 이상 전용)</option>
+              <option value="ollama">🦙 Ollama (로컬 AI / Jetson Orin / 무료·무검열)</option>
               <option value="openai">🤖 OpenAI GPT-4o (sk-... / sk-proj-...)</option>
               <option value="claude">🧠 Anthropic Claude 3.5/3.7 (sk-ant-...)</option>
               <option value="openrouter">🌐 OpenRouter (sk-or-v1-...)</option>
@@ -323,7 +324,19 @@
               <option value="xai">🚀 xAI Grok (xai-...)</option>
             </select>
 
-            <div style="display:flex; gap:0.35rem;">
+            <!-- HUD Ollama Block -->
+            <div id="hudOllamaBlock" style="display:none; flex-direction:column; gap:0.35rem; padding:0.5rem; background:rgba(168,85,247,0.1); border:1px solid rgba(168,85,247,0.3); border-radius:0.45rem;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:0.72rem; color:#c084fc; font-weight:700;">🦙 Ollama 설정</span>
+                <button type="button" class="tab-btn" style="font-size:0.68rem; padding:0.15rem 0.45rem;" onclick="fetchOllamaInstalledModels('hud')">🔄 모델조회</button>
+              </div>
+              <input type="text" id="hudOllamaEndpoint" class="input-field" style="font-size:0.75rem; padding:0.35rem 0.5rem;" value="http://127.0.0.1:11434" placeholder="Ollama URL" />
+              <input type="text" id="hudOllamaModel" class="input-field" style="font-size:0.75rem; padding:0.35rem 0.5rem;" value="qwen2.5:7b" placeholder="모델명 (예: qwen2.5:7b)" />
+              <select id="hudOllamaModelSelect" class="input-field" style="font-size:0.75rem; padding:0.35rem 0.5rem; display:none;" onchange="onOllamaModelSelectChange('hud')"></select>
+            </div>
+
+            <!-- Standard API Key Block -->
+            <div id="hudApiKeyBlock" style="display:flex; gap:0.35rem;">
               <input type="password" id="llmApiKey" class="input-field" style="flex:1; font-size:0.8rem;" placeholder="API Key 입력 (AIza... / sk-... / sk-ant-...)" onkeydown="if(event.key==='Enter') testAndSaveApiKey()" />
               <button type="button" class="tab-btn" style="padding:0.4rem 0.6rem; font-size:0.74rem;" onclick="toggleKeyVisibility()">👁️</button>
             </div>
@@ -448,9 +461,10 @@
 
       <div style="display:flex; flex-direction:column; gap:0.5rem; margin-top:0.3rem;">
         <label style="font-size:0.78rem; color:var(--text-secondary); font-weight:700;">API 제공자 선택</label>
-        <select id="modalLlmProvider" class="input-field" style="font-size:0.82rem; padding:0.55rem 0.7rem;">
+        <select id="modalLlmProvider" class="input-field" style="font-size:0.82rem; padding:0.55rem 0.7rem;" onchange="onProviderChanged('modal')">
           <option value="auto">🔍 자동 감지 (Gemini 3.1+ Flash / OpenAI / Claude)</option>
           <option value="gemini" selected>✨ Google Gemini (gemini-3.8-flash · 3.1 Flash 이상 전용)</option>
+          <option value="ollama">🦙 Ollama (로컬 AI / Jetson Orin / 완전 무료·무검열)</option>
           <option value="openai">🤖 OpenAI (sk-... / gpt-4o-mini, gpt-4o)</option>
           <option value="claude">🧠 Anthropic Claude (sk-ant-... / claude-3-7-sonnet)</option>
           <option value="openrouter">🌐 OpenRouter (sk-or-v1-...)</option>
@@ -459,7 +473,28 @@
         </select>
       </div>
 
-      <div style="display:flex; flex-direction:column; gap:0.4rem;">
+      <!-- Modal Ollama Block -->
+      <div id="modalOllamaBlock" style="display:none; flex-direction:column; gap:0.6rem; padding:0.75rem 0.9rem; border-radius:0.55rem; background:rgba(168,85,247,0.12); border:1px solid rgba(168,85,247,0.35);">
+        <div style="font-size:0.8rem; font-weight:700; color:#c084fc; display:flex; justify-content:space-between; align-items:center;">
+          <span>🦙 Ollama 로컬 연결 설정 (API 키 불필요)</span>
+          <button type="button" class="tab-btn" style="font-size:0.72rem; padding:0.25rem 0.6rem;" onclick="fetchOllamaInstalledModels('modal')">🔄 설치된 모델 조회</button>
+        </div>
+        <div>
+          <label style="font-size:0.74rem; color:var(--text-secondary); font-weight:600;">Ollama 호스트 주소</label>
+          <input type="text" id="modalOllamaEndpoint" class="input-field" style="width:100%; font-size:0.82rem; margin-top:0.2rem;" value="http://127.0.0.1:11434" placeholder="http://127.0.0.1:11434 또는 http://Jetson-IP:11434" />
+        </div>
+        <div>
+          <label style="font-size:0.74rem; color:var(--text-secondary); font-weight:600;">실행할 모델명</label>
+          <input type="text" id="modalOllamaModel" class="input-field" style="width:100%; font-size:0.82rem; margin-top:0.2rem;" value="qwen2.5:7b" placeholder="예: qwen2.5:7b, exaone3.5:7.8b, llama3.1:8b" />
+          <select id="modalOllamaModelSelect" class="input-field" style="width:100%; font-size:0.82rem; margin-top:0.35rem; display:none;" onchange="onOllamaModelSelectChange('modal')"></select>
+        </div>
+        <div style="font-size:0.72rem; color:var(--text-muted); line-height:1.45;">
+          * 추천 모델: <strong>qwen2.5:7b</strong> (한국어 최상), <strong>exaone3.5:7.8b</strong> (LG AI 한국어 특화), <strong>huihui-ai/llama3.1-8b-abliterated</strong> (19금 무검열)
+        </div>
+      </div>
+
+      <!-- Standard API Key Block -->
+      <div id="modalApiKeyBlock" style="display:flex; flex-direction:column; gap:0.4rem;">
         <label style="font-size:0.78rem; color:var(--text-secondary); font-weight:700;">API 키 입력</label>
         <div style="display:flex; gap:0.4rem;">
           <input type="password" id="modalLlmApiKey" class="input-field" style="flex:1; font-size:0.85rem;" placeholder="API Key 입력 (예: AIzaSy...)" onkeydown="if(event.key==='Enter') modalTestAndSaveApiKey()" />

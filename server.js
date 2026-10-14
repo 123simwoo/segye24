@@ -352,6 +352,8 @@ function loadStore() {
     savedApiKey: "",
     savedProvider: "auto",
     savedModel: "",
+    savedOllamaEndpoint: "http://127.0.0.1:11434",
+    savedOllamaModel: "qwen2.5:7b",
     characters: {
       "segye-24-3c209e4d-custom": SEGYE24_CHARACTER,
       ...(eunseoData ? { [eunseoData.characterId]: eunseoData } : {})
@@ -457,7 +459,9 @@ function extractJsonObject(raw) {
 
 // Detect Provider from API Key format or explicit selection
 function detectProvider(apiKey, explicitProvider) {
+  if (explicitProvider === "ollama") return "ollama";
   const key = String(apiKey || "").trim();
+  if (key === "ollama") return "ollama";
   if (!key) return "none";
   if (explicitProvider && explicitProvider !== "auto") return explicitProvider;
   if (key.startsWith("AIza")) return "gemini";
@@ -470,7 +474,7 @@ function detectProvider(apiKey, explicitProvider) {
 }
 
 // Universal Multi-Provider LLM Caller with strict multi-turn normalization & detailed error reporting
-async function callUniversalLLM({ systemPrompt, history, userMessage, apiKey, provider, preferredModel }) {
+async function callUniversalLLM({ systemPrompt, history, userMessage, apiKey, provider, preferredModel, ollamaEndpoint }) {
   const cleanKey = String(apiKey || store.savedApiKey || "").trim();
   const detected = detectProvider(cleanKey, provider || store.savedProvider);
 
@@ -708,6 +712,65 @@ async function callUniversalLLM({ systemPrompt, history, userMessage, apiKey, pr
       } catch (e) {
         errors.push(`Claude(${modelName}): ${e.message}`);
       }
+    }
+  }
+
+  // D. OLLAMA LOCAL / JETSON ORIN ENGINE (Zero-Cost / Offline / Uncensored)
+  if (detected === "ollama") {
+    const rawEndpoint = (ollamaEndpoint || store.savedOllamaEndpoint || "http://127.0.0.1:11434").trim();
+    const endpoint = rawEndpoint.replace(/\/+$/, "");
+    const modelName = (preferredModel || store.savedOllamaModel || "qwen2.5:7b").trim();
+
+    try {
+      console.log(`[LLM Ollama] Calling ${endpoint}/api/chat with model '${modelName}'...`);
+      const resp = await fetch(`${endpoint}/api/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        signal: AbortSignal.timeout(60000),
+        body: JSON.stringify({
+          model: modelName,
+          messages: [
+            { role: "system", content: fullSystemPrompt },
+            ...normalizedTurns.map(m => ({ role: m.role, content: m.text })),
+            { role: "user", content: userMessage }
+          ],
+          format: "json",
+          stream: false,
+          options: {
+            temperature: 0.85
+          }
+        })
+      });
+
+      const data = await resp.json();
+      if (!resp.ok) {
+        const errDetail = data?.error || `HTTP ${resp.status}`;
+        console.warn(`[LLM Ollama] Failed: ${errDetail}`);
+        errors.push(`Ollama(${modelName}): ${errDetail}`);
+      } else {
+        const text = data?.message?.content;
+        const parsed = extractJsonObject(text);
+        if (parsed && parsed.dialogue) {
+          console.log(`[LLM Ollama] ✅ Success with ${modelName}!`);
+          return {
+            ok: true,
+            data: parsed,
+            engine: `Ollama (${modelName})`,
+            provider: "ollama"
+          };
+        } else if (text) {
+          console.log(`[LLM Ollama] Raw text response from ${modelName}`);
+          return {
+            ok: true,
+            data: { dialogue: text, action: "", innerThought: "" },
+            engine: `Ollama (${modelName})`,
+            provider: "ollama"
+          };
+        }
+      }
+    } catch (e) {
+      console.warn(`[LLM Ollama] Connection error to ${endpoint}:`, e.message);
+      errors.push(`Ollama 연결 실패 (${endpoint}): ${e.message} (Ollama 서비스 실행 여부를 확인하세요)`);
     }
   }
 
@@ -1392,7 +1455,8 @@ async function generateSimulationReply({
   currentLocation,
   apiKey,
   provider,
-  preferredModel
+  preferredModel,
+  ollamaEndpoint
 }) {
   const newlyUnlocked = [];
   const kbList = character.keywordBooks || [];
@@ -1438,9 +1502,10 @@ async function generateSimulationReply({
   });
 
   const activeKey = String(apiKey || store.savedApiKey || "").trim();
+  const currentProvider = provider || store.savedProvider || "auto";
   let apiErrorReason = null;
 
-  if (activeKey) {
+  if (activeKey || currentProvider === "ollama") {
     const validImageKeys = Object.keys(character.profileImages || {}).filter(k => !character.profileImages[k].hidden);
     let commandDirective = "";
     if (commandInfo) {
@@ -1515,8 +1580,9 @@ ${validImageKeys.map(k => `- "${k}"`).join("\n")}
       history,
       userMessage,
       apiKey: activeKey,
-      provider,
-      preferredModel
+      provider: currentProvider,
+      preferredModel: preferredModel || store.savedOllamaModel || store.savedModel,
+      ollamaEndpoint: ollamaEndpoint || store.savedOllamaEndpoint
     });
 
     if (llmRes.ok && llmRes.data) {
@@ -1591,7 +1657,7 @@ ${validImageKeys.map(k => `- "${k}"`).join("\n")}
 }
 
 // Generate a brand-new custom conversation opening scene when user clicks "+ 새 대화 걸기"
-async function generateCustomOpeningScene({ character, customSituation, userName, userPersonaDesc, initialAffection, apiKey, provider, preferredModel }) {
+async function generateCustomOpeningScene({ character, customSituation, userName, userPersonaDesc, initialAffection, apiKey, provider, preferredModel, ollamaEndpoint }) {
   const startAff = Math.max(0, Math.min(100, Number(initialAffection ?? 25)));
   const stageInfo = getStageInfo(startAff);
   const crafted = craftKoreanPersonaScene({
@@ -1606,7 +1672,8 @@ async function generateCustomOpeningScene({ character, customSituation, userName
   });
 
   const activeKey = String(apiKey || store.savedApiKey || "").trim();
-  if (activeKey) {
+  const currentProvider = provider || store.savedProvider || "auto";
+  if (activeKey || currentProvider === "ollama") {
     const validImageKeys = Object.keys(character.profileImages || {}).filter(k => !character.profileImages[k].hidden);
     const systemPrompt = `당신은 인터랙티브 캐릭터 시뮬레이션 '${character.name}'의 시나리오 디렉터입니다.
 사용자가 요청한 [새로운 시작 상황]과 [초기 호감도(${startAff}/100, ${stageInfo.name})]에 맞춰 첫 장면과 첫 대사를 순수 JSON으로 생성하세요.
@@ -1619,8 +1686,9 @@ JSON 형식: {"imageKey":"키 이름","sceneTitle":"장면 제목","timePlace":"
       history: [],
       userMessage: `[새로운 시작 상황]: ${customSituation}. 사용자 이름: ${userName} (${userPersonaDesc || "단골 손님"}).`,
       apiKey: activeKey,
-      provider,
-      preferredModel
+      provider: currentProvider,
+      preferredModel: preferredModel || store.savedOllamaModel || store.savedModel,
+      ollamaEndpoint: ollamaEndpoint || store.savedOllamaEndpoint
     });
 
     if (llmRes.ok && llmRes.data && llmRes.data.dialogue) {
@@ -1863,16 +1931,53 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
-  // 6. POST /ko/api/chat/test-key (Validate and persist API Key across Gemini / OpenAI / Claude / OpenRouter / Groq)
+  // 6. POST /ko/api/chat/test-key (Validate and persist API Key across Gemini / OpenAI / Claude / OpenRouter / Groq / Ollama)
   if (req.method === 'POST' && pathname === '/ko/api/chat/test-key') {
     try {
       const body = await parseBody(req);
-      const rawKey = String(body.apiKey || "").trim();
       const provider = body.provider || "auto";
       const preferredModel = body.model || "";
+      const rawKey = String(body.apiKey || "").trim();
+
+      // Special handling for Ollama local provider (no API key required)
+      if (provider === "ollama") {
+        const ollamaEndpoint = (body.ollamaEndpoint || store.savedOllamaEndpoint || "http://127.0.0.1:11434").trim();
+        const modelName = (body.model || store.savedOllamaModel || "qwen2.5:7b").trim();
+
+        const testRes = await callUniversalLLM({
+          systemPrompt: '반드시 다음 순수 JSON만 출력하세요: {"dialogue":"연결 성공"}',
+          history: [],
+          userMessage: "연결 테스트입니다.",
+          apiKey: "ollama",
+          provider: "ollama",
+          preferredModel: modelName,
+          ollamaEndpoint
+        });
+
+        if (testRes.ok) {
+          store.savedApiKey = "ollama";
+          store.savedProvider = "ollama";
+          store.savedModel = modelName;
+          store.savedOllamaEndpoint = ollamaEndpoint;
+          store.savedOllamaModel = modelName;
+          saveStore(store);
+          return sendJson(res, 200, {
+            ok: true,
+            engine: testRes.engine,
+            provider: "ollama",
+            message: `✅ Ollama 연결 성공! [${modelName}] 모델이 활성화되었습니다.\n(Jetson Orin/로컬 PC에서 100% 무료·무검열로 실시간 생성됩니다)`
+          });
+        } else {
+          return sendJson(res, 400, {
+            ok: false,
+            error: testRes.error || "Ollama 서버 연결에 실패했습니다."
+          });
+        }
+      }
 
       if (!rawKey) {
         store.savedApiKey = "";
+        store.savedProvider = "auto";
         saveStore(store);
         return sendJson(res, 200, {
           ok: true,
@@ -1915,12 +2020,33 @@ const server = http.createServer(async (req, res) => {
   // 6b. GET /ko/api/chat/key-status
   if (req.method === 'GET' && pathname === '/ko/api/chat/key-status') {
     const hasKey = Boolean(store.savedApiKey);
-    const provider = hasKey ? detectProvider(store.savedApiKey, store.savedProvider) : "none";
+    const provider = store.savedProvider || (hasKey ? detectProvider(store.savedApiKey, store.savedProvider) : "none");
     return sendJson(res, 200, {
-      hasKey,
+      hasKey: hasKey || provider === 'ollama',
       provider,
-      maskedKey: hasKey ? `${store.savedApiKey.slice(0, 6)}...${store.savedApiKey.slice(-4)}` : ""
+      ollamaEndpoint: store.savedOllamaEndpoint || "http://127.0.0.1:11434",
+      ollamaModel: store.savedOllamaModel || "qwen2.5:7b",
+      maskedKey: provider === 'ollama' ? `Ollama (${store.savedOllamaModel || 'qwen2.5:7b'})` : (hasKey ? `${store.savedApiKey.slice(0, 6)}...${store.savedApiKey.slice(-4)}` : "")
     });
+  }
+
+  // 6c. GET /ko/api/chat/ollama-models
+  if (req.method === 'GET' && pathname === '/ko/api/chat/ollama-models') {
+    try {
+      const endpoint = (parsedUrl.query.endpoint || store.savedOllamaEndpoint || 'http://127.0.0.1:11434').replace(/\/+$/, '');
+      const resp = await fetch(`${endpoint}/api/tags`, { signal: AbortSignal.timeout(5000) });
+      if (!resp.ok) {
+        return sendJson(res, resp.status, { ok: false, error: `Ollama 응답 코드 ${resp.status}` });
+      }
+      const data = await resp.json();
+      const models = Array.isArray(data.models) ? data.models.map(m => m.name) : [];
+      return sendJson(res, 200, { ok: true, models, endpoint });
+    } catch (e) {
+      return sendJson(res, 500, {
+        ok: false,
+        error: `Ollama 서버(${parsedUrl.query.endpoint || 'http://127.0.0.1:11434'})에 연결할 수 없습니다: ${e.message}`
+      });
+    }
   }
 
   // 7. POST /ko/api/chat/message
@@ -1941,7 +2067,8 @@ const server = http.createServer(async (req, res) => {
         currentLocation: body.currentLocation || character.location,
         apiKey: body.apiKey || store.savedApiKey || "",
         provider: body.provider || store.savedProvider || "auto",
-        preferredModel: body.model || store.savedModel || ""
+        preferredModel: body.model || store.savedOllamaModel || store.savedModel || "",
+        ollamaEndpoint: body.ollamaEndpoint || store.savedOllamaEndpoint
       });
       saveStore(store);
 
@@ -2010,7 +2137,8 @@ const server = http.createServer(async (req, res) => {
         initialAffection: body.initialAffection ?? 15,
         apiKey: body.apiKey || store.savedApiKey || "",
         provider: body.provider || store.savedProvider || "auto",
-        preferredModel: body.model || store.savedModel || ""
+        preferredModel: body.model || store.savedOllamaModel || store.savedModel || "",
+        ollamaEndpoint: body.ollamaEndpoint || store.savedOllamaEndpoint
       });
 
       // Multi-User DB Persistence for new room

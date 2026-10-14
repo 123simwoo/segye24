@@ -2,6 +2,8 @@
   "savedApiKey": "AIzaSyBrDScABHfmvoux-WrA3RWTvrTyPt7Y7jg",
   "savedProvider": "auto",
   "savedModel": "",
+  "savedOllamaEndpoint": "http://127.0.0.1:11434",
+  "savedOllamaModel": "qwen2.5:7b",
   "characters": {
     "segye-24-3c209e4d-custom": {
       "characterId": "segye-24-3c209e4d-custom",
