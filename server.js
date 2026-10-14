@@ -493,7 +493,8 @@ async function callUniversalLLM({ systemPrompt, history, userMessage, apiKey, pr
   }
 
   const normalizedTurns = [];
-  for (const m of rawList.slice(-8)) {
+  const historyLimit = detected === "ollama" ? 4 : 8;
+  for (const m of rawList.slice(-historyLimit)) {
     const r = m.role === "user" ? "user" : "assistant";
     const t = String(m.text || "").trim();
     if (!t) continue;
