@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>세계 24 (Segye 24) — 인터랙티브 페르소나 &amp; 호감도 시뮬레이션 웹 서비스</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <!-- Top Navigation -->
+  <header class="top-nav">
+    <div class="brand-area">
+      <div class="brand-logo">BABECHAT · SIMULATION</div>
+      <div class="char-switcher" id="charSwitcher">
+        <button class="char-pill active" data-char="segye-24-3c209e4d-custom">세계 24 (12종 일러스트 · 페르소나)</button>
+        <button class="char-pill" data-char="3c209e4d-8aa2-48e7-b503-77aaf3a6539a">은서 24 (원본 비교)</button>
+      </div>
+    </div>
+    <div class="nav-actions">
+      <div class="view-tabs">
+        <button class="tab-btn active" id="tabProfileBtn" onclick="switchView('profile')">프로필 상세</button>
+        <button class="tab-btn" id="tabChatBtn" onclick="switchView('chat')">💬 시뮬레이션 채팅</button>
+        <button class="tab-btn" id="tabBuilderBtn" onclick="switchView('builder')">캐릭터 설정 편집</button>
+        <button class="tab-btn" id="navApiKeyBtn" onclick="openApiKeyModal()" style="border-color:rgba(56,189,248,0.4); color:#38bdf8;">
+          🔑 API 키 설정 <span id="navApiStatusDot" style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#10b981; margin-left:4px; vertical-align:middle;"></span>
+        </button>
+        <!-- User Auth Badge & Modal Trigger (Multi-User on Jetson Orin) -->
+        <div id="authNavArea" style="display:inline-flex; align-items:center; gap:0.4rem; margin-left:0.35rem;">
+          <button class="tab-btn" id="authLoginBtn" onclick="openAuthModal('login')" style="border-color:rgba(244,114,182,0.45); color:#f472b6;">
+            👤 로그인 / 가입
+          </button>
+          <div id="authUserBadge" style="display:none; align-items:center; gap:0.45rem;">
+            <span style="font-size:0.8rem; font-weight:700; color:#f472b6;" id="authUserName">닉네임</span>
+            <button class="tab-btn" onclick="logoutUser()" style="padding:0.35rem 0.65rem; font-size:0.75rem;">로그아웃</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <!-- 1. PROFILE VIEW -->
+    <section id="profileView" class="profile-grid">
+      <!-- Left: 12-Image Situational Carousel -->
+      <aside class="gallery-card">
+        <div class="main-image-stage">
+          <img id="galleryMainImg" src="/assets/segye24/01_smartphone_indifferent.jpg" alt="Character Illustration" />
+          <button class="carousel-nav-btn prev" onclick="stepGallery(-1)">&#10094;</button>
+          <button class="carousel-nav-btn next" onclick="stepGallery(1)">&#10095;</button>
+          <div class="image-caption-badge">
+            <span id="galleryKeyLabel">(세계)스마트폰/관심없음</span>
+            <code id="galleryOrderLabel">Slot #1 / 12</code>
+          </div>
+        </div>
+        <div class="thumb-strip" id="galleryThumbs"></div>
+      </aside>
+
+      <!-- Right: Character Metadata, Lore, Scenario Preview, Keyword Books, Comments -->
+      <div class="profile-content">
+        <div class="creator-bar">
+          <div class="creator-info">
+            <img id="creatorAvatar" class="creator-avatar" src="/assets/segye24/01_smartphone_indifferent.jpg" alt="Creator" />
+            <div>
+              <div style="display:flex; align-items:center; gap:0.4rem;">
+                <strong id="creatorNickname" style="font-size:0.9rem;">BabeChat</strong>
+                <span class="official-pill">LIVE AI SIMULATION</span>
+              </div>
+              <div style="font-size:0.75rem; color:var(--text-muted);">@babechat · 실시간 페르소나 대화 + 턴별 호감도/속마음 + 12종 상황별 그림</div>
+            </div>
+          </div>
+          <div style="display:flex; gap:0.45rem;">
+            <button class="tab-btn" onclick="openNewRoomModal()">✨ + 새로운 대화 걸기</button>
+            <button class="tab-btn active" onclick="switchView('chat')">즉시 대화 시작 &rarr;</button>
+          </div>
+        </div>
+
+        <div class="char-header-card">
+          <div class="badge-row">
+            <span class="meta-badge safety">전연령 (Safety)</span>
+            <span class="meta-badge">드라마 · 시뮬레이션 (Category 13)</span>
+            <span class="meta-badge">실시간 호감도 반응형</span>
+            <span class="meta-badge" id="modelBadge">AI 페르소나 엔진 활성</span>
+          </div>
+          <h1 class="char-title">
+            <span id="charName">세계 24</span>
+          </h1>
+          <div class="stats-row">
+            <span>💬 대화 <strong id="statChatCount">64,120</strong></span>
+            <span>❤️ 좋아요 <strong id="statLikeCount">418</strong></span>
+            <span>💭 댓글 <strong id="statCommentCount">3</strong></span>
+            <span>🖼️ 상황 일러스트 <strong id="statImgCount">12종</strong></span>
+          </div>
+          <div class="tag-list" id="charTags"></div>
+          <div class="cta-row">
+            <button class="btn-like" id="likeBtn" onclick="toggleLike()">
+              <span id="likeHeart">🤍</span> <span id="likeBtnText">418</span>
+            </button>
+            <button class="btn-start-chat" onclick="startChatWithScenario()">
+              선택한 시작 설정으로 대화 시작하기
+            </button>
+            <button class="tab-btn" style="padding:0.75rem 1.1rem;" onclick="openNewRoomModal()">
+              ✨ 자유 상황으로 새 대화 걸기
+            </button>
+          </div>
+        </div>
+
+        <!-- Character Introduction & Details -->
+        <div class="section-card">
+          <div class="section-title">
+            <span>캐릭터 소개 및 상세 페르소나 (`characterDetails`)</span>
+            <span style="font-size:0.76rem; color:var(--text-muted);" id="charDateLoc">2026.10.13 · 서울 홍대 외곽 지하 심야 PC방</span>
+          </div>
+          <div class="desc-text" id="charDescription"></div>
+          <div class="details-grid" id="charDetailsGrid"></div>
+        </div>
+
+        <!-- Starting Scenario Selector & Module 9438 Intro Preview -->
+        <div class="section-card">
+          <div class="section-title">
+            <span>시작 설정 (`startingScenarios` &amp; 상황별 그림 자동 매칭 프리뷰)</span>
+            <span style="font-size:0.75rem; color:var(--accent-cyan);">12종 고유 상황 일러스트 연동</span>
+          </div>
+          <select class="scenario-select" id="scenarioSelect" onchange="onScenarioChange()"></select>
+          <div class="intro-preview-box">
+            <div style="text-align:center;">
+              <span class="preview-pill">인트로 미리보기 (`intro_preview`)</span>
+            </div>
+            <div id="introActionPreview" class="narrator-block"></div>
+            <div id="introMessagePreview" class="dialogue-bubble"></div>
+          </div>
+        </div>
+
+        <!-- Keyword Book (5 Triggers) -->
+        <div class="section-card">
+          <div class="section-title">
+            <span>크리에이터 키워드북 (`creatorKeywordBookLimit: 5`)</span>
+            <span style="font-size:0.76rem; color:var(--text-muted);">대화 중 관련 주제 언급 시 숨겨진 서사 해금</span>
+          </div>
+          <div class="kb-list" id="kbListProfile"></div>
+        </div>
+
+        <!-- Comments & ProChat Section -->
+        <div class="section-card">
+          <div class="section-title">
+            <span>댓글 및 프로챗(ProChat) 후원</span>
+            <span style="font-size:0.75rem; color:var(--accent-amber);">Module 92996 금칙어 필터 적용</span>
+          </div>
+          <div class="comment-form">
+            <div class="comment-input-row">
+              <input type="text" id="commentNickname" class="input-field" style="width:130px;" placeholder="닉네임" value="새벽단골" />
+              <select id="commentDonate" class="input-field" style="width:155px;">
+                <option value="">일반 댓글</option>
+                <option value="1000">⚡ ProChat 1,000P</option>
+                <option value="5000">💎 ProChat 5,000P (고정)</option>
+              </select>
+              <input type="text" id="commentContent" class="input-field" style="flex:1;" placeholder="댓글을 입력하세요 (예: 타 플랫폼 금칙어 '크랙', '버블챗' 입력 시 차단 테스트)" />
+              <button class="tab-btn active" onclick="submitComment()">등록</button>
+            </div>
+            <div class="error-toast" id="commentErrorToast"></div>
+          </div>
+          <div id="commentList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. INTERACTIVE SIMULATION CHAT VIEW (3-Column: Rooms Sidebar + Chat Window + Live HUD) -->
+    <section id="chatView" class="chat-layout">
+      <!-- Left: Multi-Room Conversation Sidebar -->
+      <aside class="rooms-sidebar">
+        <button class="btn-start-chat" style="flex:0 0 auto; width:100%; padding:0.7rem;" onclick="openNewRoomModal()">
+          ✨ + 새로운 대화 걸기
+        </button>
+        <div style="font-size:0.78rem; color:var(--text-muted); font-weight:700; margin-top:0.25rem;">
+          내 대화방 목록 (`CustomCharacterRooms`)
+        </div>
+        <div id="roomListContainer" style="display:flex; flex-direction:column; gap:0.5rem;"></div>
+      </aside>
+
+      <!-- Center: Main Simulation Chat Window -->
+      <div class="chat-window">
+        <div class="chat-header">
+          <div>
+            <strong id="chatHeaderTitle" style="font-size:1.05rem;">세계 24</strong>
+            <span id="chatScenarioBadge" style="font-size:0.78rem; color:var(--accent-cyan); margin-left:0.5rem;">기본 설정</span>
+          </div>
+          <div style="display:flex; gap:0.45rem; align-items:center;">
+            <span style="font-size:0.75rem; color:var(--text-muted);">내 호칭:</span>
+            <input type="text" id="userPersonaName" class="input-field" style="width:105px; padding:0.32rem 0.55rem; font-size:0.8rem;" value="단골손님" />
+            <button class="tab-btn" onclick="openNewRoomModal()">새 상황 시작</button>
+          </div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages"></div>
+
+        <div class="suggestions-bar" id="chatSuggestions"></div>
+
+        <!-- 4 Interactive BabeChat Commands Bar -->
+        <div class="command-bar">
+          <span class="command-label">⚡ 몰입 명령어:</span>
+          <button type="button" class="cmd-pill-btn" onclick="triggerCommand('/속마음')">💭 /속마음</button>
+          <button type="button" class="cmd-pill-btn" onclick="openSkinshipPicker()">🤝 /스킨십</button>
+          <button type="button" class="cmd-pill-btn" onclick="openWhisperPrompt()">🤫 /귓속말</button>
+          <button type="button" class="cmd-pill-btn" onclick="openMidnightEventPicker()">🌙 /심야이벤트</button>
+        </div>
+
+        <div style="position:relative; width:100%;">
+          <!-- Floating Slash Command Autocomplete Popover -->
+          <div class="command-popover" id="commandPopover" style="display:none;">
+            <div class="popover-header">⚡ 명령어 선택 (클릭 시 자동 적용)</div>
+            <div class="popover-item" onclick="triggerCommand('/속마음')">
+              <span class="popover-icon">💭</span>
+              <div class="popover-text">
+                <strong>/속마음</strong>
+                <span>겉모습 뒤에 숨겨진 세계의 가장 솔직하고 무방비한 본심 독백 훔쳐보기</span>
+              </div>
+            </div>
+            <div class="popover-item" onclick="openSkinshipPicker()">
+              <span class="popover-icon">🤝</span>
+              <div class="popover-text">
+                <strong>/스킨십 [행동]</strong>
+                <span>손끝 스침, 겉옷 걸쳐주기, 뺨 만지기 등 비언어적 밀착 스킨십과 신체 반응 유도</span>
+              </div>
+            </div>
+            <div class="popover-item" onclick="openWhisperPrompt()">
+              <span class="popover-icon">🤫</span>
+              <div class="popover-text">
+                <strong>/귓속말 [내용]</strong>
+                <span>카운터 너머로 10cm까지 다가가 숨결이 닿는 은밀한 귓속말로 거리 좁히기</span>
+              </div>
+            </div>
+            <div class="popover-item" onclick="openMidnightEventPicker()">
+              <span class="popover-icon">🌙</span>
+              <div class="popover-text">
+                <strong>/심야이벤트 [선택]</strong>
+                <span>새벽 4시 PC방 정전, 라면 나눠먹기, 퇴근길 동행 등 돌발 심야 서사 이벤트 강제 발동</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-input-bar">
+            <input type="text" id="chatInput" class="input-field" placeholder="자유롭게 대화하거나 '/' 또는 '!'를 입력해 4가지 몰입 명령어를 사용해보세요!" oninput="onChatInputChanged(this.value)" onkeydown="onChatInputKeyDown(event)" />
+            <button class="btn-start-chat" id="sendMsgBtn" style="flex:0 0 auto; padding:0.65rem 1.3rem;" onclick="sendChatMessage()">전송</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Live Affection & Situation HUD -->
+      <aside class="hud-panel">
+        <div class="section-card">
+          <div class="section-title">
+            <span>실시간 호감도 &amp; 반응 단계</span>
+            <span id="hudStageBadge" class="official-pill">1단계: 경계와 무관심</span>
+          </div>
+          <div style="font-size:0.84rem; color:var(--text-secondary); display:flex; justify-content:space-between; align-items:center;">
+            <span>현재 호감도 (`Affection`)</span>
+            <strong id="hudAffectionScore" style="color:var(--accent-pink); font-size:0.95rem;">15% (15 / 100)</strong>
+          </div>
+          <div class="affection-bar-bg">
+            <div class="affection-bar-fill" id="hudAffectionBar" style="width:15%;"></div>
+          </div>
+          <p id="hudStageDesc" style="font-size:0.78rem; color:var(--text-muted); margin-top:0.35rem;">
+            만성 피로에 찌든 나른하고 사무적인 태도. 불필요한 스몰토크에 선을 긋습니다.
+          </p>
+
+          <!-- Instant Affection Stage Switcher to test different reactions -->
+          <div style="margin-top:0.8rem; padding-top:0.75rem; border-top:1px solid var(--border-subtle);">
+            <div style="font-size:0.75rem; color:var(--accent-cyan); font-weight:700; margin-bottom:0.35rem;">
+              ⚡ 호감도 구간별 반응 즉시 테스트 (클릭 시 변경)
+            </div>
+            <div class="stage-preset-grid">
+              <button class="stage-chip-btn" onclick="setAffectionPreset(5)">0단계: 적대/경멸 (5%)</button>
+              <button class="stage-chip-btn" onclick="setAffectionPreset(18)">1단계: 경계/무관심 (18%)</button>
+              <button class="stage-chip-btn" onclick="setAffectionPreset(45)">2단계: 균열/츤데레 (45%)</button>
+              <button class="stage-chip-btn" onclick="setAffectionPreset(72)">3단계: 새벽의 공범 (72%)</button>
+              <button class="stage-chip-btn" style="grid-column:1 / -1; border-color:rgba(255,59,127,0.4); color:#fda4af;" onclick="setAffectionPreset(92)">
+                💗 4단계: 방화벽 해제 / 설렘 (92%)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Current Situational Artwork Preview in HUD -->
+        <div class="section-card">
+          <div class="section-title">
+            <span>현재 상황 그림 (`Situational Scene`)</span>
+          </div>
+          <div style="display:flex; gap:0.75rem; align-items:center;">
+            <img id="hudCurrentSceneImg" src="/assets/segye24/01_smartphone_indifferent.jpg" alt="Current Scene" style="width:76px; height:100px; object-fit:cover; border-radius:0.5rem; border:1px solid var(--border-strong);" />
+            <div style="display:flex; flex-direction:column; gap:0.25rem; font-size:0.78rem;">
+              <strong id="hudCurrentSceneKey" style="color:var(--accent-cyan);">(세계)스마트폰/관심없음</strong>
+              <span id="hudCurrentTimePlace" style="color:var(--text-secondary);">새벽 03:00 · 지하 PC방 카운터</span>
+              <span id="hudCurrentMood" style="color:var(--text-muted);">무관심과 거리두기</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-title">
+            <span>키워드북 해금 현황 (<span id="hudKbCount">0/5</span>)</span>
+          </div>
+          <div class="kb-list" id="hudKbList"></div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-title">
+            <span>AI 페르소나 엔진 &amp; API 키 연결</span>
+            <span id="apiEngineBadge" style="font-size:0.72rem; padding:0.15rem 0.5rem; border-radius:999px; background:rgba(16,185,129,0.15); color:var(--accent-emerald); font-weight:700;">내장 엔진 활성</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:0.55rem;">
+            <div id="apiStatusBox" style="font-size:0.76rem; padding:0.55rem 0.7rem; border-radius:0.5rem; background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.3); color:var(--accent-emerald); line-height:1.45;">
+              ✓ 기본값: 무설치 내장 시뮬레이션 엔진 작동 중<br/>
+              <span style="color:var(--text-muted); font-size:0.72rem;">아래에 API 키를 입력하고 [저장 및 연결 테스트]를 누르면 실제 LLM이 직접 대사를 생성합니다.</span>
+            </div>
+
+            <label style="font-size:0.74rem; color:var(--text-secondary); font-weight:600;">지원 API 제공자 (자동 감지 지원)</label>
+            <select id="llmProvider" class="input-field" style="font-size:0.78rem; padding:0.42rem 0.6rem;">
+              <option value="auto">🔍 자동 감지 (Gemini 3.1+ Flash / OpenAI / Claude)</option>
+              <option value="gemini" selected>✨ Google Gemini (gemini-3.8-flash · 3.1 Flash 이상 전용)</option>
+              <option value="openai">🤖 OpenAI GPT-4o (sk-... / sk-proj-...)</option>
+              <option value="claude">🧠 Anthropic Claude 3.5/3.7 (sk-ant-...)</option>
+              <option value="openrouter">🌐 OpenRouter (sk-or-v1-...)</option>
+              <option value="groq">⚡ Groq Llama-3.3 (gsk_...)</option>
+              <option value="xai">🚀 xAI Grok (xai-...)</option>
+            </select>
+
+            <div style="display:flex; gap:0.35rem;">
+              <input type="password" id="llmApiKey" class="input-field" style="flex:1; font-size:0.8rem;" placeholder="API Key 입력 (AIza... / sk-... / sk-ant-...)" onkeydown="if(event.key==='Enter') testAndSaveApiKey()" />
+              <button type="button" class="tab-btn" style="padding:0.4rem 0.6rem; font-size:0.74rem;" onclick="toggleKeyVisibility()">👁️</button>
+            </div>
+
+            <div style="display:flex; gap:0.4rem;">
+              <button type="button" id="testApiBtn" class="btn-start-chat" style="flex:1; padding:0.55rem 0.75rem; font-size:0.8rem;" onclick="testAndSaveApiKey()">
+                🔌 API 키 저장 및 연결 테스트
+              </button>
+              <button type="button" class="tab-btn" style="padding:0.55rem 0.7rem; font-size:0.76rem;" onclick="clearApiKey()">
+                초기화
+              </button>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- 3. CHARACTER STUDIO BUILDER VIEW -->
+    <section id="builderView" style="display:none;">
+      <div class="section-card">
+        <div class="section-title">
+          <span>캐릭터 설계 스튜디오 (`POST /ko/api/characters/create` 실시간 반영)</span>
+          <div style="display:flex; gap:0.5rem;">
+            <button class="tab-btn" onclick="exportCharacterJson()">JSON 다운로드</button>
+            <button class="tab-btn active" onclick="saveCharacterBuilder()">변경사항 저장 및 적용</button>
+          </div>
+        </div>
+        <div class="details-grid">
+          <div class="detail-box">
+            <div class="detail-label">캐릭터 이름 (`name`)</div>
+            <input type="text" id="editName" class="input-field" style="width:100%;" />
+          </div>
+          <div class="detail-box">
+            <div class="detail-label">장소 (`location`)</div>
+            <input type="text" id="editLocation" class="input-field" style="width:100%;" />
+          </div>
+          <div class="detail-box full">
+            <div class="detail-label">캐릭터 인트로 소개 (`description`)</div>
+            <textarea id="editDescription" class="input-field" style="width:100%; height:110px;"></textarea>
+          </div>
+          <div class="detail-box full">
+            <div class="detail-label">상세 세계관 및 배경 (`details`)</div>
+            <textarea id="editDetails" class="input-field" style="width:100%; height:110px;"></textarea>
+          </div>
+          <div class="detail-box full">
+            <div class="detail-label">기본 오프닝 지문 (`initialAction` · 첫 줄 `img:[키]` 지원)</div>
+            <textarea id="editInitialAction" class="input-field" style="width:100%; height:110px;"></textarea>
+          </div>
+          <div class="detail-box full">
+            <div class="detail-label">기본 첫 대사 (`initialMessage`)</div>
+            <input type="text" id="editInitialMessage" class="input-field" style="width:100%;" />
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- NEW CONVERSATION / CUSTOM SITUATION MODAL -->
+  <div class="modal-backdrop" id="newRoomModal">
+    <div class="modal-card">
+      <div class="section-title" style="margin-bottom:0;">
+        <span>✨ 새로운 대화 걸기 (자유 상황 &amp; 초기 호감도 설정)</span>
+        <button class="tab-btn" onclick="closeNewRoomModal()">닫기 &times;</button>
+      </div>
+      <p style="font-size:0.83rem; color:var(--text-secondary);">
+        시현 영상처럼 내가 원하는 새로운 상황과 관계(초기 호감도)를 설정해 대화를 시작할 수 있습니다. AI가 입력한 상황에 맞춰 첫 장면과 대사, 상황별 그림을 즉시 생성합니다.
+      </p>
+
+      <div>
+        <div class="detail-label">빠른 상황 프리셋 선택 (클릭 시 자동 입력)</div>
+        <div class="pill-wrap" style="margin-top:0.35rem;">
+          <button class="suggest-chip" onclick="fillCustomSituation('새벽 4시, 아무도 없는 PC방에서 라면 두 개를 끓여 세계에게 같이 먹자고 건네는 상황', 25)">🍜 새벽 4시 라면 나눠 먹기</button>
+          <button class="suggest-chip" onclick="fillCustomSituation('장대비가 쏟아지는 새벽, 지하 계단에서 까만 길고양이 먹물이에게 우산을 씌워주다 세계와 마주친 상황', 35)">☔ 비 오는 계단과 길고양이</button>
+          <button class="suggest-chip" onclick="fillCustomSituation('새벽 6시 교대 퇴근 후, 신촌역 앞 포장마차에서 따뜻한 우동 국물을 마시며 진솔하게 대화하는 상황', 55)">🍢 퇴근길 새벽 포장마차</button>
+          <button class="suggest-chip" onclick="fillCustomSituation('시각디자인학과 졸업전시회 날, 아무도 오지 않을 줄 알았던 세계의 부스에 꽃다발을 들고 깜짝 방문한 상황', 80)">💐 졸업전시회 깜짝 방문</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="detail-label">새로운 대화 시작 상황 직접 입력 (`customSituation`)</div>
+        <textarea id="modalCustomSituation" class="input-field" style="width:100%; height:85px;" placeholder="예: 새벽 3시 반, 카운터 앞에서 밤새 과제하다 지쳐 엎드려 있는 나에게 세계가 다가오는 상황">새벽 4시, 아무도 없는 PC방에서 라면 두 개를 시켜 세계에게 하나를 건네며 말을 거는 상황</textarea>
+      </div>
+
+      <div class="details-grid" style="margin-top:0;">
+        <div>
+          <div class="detail-label">내 캐릭터 호칭 (`{{user}}`)</div>
+          <input type="text" id="modalUserName" class="input-field" style="width:100%;" value="단골손님" />
+        </div>
+        <div>
+          <div class="detail-label">초기 호감도 (`0 ~ 100%`)</div>
+          <input type="number" id="modalInitialAffection" class="input-field" style="width:100%;" value="25" min="0" max="100" />
+        </div>
+        <div class="detail-box full" style="padding:0; background:transparent; border:none;">
+          <div class="detail-label">내 페르소나 특징 (`userPersonaDesc`)</div>
+          <input type="text" id="modalUserPersonaDesc" class="input-field" style="width:100%;" value="새벽마다 카운터 근처 자리에 앉아 조용히 작업하다 가는 단골 손님" />
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:0.6rem; margin-top:0.25rem;">
+        <button class="tab-btn" onclick="closeNewRoomModal()">취소</button>
+        <button class="btn-start-chat" id="createRoomBtn" style="flex:0 0 auto; padding:0.7rem 1.4rem;" onclick="createNewCustomRoom()">
+          🚀 이 상황으로 새로운 대화 시작
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- API KEY SETTINGS MODAL -->
+  <div class="modal-backdrop" id="apiKeyModal" style="display:none;">
+    <div class="modal-card" style="max-width:560px;">
+      <div class="section-title" style="margin-bottom:0;">
+        <span>🔑 AI 페르소나 엔진 &amp; API 키 설정</span>
+        <button class="tab-btn" onclick="closeApiKeyModal()">닫기 &times;</button>
+      </div>
+      <p style="font-size:0.83rem; color:var(--text-secondary); line-height:1.5;">
+        Google Gemini, OpenAI GPT-4o, Claude 3.7 등 실제 LLM API 키를 등록하면 캐릭터가 정해진 템플릿이 아닌 <strong>실제 초거대 AI로 자유롭게 대화와 속마음을 무제한 생성</strong>합니다.
+      </p>
+
+      <div id="modalApiStatusBox" style="font-size:0.8rem; padding:0.75rem 0.9rem; border-radius:0.5rem; background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.35); color:#38bdf8; line-height:1.5;">
+        검사 중...
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:0.5rem; margin-top:0.3rem;">
+        <label style="font-size:0.78rem; color:var(--text-secondary); font-weight:700;">API 제공자 선택</label>
+        <select id="modalLlmProvider" class="input-field" style="font-size:0.82rem; padding:0.55rem 0.7rem;">
+          <option value="auto">🔍 자동 감지 (Gemini 3.1+ Flash / OpenAI / Claude)</option>
+          <option value="gemini" selected>✨ Google Gemini (gemini-3.8-flash · 3.1 Flash 이상 전용)</option>
+          <option value="openai">🤖 OpenAI (sk-... / gpt-4o-mini, gpt-4o)</option>
+          <option value="claude">🧠 Anthropic Claude (sk-ant-... / claude-3-7-sonnet)</option>
+          <option value="openrouter">🌐 OpenRouter (sk-or-v1-...)</option>
+          <option value="groq">⚡ Groq (gsk_... / llama-3.3-70b)</option>
+          <option value="xai">🚀 xAI Grok (xai-...)</option>
+        </select>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:0.4rem;">
+        <label style="font-size:0.78rem; color:var(--text-secondary); font-weight:700;">API 키 입력</label>
+        <div style="display:flex; gap:0.4rem;">
+          <input type="password" id="modalLlmApiKey" class="input-field" style="flex:1; font-size:0.85rem;" placeholder="API Key 입력 (예: AIzaSy...)" onkeydown="if(event.key==='Enter') modalTestAndSaveApiKey()" />
+          <button type="button" class="tab-btn" style="padding:0.5rem 0.75rem;" onclick="toggleModalKeyVisibility()">👁️</button>
+        </div>
+        <div style="font-size:0.72rem; color:var(--text-muted);">
+          * 입력한 키는 로컬 브라우저와 서버에 안전하게 보관되며 외부로 유출되지 않습니다.
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:0.6rem; margin-top:0.5rem;">
+        <button type="button" class="tab-btn" onclick="modalClearApiKey()">기본 엔진으로 초기화</button>
+        <button type="button" class="btn-start-chat" id="modalTestApiBtn" style="flex:0 0 auto; padding:0.65rem 1.4rem;" onclick="modalTestAndSaveApiKey()">
+          🔌 API 키 저장 및 연결 테스트
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- USER AUTH (LOGIN / REGISTER) MODAL (Multi-User on Jetson Orin) -->
+  <div class="modal-backdrop" id="authModal" style="display:none;">
+    <div class="modal-card" style="max-width:440px;">
+      <div class="section-title" style="margin-bottom:0;">
+        <span id="authModalTitle">👤 로그인</span>
+        <button class="tab-btn" onclick="closeAuthModal()">닫기 &times;</button>
+      </div>
+
+      <!-- Tab Switcher between Login & Register -->
+      <div style="display:flex; gap:0.5rem; margin-top:0.35rem; border-bottom:1px solid var(--border-subtle); padding-bottom:0.6rem;">
+        <button type="button" class="tab-btn active" id="authTabLoginBtn" onclick="switchAuthTab('login')">로그인</button>
+        <button type="button" class="tab-btn" id="authTabRegisterBtn" onclick="switchAuthTab('register')">회원가입</button>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:0.75rem; margin-top:0.35rem;">
+        <div>
+          <label style="font-size:0.78rem; color:var(--text-secondary); font-weight:700;">아이디 (Username)</label>
+          <input type="text" id="authInputUsername" class="input-field" style="width:100%; font-size:0.85rem;" placeholder="영문/숫자 3자 이상" onkeydown="if(event.key==='Enter') submitAuthForm()" />
+        </div>
+
+        <div id="authNicknameRow" style="display:none;">
+          <label style="font-size:0.78rem; color:var(--text-secondary); font-weight:700;">대화 호칭 / 닉네임</label>
+          <input type="text" id="authInputNickname" class="input-field" style="width:100%; font-size:0.85rem;" placeholder="캐릭터가 나를 부를 호칭 (예: 단골손님, 오빠, 지훈)" onkeydown="if(event.key==='Enter') submitAuthForm()" />
+        </div>
+
+        <div>
+          <label style="font-size:0.78rem; color:var(--text-secondary); font-weight:700;">비밀번호 (Password)</label>
+          <input type="password" id="authInputPassword" class="input-field" style="width:100%; font-size:0.85rem;" placeholder="비밀번호 4자 이상" onkeydown="if(event.key==='Enter') submitAuthForm()" />
+        </div>
+
+        <div id="authStatusMsg" style="font-size:0.76rem; min-height:1.2rem; display:none;"></div>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:0.6rem; margin-top:0.6rem;">
+        <button type="button" class="tab-btn" onclick="closeAuthModal()">취소</button>
+        <button type="button" class="btn-start-chat" id="authSubmitBtn" style="flex:0 0 auto; padding:0.65rem 1.4rem;" onclick="submitAuthForm()">
+          로그인 &rarr;
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1. SKINSHIP PICKER MODAL -->
+  <div class="modal-backdrop" id="skinshipModal" style="display:none;">
+    <div class="modal-card" style="max-width:520px;">
+      <div class="section-title" style="margin-bottom:0;">
+        <span>🤝 /스킨십 행동 선택</span>
+        <button class="tab-btn" onclick="closeCommandModals()">닫기 &times;</button>
+      </div>
+      <p style="font-size:0.83rem; color:var(--text-secondary);">
+        말 대신 비언어적 밀착 스킨십 액션을 취합니다. 캐릭터의 체온, 심장 박동, 표정의 미세한 변화를 유도합니다.
+      </p>
+      <div>
+        <div class="detail-label">빠른 스킨십 프리셋 (클릭 시 자동 선택)</div>
+        <div class="pill-wrap" style="margin-top:0.35rem;">
+          <button class="suggest-chip" onclick="fillSkinshipAction('카운터 위에서 그녀의 차가운 손끝을 조용히 맞잡는다')">✋ 차가운 손끝 맞잡기</button>
+          <button class="suggest-chip" onclick="fillSkinshipAction('추위에 떨고 있는 그녀의 어깨에 내 따뜻한 겉옷을 걸쳐준다')">🧥 어깨에 겉옷 걸쳐주기</button>
+          <button class="suggest-chip" onclick="fillSkinshipAction('카운터에 턱을 괴고 그녀와 10cm 거리에서 지그시 눈을 맞춘다')">👀 10cm 초근접 눈맞춤</button>
+          <button class="suggest-chip" onclick="fillSkinshipAction('집게핀에서 흘러내린 그녀의 잔머리를 조심스럽게 귀 뒤로 넘겨준다')">💇 흘러내린 머리칼 넘겨주기</button>
+        </div>
+      </div>
+      <div>
+        <div class="detail-label">스킨십 행동 내용</div>
+        <input type="text" id="skinshipInput" class="input-field" style="width:100%;" placeholder="예: 카운터 너머로 손을 뻗어 그녀의 차가운 볼을 살짝 감싼다" value="카운터 위에서 그녀의 차가운 손끝을 조용히 맞잡는다" />
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:0.6rem;">
+        <button class="tab-btn" onclick="closeCommandModals()">취소</button>
+        <button class="btn-start-chat" style="padding:0.65rem 1.3rem;" onclick="submitSkinshipAction()">🚀 스킨십 실행</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. WHISPER PROMPT MODAL -->
+  <div class="modal-backdrop" id="whisperModal" style="display:none;">
+    <div class="modal-card" style="max-width:520px;">
+      <div class="section-title" style="margin-bottom:0;">
+        <span>🤫 /귓속말 내용 입력</span>
+        <button class="tab-btn" onclick="closeCommandModals()">닫기 &times;</button>
+      </div>
+      <p style="font-size:0.83rem; color:var(--text-secondary);">
+        카운터 너머로 10cm까지 다가가 둘만의 은밀한 속삭임을 건넵니다. 숨결이 닿는 초밀착 반응과 붉어진 귓불을 이끌어냅니다.
+      </p>
+      <div>
+        <div class="detail-label">추천 귓속말 프리셋 (클릭 시 자동 선택)</div>
+        <div class="pill-wrap" style="margin-top:0.35rem;">
+          <button class="suggest-chip" onclick="fillWhisperText('오늘 새벽에 당신 보러 온 거예요.')">💕 \"오늘 당신 보러 왔어요\"</button>
+          <button class="suggest-chip" onclick="fillWhisperText('그림 그리느라 피곤했죠? 내가 옆에 있어 줄게요.')">🎨 \"내가 옆에 있어 줄게요\"</button>
+          <button class="suggest-chip" onclick="fillWhisperText('손이 왜 이렇게 차가워요? 감기 걸리겠네.')">❄️ \"손이 왜 이렇게 차가워요\"</button>
+          <button class="suggest-chip" onclick="fillWhisperText('오늘 6시 퇴근하면 나랑 같이 첫차 탈래요?')">🌅 \"퇴근하고 같이 첫차 탈래요?\"</button>
+        </div>
+      </div>
+      <div>
+        <div class="detail-label">귓속말할 대사</div>
+        <input type="text" id="whisperInput" class="input-field" style="width:100%;" placeholder="귓가에 속삭일 말을 입력하세요" value="오늘 새벽에 당신 보러 온 거예요." />
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:0.6rem;">
+        <button class="tab-btn" onclick="closeCommandModals()">취소</button>
+        <button class="btn-start-chat" style="padding:0.65rem 1.3rem;" onclick="submitWhisperText()">🤫 귓속말 전송</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. MIDNIGHT EVENT PICKER MODAL -->
+  <div class="modal-backdrop" id="midnightModal" style="display:none;">
+    <div class="modal-card" style="max-width:540px;">
+      <div class="section-title" style="margin-bottom:0;">
+        <span>🌙 /심야이벤트 발동</span>
+        <button class="tab-btn" onclick="closeCommandModals()">닫기 &times;</button>
+      </div>
+      <p style="font-size:0.83rem; color:var(--text-secondary);">
+        새벽 지하 PC방의 특수 돌발 서사를 강제로 발동합니다. 평소와 전혀 다른 긴장감과 둘만의 고립된 분위기를 연출합니다.
+      </p>
+      <div style="display:flex; flex-direction:column; gap:0.5rem;">
+        <div class="popover-item" style="background:var(--bg-tertiary); border:1px solid var(--border-subtle);" onclick="triggerCommand('/심야이벤트 PC방 정전')">
+          <span class="popover-icon">⚡</span>
+          <div class="popover-text">
+            <strong>새벽 4시 PC방 정전</strong>
+            <span>갑자기 모든 조명과 모니터가 꺼지고, 칠흑 같은 어둠 속에 둘만 남겨지는 긴장감</span>
+          </div>
+        </div>
+        <div class="popover-item" style="background:var(--bg-tertiary); border:1px solid var(--border-subtle);" onclick="triggerCommand('/심야이벤트 라면 야식')">
+          <span class="popover-icon">🍜</span>
+          <div class="popover-text">
+            <strong>새벽 라면 야식 나눠 먹기</strong>
+            <span>아무도 없는 새벽 4시 반, 세계와 카운터 보조 의자에 나란히 앉아 따뜻한 라면을 나눔</span>
+          </div>
+        </div>
+        <div class="popover-item" style="background:var(--bg-tertiary); border:1px solid var(--border-subtle);" onclick="triggerCommand('/심야이벤트 퇴근길 동행')">
+          <span class="popover-icon">🌅</span>
+          <div class="popover-text">
+            <strong>새벽 6시 첫차 퇴근길 동행</strong>
+            <span>교대 직후 지상 계단 난간에서 찬 공기를 마시며 신촌역 포장마차로 함께 걸어감</span>
+          </div>
+        </div>
+        <div class="popover-item" style="background:var(--bg-tertiary); border:1px solid var(--border-subtle);" onclick="triggerCommand('/심야이벤트 아이패드 비밀 그림')">
+          <span class="popover-icon">🎨</span>
+          <div class="popover-text">
+            <strong>아이패드 미완성 캔버스 해금</strong>
+            <span>카운터 구석에서 몰래 그리던 졸업전시회 일러스트를 오직 나에게만 열어 보여줌</span>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex; justify-content:flex-end;">
+        <button class="tab-btn" onclick="closeCommandModals()">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

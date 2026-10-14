@@ -1,0 +1,14 @@
+{
+  "name": "segye24-web",
+  "version": "1.0.0",
+  "description": "BabeChat-compatible Character Profile & Simulation Web Service for Segye 24 (세계 24) and Eunseo 24 (은서 24)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^13.0.3",
+    "jsonwebtoken": "^9.0.3"
+  }
+}
