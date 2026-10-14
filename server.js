@@ -737,7 +737,10 @@ async function callUniversalLLM({ systemPrompt, history, userMessage, apiKey, pr
           format: "json",
           stream: false,
           options: {
-            temperature: 0.85
+            temperature: 0.85,
+            num_predict: 350, // Prevent endless generation; cap to required JSON tokens (3~5x speedup)
+            num_ctx: 2048,    // Cap KV cache context to prevent unified memory bloat on Jetson Orin
+            num_gpu: 99       // Force maximum layer offloading to Jetson GPU
           }
         })
       });
