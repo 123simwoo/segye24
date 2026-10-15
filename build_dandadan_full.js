@@ -1,0 +1,775 @@
+const fs = require('fs');
+const path = require('path');
+
+const brainDir = "C:/Users/Sim's/.gemini/antigravity/brain/d5aa5067-2fcb-48ff-987e-d41735d14a6a";
+const publicDir = "C:/Users/Sim's/.gemini/antigravity/scratch/segye24-web/public";
+
+// Complete Canonical Dandadan 1~13 Chapters (Episodes 1~4)
+const dandadanCanonFullData = {
+  1: {
+    epNum: 1,
+    chapterRange: "1화~2화",
+    title: "에피소드 1: 〈그것이 사랑의 시작이었어 & 그게 바로 외계인이잖아〉",
+    subtitle: "단다단 1화~2화 원작 완전 일치 · 외계인 vs 유령의 내기, 세르포 성인 납치, 플랫우즈 몬스터 스모 결투",
+    badge: "단다단 원작 1화~2화 · 운명의 서막",
+    bannerImg: "vol1.jpg",
+    summary: "유령만 믿는 갸루 세계와 외계인만 믿는 오타쿠 사용자의 심야 내기. 폐병원에서 세르포 성인에게 납치되어 바나나 신체검사 위기에 처한 세계의 거대 염동력 손 각성, 터널에서 터보 라쿤에게 거시기를 빼앗긴 사용자의 요괴화 난입, 그리고 결계 저택을 덮친 3m 스모 외계인 플랫우즈 몬스터와의 정면 육탄 결전!",
+    scenes: [
+      {
+        sceneNum: "제1화",
+        title: "학교 복도의 구출 & 유령 vs 외계인의 자존심 내기",
+        art: "vol1_prologue.jpg",
+        artCaption: "제1화 · 학교에서 시작된 내기, 그리고 각자의 심령 스폿으로 향하는 불길한 어둠",
+        mangaPanel: "만화 1화 도입부 구도: 복도에서 불량배들을 시원하게 차버리는 세계의 하이앵글 로우컷, 그리고 교실 창가에서 서로 삿대질하며 외계인과 유령 잡지를 들이대는 다이내믹한 투샷 분할 컷!",
+        paragraphs: [
+          "방과 후 빈 교실 복도, 오컬트 잡지 『무(MU)』를 품에 안고 웅얼거리던 나는 오늘도 어김없이 불량배들에게 둘러싸여 안경이 벗겨진 채 괴롭힘을 당하고 있었다.",
+          "\"야, 외계인 오타쿠! 오늘도 화성인이랑 텔레파시 통했냐? 돈이나 내놔봐!\"",
+          "그때, 콰앙-! 하는 경쾌한 소리와 함께 앞장서던 불량배의 뒤통수가 바닥에 처박혔다. 교복 치마 아래로 늘씬한 다리를 뻗어 돌려차기를 꽂아 넣은 것은, 우리 학년 최고의 당찬 갸루 '세계'였다.",
+          "\"야, 찌질하게 떼거지로 몰려와서 뭐 하는 짓이야? 당장 꺼져, 멍청이들아!\"",
+          "불량배들이 줄행랑을 치자 세계가 흩어진 내 잡지를 주워 건넸다. 얼떨떨한 마음에 말을 붙였지만, 대화는 곧바로 초자연적 존재에 대한 격렬한 자존심 싸움으로 비화되었다.",
+          "\"외계인 따위가 우주에 어딨어, 바보야?! 유령은 진짜 있거든? 우리 할머니가 영매사란 말이야!\"",
+          "\"유령 따위는 비과학적 미신입니다! 1000억 개의 은하계에 외계인이 존재할 확률은 100%라고요!\"",
+          "서로 상대방의 주장을 꺾기 위해 결국 자존심을 건 심야 내기가 성립되었다. 세계는 국도 인근의 외계인 출몰지인 '폐병원'으로, 나는 괴이가 나온다는 악명 높은 심령 스폿 '쇼타 터널'로 향하기로 하고 스마트폰 통화를 켠 채 각자의 장소로 발을 들였다."
+        ],
+        dialogueBox: {
+          speaker: "세계 (퇴마 갸루)",
+          mood: "도도하게 턱을 치켜들며 으스대는 갸루 눈빛",
+          text: "\"좋아! 네가 이기면 빵 사주고 내가 이기면 넌 내 노예야! 폐병원 따위 아무것도 없으니까 똑똑히 보고 울지나 마라, 오타쿠!\"",
+          thought: "\"외계인 따위가 있을 리 없잖아. 근데 저 녀석, 안경 벗으니까 생각보다 눈이 맑고 귀엽네... 흥, 그래도 내기에서 지진 않을 거야!\""
+        }
+      },
+      {
+        sceneNum: "제1화 클라이맥스",
+        title: "세르포 성인의 바나나 위기 & 거대 염동력 손 각성과 요괴화 난입",
+        art: "vol1.jpg",
+        artCaption: "제1화 클라이맥스 · 거대 염동력 손으로 폭주한 요괴 사용자의 턱을 움켜쥐고 제압하는 세계",
+        mangaPanel: "만화 1화 더블 스프레드 명장면: 세르포 성인들을 찢어발기며 백발로 폭주하는 요괴 오카룬의 턱을 거대 초능력 손으로 꽉 틀어쥐고 눈을 맞추며 포효하는 세계의 결정적 투샷!",
+        paragraphs: [
+          "자정의 폐병원에 들어선 세계는 세르포 성인들에게 납치되어 투명 빔에 결박당했다. 클론 복제로 성기가 퇴화한 외계인들이 메스를 들고 \"바나나(남성기)\"를 운운하며 옷을 벗기려는 순간, 세계 안에 잠들어 있던 거대한 염동력 손이 폭발적으로 각성했다!",
+          "같은 시각, 쇼타 터널에서 \"거시기 빨게 해줘-!\"라며 시속 100km로 덮쳐온 터보 라쿤에게 소중한 거시기를 강탈당하고 저주에 걸린 내가, 백발 요괴 마스크 상태로 폐병원 벽을 뚫고 난입했다.",
+          "피아식별이 불가능한 채 세르포 성인을 찢어발기며 날뛰던 내 턱을, 세계의 거대한 염동력 손이 콱 움켜쥐었다!",
+          "\"정신 차려, 이 바보야!! 날 봐!! 네가 날 구하러 온 거잖아!!\"",
+          "세계의 진심 어린 외침에 저주가 진정되며 우주선이 폭발했다. 두 사람은 외계인과 유령이 둘 다 실존한다는 경악스러운 진실을 마주하며 첫 만남을 마무리했다."
+        ],
+        dialogueBox: {
+          speaker: "세계 (퇴마 갸루)",
+          mood: "숨을 헐떡이며 턱을 움켜쥔 박력 츤데레",
+          text: "\"외계인도 진짜고 유령도 진짜였잖아... 젠장, 내기에서 둘 다 비긴 거니까 일단 꽉 잡아! 살아서 탈출하자고!!\"",
+          thought: "\"저주에 걸려 미쳐 날뛰는 와중에도 날 구하겠다고 여기까지 달려온 거야...? 심장이 왜 이렇게 빨리 뛰지...?!\""
+        }
+      },
+      {
+        sceneNum: "제2화",
+        title: "결계 저택 피신 & 사라진 바나나와 3m 플랫우즈 몬스터 스모 결투",
+        art: "vol1_ep3_tunnel_chase.jpg",
+        artCaption: "제2화 · 세계의 염동력 손 고삐를 쥐고, 시속 100km로 돌진해 스모 외계인 플랫우즈 몬스터와 격돌하는 요괴 사용자",
+        mangaPanel: "만화 2화 전설의 액션 컷: 마루에 선 세계가 거대 염동력 손으로 오카룬의 턱끈을 조여 조종하고, 은발 요괴 오카룬이 로우앵글 광각 왜곡으로 플랫우즈 몬스터의 명치에 초고속 스모 태클을 꽂아 넣는 다이내믹 스프레드!",
+        paragraphs: [
+          "아침 햇살이 비쳐올 무렵, 세계는 나를 데리고 할머니 세이코의 신사 결계 저택으로 피신했다. 다다미방에서 바지를 확인한 나는 소중한 바나나(킨타마)가 통째로 사라졌음에 경악하며 하얗게 불태웠고, 세계는 얼굴을 붉히며 손가락 틈새로 힐끔거렸다.",
+          "하지만 문기둥의 결계 부적 하나가 툭 떨어지며 틈이 생기자, 마당 하늘이 갈라지며 3m 거구의 스모 외계인 '플랫우즈 몬스터'가 착지해 검은 독안개를 뿜어댔다!",
+          "독안개에 세계가 쓰러질 위기에 처하자, 나는 터보 라쿤의 저주를 부분 해방하여 세계에게 외쳤다. \"세계 씨, 염동력 손으로 제 목과 의식만 붙잡아주세요!\"",
+          "세계가 염동력 손으로 내 고삐를 단단히 쥐고, 나는 시속 100km로 마당을 박차고 돌진해 플랫우즈 몬스터에게 초고속 스모 태클을 꽂아 넣었다! 쿵- 콰아앙! 괴물이 담장을 뚫고 논바닥으로 처박혔다.",
+          "결계 부적을 다시 붙여 위기를 넘긴 두 사람은, 빼앗긴 바나나를 되찾고 저주를 풀기 위해 터보 라쿤과의 '100km 목숨 건 술래잡기'를 결의했다."
+        ],
+        dialogueBox: {
+          speaker: "세계 (퇴마 갸루)",
+          mood: "피를 닦아주며 손을 꼭 쥔 당찬 미소",
+          text: "\"내 배터리의 소중한 부위를 훔쳐 간 놈을 용서할 수 없거든?! 100km 술래잡기든 뭐든 내가 같이 달려줄 테니까, 절대 포기하지 마!\"",
+          thought: "\"너랑 손잡고 있으니까 알겠어. 네 소중한 것도, 네 목숨도... 내가 끝까지 지켜줄 거야. 내 최고의 파트너니까.\""
+        }
+      }
+    ]
+  },
+  2: {
+    epNum: 2,
+    chapterRange: "3화~5화",
+    title: "에피소드 2: 〈할머니 세이코의 특훈 & 화장실의 신 & 터널 결전 준비〉",
+    subtitle: "단다단 3화~5화 원작 완전 일치 · 동안 미녀 영매사 세이코 등장, 배트 응징, 영력 결계 훈련, 라면 먹방",
+    badge: "단다단 원작 3화~5화 · 결전의 준비",
+    bannerImg: "vol3.jpg",
+    summary: "대문을 열고 등장한 전설의 동안 미녀 영매사 할머니 '세이코'! 폭주하려는 요괴 오카룬을 야구 배트로 시원하게 후려쳐 제압하고, 터보 라쿤의 저주를 누르기 위해 화장실의 신(카와야가미)의 영력을 빌리는 이색 결계 훈련을 개시한다. 훈련 후 툇마루에서 세계가 정성껏 수건으로 머리를 말려주고 컵라면을 나눠 먹으며 깊어지는 썸, 그리고 쇼타 터널로 향하는 비장한 출진!",
+    scenes: [
+      {
+        sceneNum: "제3화",
+        title: "동안 미녀 영매사 할머니 세이코의 등장 & 야구 배트 응징",
+        art: "vol1_extra1_locker_hide.jpg",
+        artCaption: "제3화 · 세이코 할머니의 거침없는 영매 훈육과 다다미방에서 숨을 죽인 두 사람",
+        mangaPanel: "만화 3화 코믹 액션 컷: 젊고 매혹적인 동안 미녀 세이코가 목검 야구 배트를 어깨에 걸치고 터보 라쿤의 망령을 향해 '홈런'을 날리는 호쾌한 풀스윙 컷!",
+        paragraphs: [
+          "대문이 열리며 또각또각 나막신 소리와 함께 나타난 인물은, 꼬부랑 할머니가 아니라 믿을 수 없을 만큼 젊고 화려한 미모를 자랑하는 전설의 영매사 '아야세 세이코' 할머니였다!",
+          "\"어이, 모모(세계)! 집에 웬 냄새나는 저주 찌꺼기를 데려온 게냐?\"",
+          "그 순간, 내 몸속에서 터보 라쿤의 사악한 원혼이 불쑥 튀어나와 \"이 영감탱이 뼈마디를 분질러주마!\"라며 할머니를 덮치려 했다. 하지만 세이코 할머니는 눈 하나 깜짝하지 않고 품에서 꺼낸 거대한 야구 배트에 퇴마 영력을 실어 그대로 풀스윙을 날렸다!",
+          "콰아앙-! 홈런 타구를 맞은 것처럼 터보 라쿤의 망령이 허공으로 튕겨 나가 다다미방 벽에 처박혔다.",
+          "\"시건방진 요괴 쥐새끼가 어디서 까불어? ...손자사위 될 놈이면 인사부터 제대로 해야지, 안 그러냐?\"",
+          "할머니의 짓궂은 농담에 세계의 얼굴이 순식간에 토마토처럼 새빨갛게 타올랐다."
+        ],
+        dialogueBox: {
+          speaker: "세계 (퇴마 갸루)",
+          mood: "얼굴이 홍당무가 되어 소리치는 츤데레",
+          text: "\"할머니 미쳤어?! 손자사위라니 무슨 헛소리야!! 그냥 저주에 걸려서 불쌍해서 데려온 배터리일 뿐이거든?!\"",
+          thought: "\"할머니는 왜 눈치가 저렇게 백 단인 거야?! 얼굴 빨개진 거 쟤한테 들키면 어떡하라고 진짜!!\""
+        }
+      },
+      {
+        sceneNum: "제4화",
+        title: "화장실의 신(카와야가미)의 결계 훈련 & 툇마루 컵라면 썸",
+        art: "vol2_extra1_ramen_blow.jpg",
+        artCaption: "제4화 · 맹훈련 후 백옥 도자기 피부를 발그레 물들이며 컵라면을 후후 불어 먹여주는 세계",
+        mangaPanel: "만화 4화 명장면: 방울 부적을 차고 화장실 변소 신의 영력 결계를 다듬는 훈련 컷 뒤로, 저녁노을이 지는 툇마루에서 세계가 수건으로 오카룬의 머리를 털어주며 라면을 먹여주는 몽글몽글한 썸 컷!",
+        paragraphs: [
+          "터보 라쿤의 100km 저주는 너무나 흉포하여, 쇼타 터널 결전 전까지 오카룬이 완전히 잠식당하지 않도록 세이코 할머니는 정화의 힘을 가진 '화장실의 신(카와야가미)'의 결계 방울 부적을 오카룬의 몸에 채웠다.",
+          "온종일 이어진 혹독한 영력 호흡 훈련에 녹초가 된 우리 둘. 마루에 걸터앉자 세계가 보송보송한 면 수건을 가져와 내 젖은 머리를 능숙하고 부드럽게 털어주었다.",
+          "\"미용실 알바할 때 다져진 솜씨니까 얌전히 있어... 땀 식으면 감기 걸리니까.\"",
+          "그리고는 갓 끓여온 특제 컵라면의 면발을 나무젓가락으로 집어 후- 후- 불어 식히더니, 쑥스러운 듯 고개를 돌리며 내 입술 앞으로 내밀었다.",
+          "\"자, 아- 해. 물 선 1mm 정확히 맞춘 거니까 딱 한 입만 주는 거야, 바보야!\""
+        ],
+        dialogueBox: {
+          speaker: "세계 (퇴마 갸루)",
+          mood: "수줍게 입술을 삐죽이는 귀여운 미소",
+          text: "\"내가 먹던 젓가락이라고 싫어하기만 해봐! ...맛있지? 라면 힘내서 먹고 내일 터널에서 라쿤 놈 엉덩이를 걷어차 주자고!\"",
+          thought: "\"이렇게 가까이서 머리 말려주고 라면 먹여주니까... 완전 신혼부부 같잖아?! 심장이 터질 것 같아...\""
+        }
+      },
+      {
+        sceneNum: "제5화",
+        title: "터보 라쿤 공략 작전 수립과 쇼타 터널 출진",
+        art: "vol3_rain_hideout.jpg",
+        artCaption: "제5화 · 결전을 앞두고 다다미방에서 붕대와 장비를 점검하며 서로의 손을 꼭 쥔 두 사람",
+        mangaPanel: "만화 5화 출진 컷: 결전의 밤, 신사 마루에서 세이코 할머니의 전송을 받으며 터널로 향하는 모모의 초능력 거대 손과 오카룬의 각오에 찬 결의의 뒷모습!",
+        paragraphs: [
+          "세이코 할머니가 쇼타 터널 공략의 핵심을 짚어주었다.",
+          "\"터보 라쿤은 쇼타 터널 지박령들과 융합되어 있어, 터널 밖으로 끌어내지 않으면 절대 성불시킬 수 없다. 시속 100km의 추격을 버텨내며 우리 신사 결계 경계선까지 놈을 유인해 와야 해!\"",
+          "목숨을 건 100km 고속 술래잡기 작전. 오카룬이 터보 라쿤의 저주를 끌어올려 미끼가 되고, 세계가 염동력 손으로 오카룬을 서포트하며 탈출하는 위험천만한 계획이었다.",
+          "자정이 다가오자 세계는 내 손을 꽉 쥐었다.",
+          "\"겁먹지 마, 오타쿠. 네 손가락은 내가 절대로 안 놓을 거니까. 네 소중한 거시기, 내가 꼭 되찾아줄게!\""
+        ],
+        dialogueBox: {
+          speaker: "세계 (퇴마 갸루)",
+          mood: "당차고 듬직한 파트너의 눈빛",
+          text: "\"가자, 쇼타 터널로! 오늘 밤으로 저주 끝내고, 내일 학교 옥상에서 축하 라면 먹는 거다!\"",
+          thought: "\"어떤 괴물이 나와도 내가 지켜줄 거야. 내 최고의 배터리니까!\""
+        }
+      }
+    ]
+  },
+  3: {
+    epNum: 3,
+    chapterRange: "6화~8화",
+    title: "에피소드 3: 〈심야 쇼타 터널 100km/h 질주 & 거대 합체 지박령 결전〉",
+    subtitle: "단다단 6화~8화 원작 완전 일치 · 시속 100km 데스매치, 거대 대게 요괴 합체, 손깍지 영력 부스터, 라쿤의 마스코트 정화",
+    badge: "단다단 원작 6화~8화 · 전설의 고속 결전",
+    bannerImg: "vol1_ep3_tunnel_chase.jpg",
+    summary: "심야의 쇼타 터널 안에서 벌어지는 시속 100km 극한의 고속 술래잡기! 터널의 처녀 원혼들과 거대 대게 요괴가 터보 라쿤과 융합하여 도심을 향해 폭주하자, 세계와 오카룬은 손가락을 단단히 맞물린 손깍지 영력 부스터로 100km의 아스팔트를 질주한다! 신사 결계로의 유인과 초능력 거대 손의 일격으로 악령을 완전 성불시키고, 라쿤을 귀여운 마스코트로 영구 정화하는 1권 최고의 하이라이트!",
+    scenes: [
+      {
+        sceneNum: "제6화",
+        title: "달려라 터보 라쿤! 쇼타 터널 100km/h 데스매치",
+        art: "vol1_ep3_tunnel_chase.jpg",
+        artCaption: "제6화 · 주황색 비상등이 깜빡이는 쇼타 터널 안에서 시속 100km로 질주하는 결전의 순간",
+        mangaPanel: "만화 6화 고속 액션 구도: 어두운 터널 아스팔트에서 스파크를 튀기며 100km로 달리는 오카룬과 초능력 손을 펼쳐 벽을 짚는 모모의 광속 스피드 컷!",
+        paragraphs: [
+          "자정의 쇼타 터널 안. 주황색 비상등이 기괴하게 깜빡이는 터널 한가운데 서자, 터널 천장에서 터보 라쿤의 광기 어린 괴성이 메아리쳤다.",
+          "\"우헤헤헤! 제 발로 거시기를 바치러 왔구나아아-!!\"",
+          "콰아아앙! 터보 라쿤이 시속 100km의 맹렬한 각력으로 아스팔트를 박차며 덮쳐왔다. 나는 터보 저주를 끌어올려 백발 요괴로 변신, 세계의 손을 잡고 터널 출구를 향해 전력 질주하기 시작했다!",
+          "바람이 귀를 찢을 듯 울부짖고 타이어 타는 냄새가 진동하는 극한의 레이스. 뒤에서 붉은 안광을 번뜩이는 터보 라쿤의 발톱이 우리 등 뒤 10cm까지 바짝 좁혀왔다!"
+        ],
+        dialogueBox: {
+          speaker: "세계 (퇴마 갸루)",
+          mood: "아드레날린 폭발과 다급한 외침",
+          text: "\"손 놓치지 마, 바보야!! 이 속도에서 놓치면 둘 다 아스팔트에 갈려 나간다고! 끝까지 꽉 잡고 있어!!\"",
+          thought: "\"짜릿해 미칠 것 같아! 손끝 사이로 전해지는 얘 영력이 내 온몸의 피를 끓게 만들어... 사랑해, 내 최고의 파트너!\""
+        }
+      },
+      {
+        sceneNum: "제7화",
+        title: "거대 대게 요괴 합체와 도심 폭주 위기",
+        art: "vol1_extra2_talisman_cut.jpg",
+        artCaption: "제7화 · 거대 지박령과 합체한 괴물의 집게발을 향해 염동력 가위질 결계를 투하하는 세계",
+        mangaPanel: "만화 7화 거대 괴수 컷: 터널을 부수고 솟구쳐 오른 아파트 크기의 거대 대게 합체 괴수의 위용과, 그 거대한 집게발 사이를 아슬아슬하게 통과하는 두 사람의 다이내믹 공중 컷!",
+        paragraphs: [
+          "터널 출구가 눈앞에 보인 순간, 터보 라쿤이 터널 벽에 깃든 수많은 처녀 지박령의 원혼을 흡수하더니, 거대한 갑각을 가진 '대게 합체 요괴'로 융합 팽창했다!",
+          "아파트 3층 높이의 거대한 집게발이 터널 천장을 짓이기며 도로를 붕괴시켰다. 놈이 도심 고속도로로 빠져나가면 수천 명이 압사당할 위기!",
+          "세계는 내 손을 쥔 채 허공으로 높이 도약했다. \"내가 염동력 손으로 집게발을 묶을 테니까, 넌 신사 결계 경계선으로 단번에 뛰어넘어!!\""
+        ],
+        dialogueBox: {
+          speaker: "세계 (퇴마 갸루)",
+          mood: "카리스마 넘치는 영력 폭발",
+          text: "\"내 미용 가위가 머리만 자르는 줄 알아?! 이 거대 갑각류 녀석, 오늘 게장으로 담가주마!!\"",
+          thought: "\"절대 얘 다치게 안 해... 내 초능력 손의 최대 출력, 여기서 전부 쏟아붓는다!!\""
+        }
+      },
+      {
+        sceneNum: "제8화",
+        title: "신사 결계 대폭발 성불 & 라쿤의 마스코트 영구 정화",
+        art: "vol2_extra2_windy_cardigan.jpg",
+        artCaption: "제8화 · 결전을 마친 새벽녘, 지친 세계의 어깨에 겉옷을 걸쳐주며 나눈 애틋한 온기",
+        mangaPanel: "만화 8화 클라이맥스 성불 컷: 세이코의 신사 도리이 결계선 안으로 유인된 괴수가 눈부신 황금빛 결계 폭발과 함께 성불하고, 힘을 잃은 라쿤이 퐁! 변신하는 해피엔딩 라스트 컷!",
+        paragraphs: [
+          "괴물의 집게발을 피하며 결사적으로 결계선 안으로 뛰어든 순간! 대기하고 있던 세이코 할머니의 거대한 퇴마 결계가 작동하며 황금빛 폭풍이 일어났다.",
+          "콰아아앙-! 거대 대게 요괴는 눈부신 성불의 빛 속에서 한 줌의 푸른 재가 되어 밤바람에 흩어졌다.",
+          "요괴의 흉포한 음기가 모두 정화되자, 터보 라쿤은 요력을 완전히 잃고 손바닥만 한 통통하고 무해한 귀여운 아기 라쿤 모습으로 퐁! 하고 변했다. 녀석은 세계의 품으로 쏙 파고들어 갸릉거리며 골골송을 불렀다.",
+          "모든 힘을 다 쏟아부은 세계가 휘청거리자, 내가 겉옷을 벗어 세계의 어깨를 감싸 안으며 든든하게 받쳐주었다. 세계는 옷깃을 꼭 쥔 채, 촉촉한 눈망울로 나를 올려다보았다."
+        ],
+        dialogueBox: {
+          speaker: "세계 (퇴마 갸루)",
+          mood: "온기 가득한 배려와 풋풋한 설렘",
+          text: "\"...따뜻하네. 고마워, 이번에도 네가 날 살렸어. ...이제 라쿤도 우리 가족이네? 헤헤.\"",
+          thought: "\"옷에서 좋은 냄새가 나... 심장 뛰는 소리가 옷감 너머로 다 들리는 것 같아. 영원히 이 품에 안겨 있고 싶어...\""
+        }
+      }
+    ]
+  },
+  4: {
+    epNum: 4,
+    chapterRange: "9화~13화",
+    title: "에피소드 4: 〈사라진 황금 구슬, 옥상 라멘 썸, 아크로바틱 사라사라, 텐겐의 등장〉",
+    subtitle: "단다단 9화~13화 원작 완전 일치 · 잃어버린 킨타마, 미소녀 아이라의 구슬 획득, 빗속 사당 사투, 198cm 은발 텐겐 선배의 깜짝 등장",
+    badge: "단다단 원작 9화~13화 · 1권 피날레",
+    bannerImg: "vol2.jpg",
+    summary: "터널 결전을 끝내고 평화로운 학교로 돌아왔지만, 황금 구슬 2개 중 1개가 사라졌다?! 옥상에서 컵라면을 나눠 먹으며 서로에게 어깨를 기댄 달콤한 썸. 떨어진 황금 구슬을 주워 영력을 얻은 미소녀 '아이라'와 그녀를 납치한 빨간 원피스 요괴 '아크로바틱 사라사라'와의 빗속 사당 사투! 그리고 다음 날 아침 교문을 뒤흔든 198cm 은발 장발 미남 텐겐 선배의 등장으로 대단원의 1권 완편!",
+    scenes: [
+      {
+        sceneNum: "제9화",
+        title: "평화로운 일상과 사라진 황금 구슬 (옥상 컵라면 썸)",
+        art: "vol2_epilogue.jpg",
+        artCaption: "제9화 · 서늘한 밤바람 속, 조용히 플레이어의 어깨에 머리를 기댄 세계",
+        mangaPanel: "만화 9화 일상 컷: 옥상에서 라면을 먹다가 '구슬 하나가 어디 갔지?!' 하며 당황하는 오카룬과, 풋 웃으며 어깨에 머리를 기대오는 모모의 달콤한 썸 컷!",
+        paragraphs: [
+          "터널 결전이 끝나고 소중한 바나나는 무사히 돌아왔지만, 황금 구슬 2개 중 1개가 보이지 않는 충격적인 사태가 벌어졌다! 어디선가 잃어버린 것이 분명했다.",
+          "하지만 방과 후 노을빛 옥상에서 세계와 단둘이 마주 앉아 컵라면을 먹을 때만큼은 세상 모든 근심이 사라지는 듯했다.",
+          "서늘해진 밤바람에 세계는 '춥다...'라며 슬그머니 내 옆으로 바짝 붙어 앉더니, 조심스럽게 내 어깨 위로 자신의 머리를 얹어왔다. 라쿤은 세계의 무릎 위에서 새근새근 잠들어 있었다."
+        ],
+        dialogueBox: {
+          speaker: "세계 (퇴마 갸루)",
+          mood: "서늘한 밤바람 속 달콤한 밀착",
+          text: "\"...바람 추우니까 10분만 이러고 있자. 내 어깨 빌려줄 사람, 세상에서 너밖에 없으니까 가만히 있어.\"",
+          thought: "\"어깨 진짜 단단하고 따뜻해... 이대로 시간이 영원히 멈췄으면 좋겠다.\""
+        }
+      },
+      {
+        sceneNum: "제10화~12화",
+        title: "아이라의 구슬 획득 & 아크로바틱 사라사라의 빗속 사당 사투",
+        art: "vol3_prologue.jpg",
+        artCaption: "제11화 · 쏟아지는 폭우 속 사당에서 아이라를 구출하기 위해 사투를 벌이는 두 사람",
+        mangaPanel: "만화 10~12화 호러 액션 컷: 빨간 원피스를 휘날리며 아이라를 품에 안고 옥상을 뛰어넘는 장신 요괴 아크로바틱 사라사라와, 빗속 사당에서 피를 흘리며 맞서는 모모와 오카룬의 애절한 결투 컷!",
+        paragraphs: [
+          "학교의 미소녀 '아이라'가 우연히 떨어진 황금 구슬을 줍고 영적 능력을 얻으며, 세계를 사악한 악마로 오해하는 소동이 일어났다.",
+          "하지만 그 순간, 아이라를 친딸로 착각한 빨간 원피스의 장신 요괴 '아크로바틱 사라사라'가 나타나 아이라를 납치해 버렸다!",
+          "쏟아지는 폭우 속 사당에서 세계와 나는 아이라를 구출하기 위해 필사의 사투를 벌였다. 괴물의 공격으로부터 아이라와 세계를 감싸다 내가 깊은 부상을 입었지만, 세계의 거대 초능력 손과 오카룬의 터보 질주가 폭발하며 마침내 사라사라의 슬픈 모성애를 어루만지며 성불시키는 데 성공했다.",
+          "빗물이 갠 사당 다다미방에서, 세계는 눈물을 뚝뚝 흘리며 내 다친 팔에 붕대를 감아주었다."
+        ],
+        dialogueBox: {
+          speaker: "세계 (퇴마 갸루)",
+          mood: "눈물을 글썽이며 붕대를 감아주는 애절한 진심",
+          text: "\"다쳤으면 말을 했어야지 바보야... 네가 잘못되면 난 진짜 어떡하라고... 평생 네 상처 내가 감싸줄 테니까 약속해, 다신 다치지 마.\"",
+          thought: "\"피 흘리는 거 보는데 가슴이 찢어지는 줄 알았어... 나 얘 없으면 이제 평생 못 살아...\""
+        }
+      },
+      {
+        sceneNum: "제13화 (1권 피날레)",
+        title: "단골 라멘집 팔짱 데이트 & 198cm 은발 미남 텐겐의 등장!",
+        art: "vol4_prologue.jpg",
+        artCaption: "제13화 · 봄날 아침 등굣길, 교문 앞을 마비시킨 198cm 은발 쌩얼 미남 텐겐 선배의 깜짝 등장",
+        mangaPanel: "만화 1권 피날레 라스트 컷: 따스한 단골 라멘집 골목에서 팔짱을 꼭 끼고 웃는 모모와 오카룬의 사랑스러운 컷, 그리고 다음 날 아침 교문 앞을 마비시킨 198cm 은발 미남 지진(텐겐)의 화려한 등장과 삼각관계 암시 라스트 컷!",
+        paragraphs: [
+          "사라사라 사건을 해결한 뒤, 세계는 내 팔에 제 팔을 꼬옥 얽어맨 채 단골 라멘집으로 나를 이끌었다. 붉은 제등 아래서 마주 보며 웃던 그 밤, 우리는 둘만의 영원한 파트너가 되었다.",
+          "하지만 평화는 오래가지 않았다. 다음 날 아침 등굣길, 교문 앞이 여학생들의 환호성으로 완전히 마비되어 있었다.",
+          "인파의 한가운데, 198cm의 압도적인 피지컬에 찰랑이는 실크 은발을 어깨 뒤로 풀어헤치고 조각 같은 얼굴로 호탕하게 웃고 있는 3학년 꽃미남 우즈이 텐겐 선배가 서 있었다!",
+          "그 눈부신 위용 앞에 내가 주눅 들어 서 있던 그 찰나, 세계가 다가와 내 교복 재킷을 툭 치며 뾰로통하게 귓가에 속삭였다.",
+          "\"야, 뭘 그렇게 넋 놓고 쳐다보고 있어? 키만 쓸데없이 크고 시끄러운 은발 원숭이일 뿐이거든? ...내 눈엔 네가 백 배는 더 잘생겼으니까, 기죽지 말고 얼른 들어가자.\"",
+          "새로운 라이벌 텐겐의 등장과 함께, 더욱 뜨거워질 제2권의 거대한 오컬트 삼각 로맨스를 알리며 제1권의 대단원이 화려하게 막을 내렸다!"
+        ],
+        dialogueBox: {
+          speaker: "세계 (퇴마 갸루)",
+          mood: "당당한 질투 차단과 윙크",
+          text: "\"텐겐 선배가 아무리 잘생겨봤자 내 파트너는 너 하나뿐이야. 얼른 가자, 지각하겠다!\"",
+          thought: "\"질투하는 표정 봐... 귀여워 미치겠네. 텐겐 선배한테 절대 안 뺏길 거니까 걱정 마, 바보야!\""
+        }
+      }
+    ]
+  }
+};
+
+function generateHtml(isPublic) {
+  const getImgPath = (imgName) => {
+    if (!isPublic) return imgName;
+    const mapping = {
+      'main.jpg': '/assets/segye_occult/segye_main.jpg',
+      'vol1_prologue.jpg': '/assets/segye_occult/01_vol1_prologue.jpg',
+      'vol1.jpg': '/assets/segye_occult/01_vol1_encounter.jpg',
+      'vol1_epilogue.jpg': '/assets/segye_occult/01_vol1_epilogue.jpg',
+      'vol1_extra1_locker_hide.jpg': '/assets/segye_occult/01_vol1_extra1_locker_hide.jpg',
+      'vol1_extra2_talisman_cut.jpg': '/assets/segye_occult/01_vol1_extra2_talisman_cut.jpg',
+      'vol1_ep3_tunnel_chase.jpg': '/assets/segye_occult/01_vol1_ep3_tunnel_chase.jpg',
+      'vol2_prologue.jpg': '/assets/segye_occult/02_vol2_prologue.jpg',
+      'vol2.jpg': '/assets/segye_occult/02_vol2_patrol_rooftop.jpg',
+      'vol2_epilogue.jpg': '/assets/segye_occult/02_vol2_epilogue.jpg',
+      'vol2_extra1_ramen_blow.jpg': '/assets/segye_occult/02_vol2_extra1_ramen_blow.jpg',
+      'vol2_extra2_windy_cardigan.jpg': '/assets/segye_occult/02_vol2_extra2_windy_cardigan.jpg',
+      'vol3_prologue.jpg': '/assets/segye_occult/03_vol3_prologue.jpg',
+      'vol3.jpg': '/assets/segye_occult/03_vol3_rain_hideout.jpg',
+      'vol3_epilogue.jpg': '/assets/segye_occult/03_vol3_epilogue.jpg',
+      'vol3_extra1_wet_hair_dry.jpg': '/assets/segye_occult/03_vol3_extra1_wet_hair_dry.jpg',
+      'vol3_extra2_thunder_hug.jpg': '/assets/segye_occult/03_vol3_extra2_thunder_hug.jpg',
+      'vol4_prologue.jpg': '/assets/segye_occult/04_vol4_prologue.jpg',
+      'vol4.jpg': '/assets/segye_occult/04_vol4_tengen_jealousy.jpg',
+      'vol4_epilogue.jpg': '/assets/segye_occult/04_vol4_epilogue.jpg',
+      'vol4_extra1_tengen_tease.jpg': '/assets/segye_occult/04_vol4_extra1_tengen_tease.jpg',
+      'vol4_extra2_ramen_date.jpg': '/assets/segye_occult/04_vol4_extra2_ramen_date.jpg'
+    };
+    return mapping[imgName] || imgName;
+  };
+
+  const galleryUrl = isPublic ? "/gallery.html" : "gallery.html";
+  const webAppUrl = isPublic ? "/" : "http://localhost:3024";
+
+  return `<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>단다단 원작 정통 스토리 제1권 (1화~13화 완편 뷰어)</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    .active-ep-tab {
+      background: linear-gradient(135deg, #ec4899, #8b5cf6) !important;
+      color: white !important;
+      font-weight: 700;
+      box-shadow: 0 4px 14px rgba(236, 72, 153, 0.4);
+      border-color: transparent !important;
+    }
+    .active-mode-btn {
+      background: rgba(236, 72, 153, 0.25) !important;
+      color: #f472b6 !important;
+      border-color: #ec4899 !important;
+      font-weight: 700;
+    }
+    .prose-line {
+      position: relative;
+    }
+    .prose-line::before {
+      content: "";
+      position: absolute;
+      left: -0.75rem;
+      top: 0.25rem;
+      bottom: 0.25rem;
+      width: 2px;
+      background: linear-gradient(to bottom, #ec4899, #8b5cf6);
+      border-radius: 999px;
+    }
+  </style>
+</head>
+<body class="bg-[#0b0813] text-[#e2e8f0] min-h-screen antialiased p-3 sm:p-6 selection:bg-pink-500 selection:text-white">
+
+  <div class="max-w-5xl mx-auto">
+    
+    <!-- Top Global Header -->
+    <header class="border-b border-white/10 pb-5 mb-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div class="flex items-center gap-3.5">
+        <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-pink-500 shadow-lg flex-shrink-0">
+          <img src="${getImgPath('main.jpg')}" alt="세계 프로필" class="w-full h-full object-cover">
+        </div>
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <h1 class="text-2xl font-extrabold tracking-tight text-white flex items-center gap-2">
+              <span>단다단 원작 정통 스토리</span>
+              <span class="text-pink-400 font-normal text-lg">제1권 (1화~13화 완편)</span>
+            </h1>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-pink-500/20 text-pink-400 border border-pink-500/30">세계 x 사용자</span>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">실제 만화 연출 구도</span>
+          </div>
+          <p class="text-xs text-slate-400">
+            에피소드 1 (1~2화) · 에피소드 2 (3~5화) · 에피소드 3 (6~8화) · 에피소드 4 (9~13화)
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2.5 self-end md:self-auto">
+        <a href="${galleryUrl}" class="px-3.5 py-2 rounded-xl border border-pink-500/40 bg-pink-500/10 text-pink-300 font-bold text-xs hover:bg-pink-500/20 transition flex items-center gap-1.5">
+          <span>🖼️ 22종 화보 갤러리</span>
+        </a>
+        <a href="${webAppUrl}" target="_blank" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold text-xs hover:opacity-90 transition shadow-md flex items-center gap-1.5">
+          <span>💬 실시간 AI 대화 웹앱</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+        </a>
+      </div>
+    </header>
+
+    <!-- 4 Episode Tabs Navigation -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-5">
+      <button onclick="selectEpisode(1)" id="ep-btn-1" class="ep-btn active-ep-tab p-3 rounded-2xl border border-white/10 bg-white/5 hover:border-pink-500/50 transition text-left flex flex-col gap-1">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] text-pink-300 font-bold tracking-wider uppercase">에피소드 1</span>
+          <span class="text-xs font-bold text-pink-400">1화~2화</span>
+        </div>
+        <span class="font-bold text-xs sm:text-sm truncate">조우 &amp; 스모 외계인</span>
+        <span class="text-[11px] text-slate-300 truncate">세르포 성인 · 바나나 강탈</span>
+      </button>
+
+      <button onclick="selectEpisode(2)" id="ep-btn-2" class="ep-btn p-3 rounded-2xl border border-white/10 bg-white/5 hover:border-pink-500/50 transition text-left flex flex-col gap-1">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] text-pink-300 font-bold tracking-wider uppercase">에피소드 2</span>
+          <span class="text-xs font-bold text-pink-400">3화~5화</span>
+        </div>
+        <span class="font-bold text-xs sm:text-sm truncate">할머니 세이코 &amp; 특훈</span>
+        <span class="text-[11px] text-slate-300 truncate">배트 홈런 · 툇마루 라면</span>
+      </button>
+
+      <button onclick="selectEpisode(3)" id="ep-btn-3" class="ep-btn p-3 rounded-2xl border border-white/10 bg-white/5 hover:border-pink-500/50 transition text-left flex flex-col gap-1">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] text-pink-300 font-bold tracking-wider uppercase">에피소드 3</span>
+          <span class="text-xs font-bold text-pink-400">6화~8화</span>
+        </div>
+        <span class="font-bold text-xs sm:text-sm truncate">터널 100km/h 질주</span>
+        <span class="text-[11px] text-slate-300 truncate">대게 요괴 · 라쿤 정화</span>
+      </button>
+
+      <button onclick="selectEpisode(4)" id="ep-btn-4" class="ep-btn p-3 rounded-2xl border border-white/10 bg-white/5 hover:border-pink-500/50 transition text-left flex flex-col gap-1">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] text-pink-300 font-bold tracking-wider uppercase">에피소드 4</span>
+          <span class="text-xs font-bold text-pink-400">9화~13화</span>
+        </div>
+        <span class="font-bold text-xs sm:text-sm truncate">사라사라 &amp; 텐겐 등장</span>
+        <span class="text-[11px] text-slate-300 truncate">잃어버린 구슬 · 1권 피날레</span>
+      </button>
+    </div>
+
+    <!-- Mode Selector & Episode Meta Bar -->
+    <div class="bg-[#150f24] border border-white/10 rounded-2xl p-4 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-md">
+      <div>
+        <div class="flex items-center gap-2 mb-1">
+          <h2 id="ep-title-display" class="text-lg font-bold text-white"></h2>
+          <span id="ep-badge-display" class="px-2 py-0.5 rounded text-[11px] font-bold bg-pink-500/20 text-pink-400 border border-pink-500/30"></span>
+        </div>
+        <p id="ep-subtitle-display" class="text-xs text-slate-400"></p>
+      </div>
+
+      <div class="flex items-center gap-2 self-stretch sm:self-auto">
+        <button onclick="setMode('story')" id="mode-story-btn" class="mode-btn active-mode-btn flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-bold border border-white/10 bg-white/5 hover:border-pink-500/40 transition flex items-center justify-center gap-1.5">
+          <span>📖 원작 소설 정독 모드</span>
+        </button>
+        <button onclick="setMode('interactive')" id="mode-interactive-btn" class="mode-btn flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-bold border border-white/10 bg-white/5 hover:border-pink-500/40 transition flex items-center justify-center gap-1.5">
+          <span>🎮 만화 씬 시뮬레이션</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- MAIN DISPLAY AREA -->
+
+    <!-- 1. FULL NOVELISTIC STORY MODE CONTAINER -->
+    <div id="story-mode-container" class="space-y-8">
+      <!-- Injected via JavaScript -->
+    </div>
+
+    <!-- 2. INTERACTIVE SIMULATOR CONTAINER -->
+    <div id="interactive-mode-container" class="hidden">
+      <!-- Scene Navigator -->
+      <div class="flex items-center gap-1.5 overflow-x-auto pb-2 mb-4" id="interactive-scene-nav">
+        <!-- Injected via JS -->
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-5 bg-[#150f24] border border-white/10 rounded-2xl p-4 sm:p-6 shadow-xl">
+        <div class="md:col-span-5 relative rounded-xl overflow-hidden border border-white/10 bg-black/60 shadow-lg">
+          <img id="interactive-img" src="" alt="Scene Artwork" class="w-full h-auto max-h-[460px] object-cover">
+          <div class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[11px] font-bold bg-black/70 backdrop-blur-md text-pink-400 border border-pink-500/30" id="interactive-badge"></div>
+        </div>
+
+        <div class="md:col-span-7 flex flex-col justify-between gap-4">
+          <div>
+            <div class="flex items-center justify-between text-xs text-pink-400 font-bold mb-1">
+              <span id="interactive-chapter-label"></span>
+              <span class="text-slate-400" id="interactive-char-name">세계 (퇴마 갸루)</span>
+            </div>
+            <h3 id="interactive-title" class="text-base sm:text-lg font-bold text-white mb-2"></h3>
+            
+            <!-- Manga Panel Guide Box -->
+            <div class="p-2.5 rounded-xl bg-purple-500/15 border border-purple-500/30 text-purple-200 text-xs mb-3 flex items-start gap-1.5">
+              <span class="font-bold text-pink-400 shrink-0">🎨 원작 만화 연출 구도:</span>
+              <span id="interactive-manga-panel" class="leading-relaxed"></span>
+            </div>
+
+            <div id="interactive-paragraphs" class="text-xs text-slate-300 leading-relaxed space-y-2 mb-4 bg-black/30 p-3 rounded-xl border border-white/5 max-h-48 overflow-y-auto"></div>
+
+            <!-- Dialogue Bubble -->
+            <div class="p-3.5 rounded-xl bg-gradient-to-br from-pink-500/15 to-purple-500/10 border border-pink-500/30 mb-4">
+              <div class="flex items-center justify-between text-xs font-bold text-pink-400 mb-1">
+                <span>세계의 생생한 대사</span>
+                <span id="interactive-mood" class="text-slate-400 font-normal"></span>
+              </div>
+              <p id="interactive-dialogue" class="text-xs sm:text-sm font-semibold text-white leading-relaxed mb-1.5"></p>
+              <div class="text-[11px] text-purple-300 flex items-start gap-1">
+                <span class="font-bold text-pink-400 shrink-0">💭 속마음:</span>
+                <span id="interactive-thought" class="italic"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dynamic Choice Actions -->
+          <div id="interactive-actions" class="space-y-2 pt-2 border-t border-white/10">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const dandadanCanonFullData = ${JSON.stringify(dandadanCanonFullData)};
+
+    const isPublic = ${isPublic ? 'true' : 'false'};
+    const pathMapping = {
+      'main.jpg': isPublic ? '/assets/segye_occult/segye_main.jpg' : 'main.jpg',
+      'vol1_prologue.jpg': isPublic ? '/assets/segye_occult/01_vol1_prologue.jpg' : 'vol1_prologue.jpg',
+      'vol1.jpg': isPublic ? '/assets/segye_occult/01_vol1_encounter.jpg' : 'vol1.jpg',
+      'vol1_epilogue.jpg': isPublic ? '/assets/segye_occult/01_vol1_epilogue.jpg' : 'vol1_epilogue.jpg',
+      'vol1_extra1_locker_hide.jpg': isPublic ? '/assets/segye_occult/01_vol1_extra1_locker_hide.jpg' : 'vol1_extra1_locker_hide.jpg',
+      'vol1_extra2_talisman_cut.jpg': isPublic ? '/assets/segye_occult/01_vol1_extra2_talisman_cut.jpg' : 'vol1_extra2_talisman_cut.jpg',
+      'vol1_ep3_tunnel_chase.jpg': isPublic ? '/assets/segye_occult/01_vol1_ep3_tunnel_chase.jpg' : 'vol1_ep3_tunnel_chase.jpg',
+      'vol2_prologue.jpg': isPublic ? '/assets/segye_occult/02_vol2_prologue.jpg' : 'vol2_prologue.jpg',
+      'vol2.jpg': isPublic ? '/assets/segye_occult/02_vol2_patrol_rooftop.jpg' : 'vol2.jpg',
+      'vol2_epilogue.jpg': isPublic ? '/assets/segye_occult/02_vol2_epilogue.jpg' : 'vol2_epilogue.jpg',
+      'vol2_extra1_ramen_blow.jpg': isPublic ? '/assets/segye_occult/02_vol2_extra1_ramen_blow.jpg' : 'vol2_extra1_ramen_blow.jpg',
+      'vol2_extra2_windy_cardigan.jpg': isPublic ? '/assets/segye_occult/02_vol2_extra2_windy_cardigan.jpg' : 'vol2_extra2_windy_cardigan.jpg',
+      'vol3_prologue.jpg': isPublic ? '/assets/segye_occult/03_vol3_prologue.jpg' : 'vol3_prologue.jpg',
+      'vol3.jpg': isPublic ? '/assets/segye_occult/03_vol3_rain_hideout.jpg' : 'vol3.jpg',
+      'vol3_epilogue.jpg': isPublic ? '/assets/segye_occult/03_vol3_epilogue.jpg' : 'vol3_epilogue.jpg',
+      'vol3_extra1_wet_hair_dry.jpg': isPublic ? '/assets/segye_occult/03_vol3_extra1_wet_hair_dry.jpg' : 'vol3_extra1_wet_hair_dry.jpg',
+      'vol3_extra2_thunder_hug.jpg': isPublic ? '/assets/segye_occult/03_vol3_extra2_thunder_hug.jpg' : 'vol3_extra2_thunder_hug.jpg',
+      'vol4_prologue.jpg': isPublic ? '/assets/segye_occult/04_vol4_prologue.jpg' : 'vol4_prologue.jpg',
+      'vol4.jpg': isPublic ? '/assets/segye_occult/04_vol4_tengen_jealousy.jpg' : 'vol4.jpg',
+      'vol4_epilogue.jpg': isPublic ? '/assets/segye_occult/04_vol4_epilogue.jpg' : 'vol4_epilogue.jpg',
+      'vol4_extra1_tengen_tease.jpg': isPublic ? '/assets/segye_occult/04_vol4_extra1_tengen_tease.jpg' : 'vol4_extra1_tengen_tease.jpg',
+      'vol4_extra2_ramen_date.jpg': isPublic ? '/assets/segye_occult/04_vol4_extra2_ramen_date.jpg' : 'vol4_extra2_ramen_date.jpg'
+    };
+
+    function resolveImg(name) {
+      return pathMapping[name] || name;
+    }
+
+    let currentEpNum = 1;
+    let currentMode = 'story'; // 'story' | 'interactive'
+    let currentSceneIdx = 0;
+
+    function selectEpisode(num) {
+      currentEpNum = num;
+      currentSceneIdx = 0;
+      document.querySelectorAll('.ep-btn').forEach(btn => btn.classList.remove('active-ep-tab'));
+      const activeBtn = document.getElementById('ep-btn-' + num);
+      if (activeBtn) activeBtn.classList.add('active-ep-tab');
+
+      const ep = dandadanCanonFullData[num];
+      document.getElementById('ep-title-display').textContent = ep.title;
+      document.getElementById('ep-badge-display').textContent = ep.badge;
+      document.getElementById('ep-subtitle-display').textContent = ep.subtitle;
+
+      renderView();
+    }
+
+    function setMode(mode) {
+      currentMode = mode;
+      document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active-mode-btn'));
+      if (mode === 'story') {
+        document.getElementById('mode-story-btn').classList.add('active-mode-btn');
+        document.getElementById('story-mode-container').classList.remove('hidden');
+        document.getElementById('interactive-mode-container').classList.add('hidden');
+      } else {
+        document.getElementById('mode-interactive-btn').classList.add('active-mode-btn');
+        document.getElementById('story-mode-container').classList.add('hidden');
+        document.getElementById('interactive-mode-container').classList.remove('hidden');
+      }
+      renderView();
+    }
+
+    function renderView() {
+      const ep = dandadanCanonFullData[currentEpNum];
+      if (!ep) return;
+
+      if (currentMode === 'story') {
+        renderStoryMode(ep);
+      } else {
+        renderInteractiveMode(ep);
+      }
+    }
+
+    function renderStoryMode(ep) {
+      const container = document.getElementById('story-mode-container');
+      
+      let html = \`
+        <div class="bg-[#150f24] border border-white/10 rounded-2xl p-5 mb-6 flex flex-col md:flex-row gap-5 items-center">
+          <div class="w-full md:w-1/3 rounded-xl overflow-hidden border border-white/10 shadow-lg">
+            <img src="\${resolveImg(ep.bannerImg)}" alt="Episode Banner" class="w-full h-48 md:h-56 object-cover hover:scale-105 transition duration-500">
+          </div>
+          <div class="w-full md:w-2/3">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="px-2 py-0.5 rounded text-[11px] font-extrabold bg-pink-500 text-white">\${ep.chapterRange}</span>
+              <span class="text-xs text-pink-400 font-bold">\${ep.subtitle}</span>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">\${ep.title}</h3>
+            <p class="text-xs text-slate-300 leading-relaxed mb-4">\${ep.summary}</p>
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-pink-500/20 text-pink-300 border border-pink-500/30">총 \${ep.scenes.length}개 명장면 수록</span>
+              <span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">원작 만화 연출 구도 반영</span>
+              <span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">원작 대사 재현</span>
+            </div>
+          </div>
+        </div>
+      \`;
+
+      ep.scenes.forEach((scene, idx) => {
+        html += \`
+          <article class="bg-[#150f24] border border-white/10 rounded-2xl overflow-hidden shadow-xl hover:border-pink-500/30 transition duration-300">
+            <!-- Scene Header -->
+            <div class="px-5 py-3.5 border-b border-white/10 bg-black/40 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-extrabold bg-pink-500 text-white">\${scene.sceneNum}</span>
+                <h4 class="text-sm sm:text-base font-bold text-white">\${scene.title}</h4>
+              </div>
+              <span class="text-xs text-slate-400">Scene \${idx + 1} of \${ep.scenes.length}</span>
+            </div>
+
+            <!-- Scene Body -->
+            <div class="p-5 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+              
+              <!-- Left: Artwork with Caption & Manga Panel Info -->
+              <div class="lg:col-span-5 flex flex-col gap-2.5">
+                <div class="rounded-xl overflow-hidden border border-white/10 shadow-lg bg-black/50">
+                  <img src="\${resolveImg(scene.art)}" alt="\${scene.title}" class="w-full h-auto max-h-[420px] object-cover hover:scale-105 transition duration-500">
+                  <div class="p-2.5 bg-black/80 text-[11px] text-pink-300 border-t border-white/10 text-center font-medium">
+                    \${scene.artCaption}
+                  </div>
+                </div>
+
+                <div class="p-3 rounded-xl bg-purple-500/10 border border-purple-500/25 text-purple-200 text-xs">
+                  <div class="font-bold text-pink-400 mb-1 flex items-center gap-1">
+                    <span>🎬 원작 만화 연출 구도:</span>
+                  </div>
+                  <p class="leading-relaxed text-[11px] text-slate-300">\${scene.mangaPanel}</p>
+                </div>
+              </div>
+
+              <!-- Right: Prose & Dialogues -->
+              <div class="lg:col-span-7 flex flex-col gap-4">
+                <div class="text-xs sm:text-sm text-slate-300 leading-relaxed space-y-3 pl-3">
+                  \${scene.paragraphs.map(p => \`<p class="prose-line leading-relaxed">\${p}</p>\`).join('')}
+                </div>
+
+                <!-- Tsundere Dialogue Callout Box -->
+                <div class="mt-2 p-4 rounded-xl bg-gradient-to-br from-pink-500/15 to-purple-500/10 border border-pink-500/30 shadow-md">
+                  <div class="flex items-center justify-between text-xs font-bold text-pink-400 mb-1.5">
+                    <span class="flex items-center gap-1.5">
+                      <span class="w-2 h-2 rounded-full bg-pink-500 animate-pulse"></span>
+                      \${scene.dialogueBox.speaker}
+                    </span>
+                    <span class="text-slate-400 text-[11px] font-normal">\${scene.dialogueBox.mood}</span>
+                  </div>
+                  <p class="text-xs sm:text-sm font-semibold text-white leading-relaxed mb-2">
+                    \${scene.dialogueBox.text}
+                  </p>
+                  <div class="pt-2 border-t border-pink-500/20 text-xs text-purple-300 flex items-start gap-1.5">
+                    <span class="font-bold text-pink-400 shrink-0">💭 속마음:</span>
+                    <span class="italic text-slate-300">\${scene.dialogueBox.thought}</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </article>
+        \`;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function selectScene(idx) {
+      currentSceneIdx = idx;
+      renderInteractiveMode(dandadanCanonFullData[currentEpNum]);
+    }
+
+    function renderInteractiveMode(ep) {
+      // Build scene tabs
+      const nav = document.getElementById('interactive-scene-nav');
+      nav.innerHTML = ep.scenes.map((scene, i) => \`
+        <button onclick="selectScene(\${i})" class="px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition \${i === currentSceneIdx ? 'border border-pink-500 bg-pink-500/20 text-pink-300' : 'border border-white/10 bg-white/5 text-slate-300'}">
+          \${scene.sceneNum}: \${scene.title.split('&')[0].trim()}
+        </button>
+      \`).join('');
+
+      const scene = ep.scenes[currentSceneIdx];
+      if (!scene) return;
+
+      document.getElementById('interactive-img').src = resolveImg(scene.art);
+      document.getElementById('interactive-badge').textContent = scene.sceneNum;
+      document.getElementById('interactive-chapter-label').textContent = \`\${ep.title.split(':')[0]} · \${scene.sceneNum}\`;
+      document.getElementById('interactive-title').textContent = scene.title;
+      document.getElementById('interactive-manga-panel').textContent = scene.mangaPanel;
+      document.getElementById('interactive-paragraphs').innerHTML = scene.paragraphs.map(p => \`<p>\${p}</p>\`).join('');
+      document.getElementById('interactive-mood').textContent = scene.dialogueBox.mood;
+      document.getElementById('interactive-dialogue').textContent = scene.dialogueBox.text;
+      document.getElementById('interactive-thought').textContent = scene.dialogueBox.thought;
+
+      const actions = document.getElementById('interactive-actions');
+      actions.innerHTML = \`
+        <div class="text-xs font-bold text-pink-400 mb-2 flex items-center justify-between">
+          <span>⚡ 플레이어 대화 선택지</span>
+          <span class="text-[11px] text-slate-400">원작 감정선 반영 반응</span>
+        </div>
+        <div class="space-y-1.5">
+          <button onclick="handleSimChoice('brave')" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-pink-500/40 bg-pink-500/10 hover:bg-pink-500/20 transition text-xs flex items-center justify-between group">
+            <span class="font-bold text-pink-200">💥 \"세계 씨, 절 믿고 제 턱을 잡아주세요! 제가 돌진하겠습니다!\"</span>
+            <span class="text-[10px] font-extrabold text-pink-400 bg-pink-500/20 px-2 py-0.5 rounded-full">신뢰도 +12 상승</span>
+          </button>
+          <button onclick="handleSimChoice('comic')" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-emerald-500/40 bg-emerald-500/10 hover:bg-emerald-500/20 transition text-xs flex items-center justify-between group">
+            <span class="font-bold text-emerald-200">😱 \"제 바나나가 사라졌다고요! 바나나를 되찾아야 인간으로 살 수 있어요!\"</span>
+            <span class="text-[10px] font-extrabold text-emerald-400 bg-emerald-500/20 px-2 py-0.5 rounded-full">코믹 심쿵 +9 상승</span>
+          </button>
+          <button onclick="handleSimChoice('tsun')" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20 transition text-xs flex items-center justify-between group">
+            <span class="font-bold text-amber-200">⚡ \"외계인도 유령도 둘 다 진짜였잖아요! 우리 내기는 비긴 겁니다!\"</span>
+            <span class="text-[10px] font-extrabold text-amber-400 bg-amber-500/20 px-2 py-0.5 rounded-full">티키타카 +8 상승</span>
+          </button>
+        </div>
+        <div id="choice-feedback-box" class="hidden mt-2 p-3 rounded-xl bg-pink-500/20 border border-pink-500/40 text-xs">
+          <div class="font-bold text-pink-300 mb-1" id="feedback-delta"></div>
+          <p class="text-white font-medium mb-1" id="feedback-dialogue"></p>
+          <p class="italic text-purple-300 text-[11px]" id="feedback-thought"></p>
+        </div>
+      \`;
+    }
+
+    function handleSimChoice(type) {
+      const fbBox = document.getElementById('choice-feedback-box');
+      if (!fbBox) return;
+      fbBox.classList.remove('hidden');
+
+      if (type === 'brave') {
+        document.getElementById('feedback-delta').textContent = "⚡ +12 신뢰도 폭발! (원작 모모와 오카룬의 완벽한 전투 호흡)";
+        document.getElementById('feedback-dialogue').textContent = "\"알았어, 널 믿을게! 내 염동력 손으로 고삐 꽉 쥐고 있을 테니까 시원하게 날려버려, 파트너!!\"";
+        document.getElementById('feedback-thought').textContent = "속마음: (찌질한 줄 알았는데... 날 지키겠다고 목숨 걸고 돌진하는 모습, 진짜 반할 것 같잖아...!)";
+      } else if (type === 'comic') {
+        document.getElementById('feedback-delta').textContent = "⚡ +9 코믹 심쿵 상승! (얼굴 붉히며 당황하는 세계)";
+        document.getElementById('feedback-dialogue').textContent = "\"부끄럽게 대낮부터 바나나 소리 좀 그만해, 변태야!! ...내가 되찾아준다고 약속했잖아! 절대 기죽지 마!\"";
+        document.getElementById('feedback-thought').textContent = "속마음: (진짜 저러다 평생 고자로 살면 어떡해... 내가 책임져야 하나?! 아 무슨 생각을 하는 거야!)";
+      } else {
+        document.getElementById('feedback-delta').textContent = "⚡ +8 티키타카 호감도 상승! (츤데레 맞불)";
+        document.getElementById('feedback-dialogue').textContent = "\"시끄러워! 내가 먼저 구해줬으니까 내가 이긴 거거든?! ...하지만 외계인이 진짜 있을 줄은 몰랐어. 인정할게, 바보야.\"";
+        document.getElementById('feedback-thought').textContent = "속마음: (비겼으니까 빵도 안 사주고 노예도 안 시킬 거야. 대신... 계속 내 옆에 있어줘.)";
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      selectEpisode(1);
+    });
+  </script>
+
+</body>
+</html>
+`;
+}
+
+// Generate brain version
+fs.writeFileSync(path.join(brainDir, 'preview.html'), generateHtml(false), 'utf8');
+console.log('Successfully generated brain/preview.html');
+
+// Generate public version
+fs.writeFileSync(path.join(publicDir, 'preview.html'), generateHtml(true), 'utf8');
+console.log('Successfully generated public/preview.html');
