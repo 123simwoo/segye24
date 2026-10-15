@@ -121,16 +121,21 @@
         <!-- Starting Scenario Selector & Module 9438 Intro Preview -->
         <div class="section-card">
           <div class="section-title">
-            <span>시작 설정 (`startingScenarios` &amp; 상황별 그림 자동 매칭 프리뷰)</span>
-            <span style="font-size:0.75rem; color:var(--accent-cyan);">12종 고유 상황 일러스트 연동</span>
+            <span id="scenarioSectionTitle">시작 설정 (`startingScenarios` &amp; 상황별 그림 자동 매칭 프리뷰)</span>
+            <span style="font-size:0.75rem; color:var(--accent-cyan);" id="scenarioSectionBadge">12종 고유 상황 일러스트 연동</span>
           </div>
-          <select class="scenario-select" id="scenarioSelect" onchange="onScenarioChange()"></select>
-          <div class="intro-preview-box">
-            <div style="text-align:center;">
-              <span class="preview-pill">인트로 미리보기 (`intro_preview`)</span>
+          <!-- Dedicated Visual Chapter Cards for Segye Occult Volumes 1~4 -->
+          <div id="chapterGridContainer" style="display:none;" class="chapter-grid"></div>
+
+          <div id="standardScenarioContainer">
+            <select class="scenario-select" id="scenarioSelect" onchange="onScenarioChange()"></select>
+            <div class="intro-preview-box">
+              <div style="text-align:center;">
+                <span class="preview-pill">인트로 미리보기 (`intro_preview`)</span>
+              </div>
+              <div id="introActionPreview" class="narrator-block"></div>
+              <div id="introMessagePreview" class="dialogue-bubble"></div>
             </div>
-            <div id="introActionPreview" class="narrator-block"></div>
-            <div id="introMessagePreview" class="dialogue-bubble"></div>
           </div>
         </div>
 
@@ -183,9 +188,11 @@
       <!-- Center: Main Simulation Chat Window -->
       <div class="chat-window">
         <div class="chat-header">
-          <div>
+          <div style="display:flex; align-items:center; flex-wrap:wrap; gap:0.5rem;">
             <strong id="chatHeaderTitle" style="font-size:1.05rem;">세계 24</strong>
-            <span id="chatScenarioBadge" style="font-size:0.78rem; color:var(--accent-cyan); margin-left:0.5rem;">기본 설정</span>
+            <span id="chatScenarioBadge" style="font-size:0.78rem; color:var(--accent-cyan);">기본 설정</span>
+            <!-- Dynamic Chapter & Narrative Buttons (Prologue, Epilogue, Volume Switching) -->
+            <div class="chat-chapter-nav" id="chatChapterNav" style="display:none;"></div>
           </div>
           <div style="display:flex; gap:0.45rem; align-items:center;">
             <span style="font-size:0.75rem; color:var(--text-muted);">내 호칭:</span>
@@ -719,6 +726,53 @@
       <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.76rem; color:var(--text-muted);">
         <span id="adminNoticeMsg"></span>
         <button type="button" class="tab-btn" onclick="closeAdminUsersModal()">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STORY CINEMATIC MODAL (PROLOGUE & EPILOGUE NARRATIVE VIEWER) -->
+  <div class="modal-backdrop" id="storyCinematicModal" style="display:none;">
+    <div class="modal-card story-cinematic-modal">
+      <div class="story-modal-header">
+        <div class="story-header-left">
+          <span id="storyModalPhaseBadge" class="story-phase-badge phase-prologue">📜 프롤로그</span>
+          <span id="storyModalChapterTitle" style="font-size:0.95rem; font-weight:700; color:#fff;">제1권: 자정의 폐교와 맞닿은 손가락</span>
+        </div>
+        <button type="button" class="tab-btn" onclick="closeStoryCinematicModal()" style="font-size:1.1rem; line-height:1; padding:0.25rem 0.55rem;">&times;</button>
+      </div>
+      <div class="story-modal-body">
+        <div class="story-img-container">
+          <img id="storyModalImg" src="" alt="시네마틱 일러스트" />
+          <div class="story-img-tag" id="storyModalImgTag">단다단 각색 K-오컬트 서사</div>
+        </div>
+        <div class="story-text-container">
+          <div class="story-subtitle" id="storyModalSubtitle">
+            <span>📍</span> <span id="storyModalSubtitleText">밤 11시 50분 · 구교사 복도</span>
+          </div>
+          <div class="story-title" id="storyModalHeadline">자정의 구교사, 칠흑 같은 어둠과 붉은 안광</div>
+          <div class="story-narration-box" id="storyModalNarration">
+            <!-- Story narrative text -->
+          </div>
+          <div class="story-quote-bubble" id="storyModalQuoteBubble">
+            <div class="story-quote-header">
+              <strong id="storyModalQuoteChar">세계 (퇴마 갸루)</strong>
+              <span id="storyModalQuoteMood">당황한 츤데레 눈빛</span>
+            </div>
+            <div class="story-quote-text" id="storyModalQuoteText">
+              "바보야! 밤에 여길 왜 기어들어와?! 죽고 싶어서 환장했어?!"
+            </div>
+          </div>
+          <div class="story-hook-note" id="storyModalHook">
+            💡 <strong>서사 가이드:</strong> 지금 바로 손을 맞잡고 살아남으세요.
+          </div>
+        </div>
+      </div>
+      <div class="story-modal-footer" id="storyModalFooter">
+        <button type="button" class="tab-btn" onclick="closeStoryCinematicModal()">닫기</button>
+        <button type="button" class="tab-btn" id="storyModalSecondaryBtn" onclick="onStoryModalSecondaryAction()" style="display:none;"></button>
+        <button type="button" class="btn-chapter-start" id="storyModalPrimaryBtn" onclick="onStoryModalPrimaryAction()">
+          ▶ 본편 시뮬레이션 진입 (세계와 대화 시작)
+        </button>
       </div>
     </div>
   </div>

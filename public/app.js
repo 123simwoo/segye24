@@ -236,26 +236,35 @@ function renderProfile(char) {
   galleryIndex = 0;
   renderGallery();
 
-  // Scenarios
-  const allScenarios = [
-    {
-      id: 0,
-      initialTitle: char.initialTitle || "기본 설정",
-      initialAction: char.initialAction,
-      initialMessage: char.initialMessage,
-      playGuide: char.playGuide,
-      replySuggestions: char.replySuggestions || []
-    },
-    ...(char.startingScenarios || [])
-  ];
+  // Scenarios & Occult Volumes
+  const isOccult = (char.characterId && char.characterId.includes("occult")) || (char.tags && char.tags.some(t => t.includes("오컬트")));
+  let allScenarios;
+  if (isOccult && char.startingScenarios && char.startingScenarios.length > 0) {
+    allScenarios = char.startingScenarios;
+    selectedScenarioId = 1;
+  } else {
+    allScenarios = [
+      {
+        id: 0,
+        initialTitle: char.initialTitle || "기본 설정",
+        initialAction: char.initialAction,
+        initialMessage: char.initialMessage,
+        playGuide: char.playGuide,
+        replySuggestions: char.replySuggestions || []
+      },
+      ...(char.startingScenarios || [])
+    ];
+    selectedScenarioId = 0;
+  }
   char._allScenarios = allScenarios;
 
   const sel = document.getElementById("scenarioSelect");
   sel.innerHTML = allScenarios
     .map(s => `<option value="${s.id}">[시작 설정 #${s.id}] ${escapeHtml(s.initialTitle)}</option>`)
     .join("");
-  selectedScenarioId = 0;
+  sel.value = String(selectedScenarioId);
   onScenarioChange();
+  renderOccultChapterCards(char);
 
   renderKeywordBooks();
 }
@@ -286,6 +295,203 @@ function stepGallery(dir) {
   if (!galleryItems.length) return;
   galleryIndex = (galleryIndex + dir + galleryItems.length) % galleryItems.length;
   renderGallery();
+}
+
+let currentStoryModalContext = { scenarioId: 1, phase: "prologue" };
+
+function renderOccultChapterCards(char) {
+  const isOccult = (char?.characterId && char.characterId.includes("occult")) || (char?.tags && char.tags.some(t => t.includes("오컬트")));
+  const gridEl = document.getElementById("chapterGridContainer");
+  const stdEl = document.getElementById("standardScenarioContainer");
+  const secTitle = document.getElementById("scenarioSectionTitle");
+  const secBadge = document.getElementById("scenarioSectionBadge");
+
+  if (!gridEl || !stdEl) return;
+
+  if (isOccult && char.startingScenarios && char.startingScenarios.length > 0) {
+    gridEl.style.display = "grid";
+    stdEl.style.display = "none";
+    if (secTitle) secTitle.textContent = "🔮 1~4권 챕터 선택 (프롤로그 / 본편 대화 / 에필로그 엔딩)";
+    if (secBadge) secBadge.textContent = "단다단 각색 4대 에피소드 고유 일러스트 연동";
+
+    gridEl.innerHTML = char.startingScenarios.map((s, idx) => {
+      const volNum = s.volume || s.id || (idx + 1);
+      const coverImg = s.prologue?.imageUrl || s.epilogue?.imageUrl || char.mainImage;
+      const subtitle = s.prologue?.subtitle || s.playGuide || "";
+      const isActive = selectedScenarioId === s.id;
+
+      return `
+        <div class="chapter-card ${isActive ? 'active-chapter' : ''}" onclick="selectOccultChapterCard(${s.id})">
+          <div class="chapter-thumb-wrap">
+            <img src="${escapeHtml(coverImg)}" alt="제${volNum}권 표지" />
+            <span class="chapter-vol-badge">제${volNum}권 · 단다단 각색</span>
+          </div>
+          <div class="chapter-card-body">
+            <div class="chapter-card-title">${escapeHtml(s.initialTitle)}</div>
+            <div class="chapter-card-desc">${escapeHtml(subtitle)}</div>
+            <div class="chapter-card-actions">
+              <button type="button" class="btn-chapter-prologue" onclick="event.stopPropagation(); openStoryCinematic(${s.id}, 'prologue')">
+                📜 프롤로그
+              </button>
+              <button type="button" class="btn-chapter-prologue" style="color:#facc15; border-color:rgba(234,179,8,0.35); background:rgba(234,179,8,0.12);" onclick="event.stopPropagation(); openStoryCinematic(${s.id}, 'epilogue')">
+                🏆 에필로그
+              </button>
+              <button type="button" class="btn-chapter-start" onclick="event.stopPropagation(); startOccultVolume(${s.id})">
+                ▶ 대화 시작
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("");
+  } else {
+    gridEl.style.display = "none";
+    stdEl.style.display = "block";
+    if (secTitle) secTitle.textContent = "시작 설정 (`startingScenarios` & 상황별 그림 자동 매칭 프리뷰)";
+    if (secBadge) secBadge.textContent = "12종 고유 상황 일러스트 연동";
+  }
+}
+
+function selectOccultChapterCard(scenarioId) {
+  selectedScenarioId = scenarioId;
+  const sel = document.getElementById("scenarioSelect");
+  if (sel) sel.value = String(scenarioId);
+  onScenarioChange();
+  if (currentCharacter) renderOccultChapterCards(currentCharacter);
+}
+
+function openStoryCinematic(scenarioId, phase = "prologue") {
+  if (!currentCharacter) return;
+  const scenarios = currentCharacter._allScenarios || currentCharacter.startingScenarios || [];
+  const scenario = scenarios.find(s => s.id === scenarioId) || scenarios[0];
+  if (!scenario || !scenario[phase]) return;
+
+  currentStoryModalContext = { scenarioId, phase };
+  const data = scenario[phase];
+  const volNum = scenario.volume || scenario.id || 1;
+
+  const modal = document.getElementById("storyCinematicModal");
+  if (!modal) return;
+
+  const phaseBadge = document.getElementById("storyModalPhaseBadge");
+  if (phaseBadge) {
+    phaseBadge.className = `story-phase-badge ${phase === 'prologue' ? 'phase-prologue' : 'phase-epilogue'}`;
+    phaseBadge.textContent = phase === 'prologue' ? `📜 제${volNum}권 프롤로그 (사건의 서막)` : `🏆 제${volNum}권 에필로그 (엔딩 후일담)`;
+  }
+
+  const titleEl = document.getElementById("storyModalChapterTitle");
+  if (titleEl) titleEl.textContent = scenario.initialTitle;
+
+  const imgEl = document.getElementById("storyModalImg");
+  if (imgEl) imgEl.src = data.imageUrl || currentCharacter.mainImage;
+
+  const imgTagEl = document.getElementById("storyModalImgTag");
+  if (imgTagEl) imgTagEl.textContent = `제${volNum}권 ${phase === 'prologue' ? '오프닝 시네마틱' : '클라이맥스 엔딩'}`;
+
+  const subEl = document.getElementById("storyModalSubtitleText");
+  if (subEl) subEl.textContent = data.subtitle || "시간과 장소 미상";
+
+  const headEl = document.getElementById("storyModalHeadline");
+  if (headEl) headEl.textContent = data.title || scenario.initialTitle;
+
+  const narrEl = document.getElementById("storyModalNarration");
+  if (narrEl) narrEl.textContent = data.narration || "";
+
+  const quoteCharEl = document.getElementById("storyModalQuoteChar");
+  if (quoteCharEl) quoteCharEl.textContent = `${currentCharacter.name} (${currentCharacter.tags?.[1] || "퇴마 갸루"})`;
+
+  const quoteMoodEl = document.getElementById("storyModalQuoteMood");
+  if (quoteMoodEl) quoteMoodEl.textContent = phase === 'prologue' ? "다급하고 붉어진 츤데레 눈빛" : "수줍은 미소와 붉어진 두 뺨";
+
+  const quoteTextEl = document.getElementById("storyModalQuoteText");
+  if (quoteTextEl) quoteTextEl.textContent = data.segyeQuote || "";
+
+  const hookEl = document.getElementById("storyModalHook");
+  if (hookEl) {
+    if (phase === 'prologue') {
+      hookEl.innerHTML = `💡 <strong>서사 가이드:</strong> ${escapeHtml(data.hook || "손을 맞잡고 살아남으세요.")}`;
+    } else {
+      hookEl.innerHTML = data.nextUnlock 
+        ? `🌟 <strong>다음 서사 안내:</strong> [제${data.nextUnlock}권 해금] ${escapeHtml(data.nextTitle || "")}`
+        : `🎉 <strong>스토리 완료:</strong> 세계와의 모든 인연 서사를 완료했습니다! 자유롭게 대화를 즐겨보세요.`;
+    }
+  }
+
+  const primaryBtn = document.getElementById("storyModalPrimaryBtn");
+  const secondaryBtn = document.getElementById("storyModalSecondaryBtn");
+
+  if (primaryBtn) {
+    if (phase === 'prologue') {
+      primaryBtn.textContent = `▶ 제${volNum}권 본편 대화 시작하기`;
+    } else {
+      primaryBtn.textContent = data.nextUnlock 
+        ? `🌟 다음 권(제${data.nextUnlock}권)으로 넘어가기 &rarr;` 
+        : `💬 대화방으로 복귀하기`;
+    }
+  }
+
+  if (secondaryBtn) {
+    secondaryBtn.style.display = "inline-block";
+    if (phase === 'prologue') {
+      secondaryBtn.textContent = `🏆 에필로그 엿보기`;
+    } else {
+      secondaryBtn.textContent = `📜 프롤로그 다시보기`;
+    }
+  }
+
+  modal.style.display = "flex";
+}
+
+function closeStoryCinematicModal() {
+  const modal = document.getElementById("storyCinematicModal");
+  if (modal) modal.style.display = "none";
+}
+
+function onStoryModalPrimaryAction() {
+  const ctx = currentStoryModalContext;
+  if (!ctx) return closeStoryCinematicModal();
+
+  if (ctx.phase === "prologue") {
+    closeStoryCinematicModal();
+    startOccultVolume(ctx.scenarioId);
+  } else {
+    // Epilogue
+    const scenarios = currentCharacter?._allScenarios || currentCharacter?.startingScenarios || [];
+    const scenario = scenarios.find(s => s.id === ctx.scenarioId);
+    if (scenario?.epilogue?.nextUnlock) {
+      openStoryCinematic(scenario.epilogue.nextUnlock, "prologue");
+    } else {
+      closeStoryCinematicModal();
+      switchView("chat");
+    }
+  }
+}
+
+function onStoryModalSecondaryAction() {
+  const ctx = currentStoryModalContext;
+  if (!ctx) return;
+  const nextPhase = ctx.phase === "prologue" ? "epilogue" : "prologue";
+  openStoryCinematic(ctx.scenarioId, nextPhase);
+}
+
+function startOccultVolume(volId) {
+  selectedScenarioId = volId;
+  const sel = document.getElementById("scenarioSelect");
+  if (sel) sel.value = String(volId);
+  onScenarioChange();
+
+  // Find existing room for this volume or create a new one
+  const existingRoom = chatRooms.find(r => (r.volume === volId || r.scenarioId === volId));
+  if (existingRoom) {
+    selectRoom(existingRoom.roomId);
+    switchView("chat");
+  } else {
+    startChatWithScenario(true);
+  }
+}
+
+function switchOccultVolume(volId) {
+  startOccultVolume(volId);
 }
 
 function onScenarioChange() {
@@ -348,6 +554,8 @@ function buildRoomFromScenario(char, scenario, startAffection = 15) {
   return {
     roomId: `room-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
     title: scenario?.initialTitle || "기본 대화",
+    volume: scenario?.volume || scenario?.id || 1,
+    scenarioId: scenario?.id || 1,
     userName: (currentUser?.nickname) || document.getElementById("userPersonaName")?.value || "단골손님",
     userPersonaDesc: "새벽마다 찾아오는 단골 손님",
     affection: startAffection,
@@ -419,13 +627,36 @@ function syncActiveRoomToUI() {
   document.getElementById("chatScenarioBadge").textContent = room.title;
   document.getElementById("userPersonaName").value = room.userName || (currentUser?.nickname) || "단골손님";
 
+  // Occult Volume Navigation Bar in Header
+  const isOccult = (currentCharacter.characterId && currentCharacter.characterId.includes("occult")) || (currentCharacter.tags && currentCharacter.tags.some(t => t.includes("오컬트")));
+  const chapterNavEl = document.getElementById("chatChapterNav");
+  if (chapterNavEl) {
+    if (isOccult) {
+      chapterNavEl.style.display = "inline-flex";
+      const volNum = room.volume || room.scenarioId || 1;
+      chapterNavEl.innerHTML = `
+        <button type="button" class="chapter-pill-btn chapter-pill-prologue" onclick="openStoryCinematic(${volNum}, 'prologue')" title="제${volNum}권 프롤로그 서사 열기">📜 프롤로그</button>
+        <button type="button" class="chapter-pill-btn chapter-pill-epilogue" onclick="openStoryCinematic(${volNum}, 'epilogue')" title="제${volNum}권 에필로그 엔딩 열기">🏆 에필로그</button>
+        <div style="display:inline-flex; gap:3px; margin-left:4px; background:rgba(0,0,0,0.35); padding:2px 4px; border-radius:999px; border:1px solid rgba(255,255,255,0.08);">
+          ${[1, 2, 3, 4].map(v => `
+            <button type="button" onclick="switchOccultVolume(${v})" style="background:${v === volNum ? 'linear-gradient(135deg, #ec4899, #8b5cf6)' : 'transparent'}; border:none; color:${v === volNum ? '#fff' : 'var(--text-muted)'}; font-size:0.7rem; font-weight:${v === volNum ? '700' : '500'}; padding:0.18rem 0.52rem; border-radius:999px; cursor:pointer;" title="제${v}권으로 이동">
+              ${v}권
+            </button>
+          `).join("")}
+        </div>
+      `;
+    } else {
+      chapterNavEl.style.display = "none";
+    }
+  }
+
   renderChatMessages();
   renderSuggestions(room.branches, room.replySuggestions || []);
   updateHud();
   renderKeywordBooks();
 }
 
-function startChatWithScenario() {
+function startChatWithScenario(skipPrologue = false) {
   if (!currentCharacter) return;
   if (currentCharacter.adminOnly) {
     if (!currentUser || currentUser.role !== "admin") {
@@ -443,6 +674,14 @@ function startChatWithScenario() {
   }
   const scenarios = currentCharacter._allScenarios || [];
   const target = scenarios.find(s => s.id === selectedScenarioId) || scenarios[0];
+
+  // If occult character and prologue exists, show prologue modal first if not skipped
+  const isOccult = (currentCharacter.characterId && currentCharacter.characterId.includes("occult")) || (currentCharacter.tags && currentCharacter.tags.some(t => t.includes("오컬트")));
+  if (!skipPrologue && isOccult && target?.prologue) {
+    openStoryCinematic(target.id, "prologue");
+    return;
+  }
+
   const startAff = selectedScenarioId === 1 ? 30 : selectedScenarioId === 2 ? 25 : selectedScenarioId === 3 ? 35 : 15;
   const newRoom = buildRoomFromScenario(currentCharacter, target, startAff);
   chatRooms.unshift(newRoom);
@@ -742,6 +981,24 @@ function renderSuggestions(branches, plainSuggestions) {
           `;
         }).join("")}
       </div>
+      ${(() => {
+        const room = getActiveRoom();
+        const isOccult = (currentCharacter?.characterId && currentCharacter.characterId.includes("occult")) || (currentCharacter?.tags && currentCharacter.tags.some(t => t.includes("오컬트")));
+        if (isOccult && room && room.messages && room.messages.length >= 2) {
+          const volNum = room.volume || room.scenarioId || 1;
+          return `
+            <div style="margin-top:0.75rem; padding:0.65rem 1rem; background:linear-gradient(135deg, rgba(234,179,8,0.14), rgba(236,72,153,0.14)); border:1px solid rgba(234,179,8,0.35); border-radius:0.75rem; display:flex; align-items:center; justify-content:space-between; gap:0.6rem; flex-wrap:wrap;">
+              <div style="font-size:0.79rem; color:#facc15; font-weight:700;">
+                🏆 <strong>제${volNum}권 서사 클라이맥스!</strong> 세계의 속마음과 애틋한 엔딩 후일담이 준비되어 있습니다.
+              </div>
+              <button type="button" class="btn-chapter-prologue" style="color:#facc15; border-color:#eab308; background:rgba(234,179,8,0.22); font-weight:700; padding:0.35rem 0.85rem; border-radius:0.5rem; cursor:pointer;" onclick="openStoryCinematic(${volNum}, 'epilogue')">
+                🏆 에필로그 엔딩 보기 &rarr;
+              </button>
+            </div>
+          `;
+        }
+        return '';
+      })()}
     </div>
   `;
 }

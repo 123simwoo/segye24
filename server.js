@@ -809,17 +809,26 @@ function pickBestSituationalImageKey(character, textContext, affection, delta, s
   const isOccultSegye = (character.characterId && character.characterId.includes("occult")) || (character.tags && character.tags.some(t => t.includes("오컬트")));
   if (isOccultSegye) {
     const combined = String(textContext || "");
+    if (/1권.*(에필로그|엔딩)|(에필로그|엔딩).*1권/.test(combined)) return validKeys.find(k => k.includes("01_vol1_epilogue")) || validKeys[0];
+    if (/1권.*프롤로그|프롤로그.*1권/.test(combined)) return validKeys.find(k => k.includes("01_vol1_prologue")) || validKeys[0];
+    if (/2권.*(에필로그|엔딩)|(에필로그|엔딩).*2권/.test(combined)) return validKeys.find(k => k.includes("02_vol2_epilogue")) || validKeys[0];
+    if (/2권.*프롤로그|프롤로그.*2권/.test(combined)) return validKeys.find(k => k.includes("02_vol2_prologue")) || validKeys[0];
+    if (/3권.*(에필로그|엔딩)|(에필로그|엔딩).*3권/.test(combined)) return validKeys.find(k => k.includes("03_vol3_epilogue")) || validKeys[0];
+    if (/3권.*프롤로그|프롤로그.*3권/.test(combined)) return validKeys.find(k => k.includes("03_vol3_prologue")) || validKeys[0];
+    if (/4권.*(에필로그|엔딩)|(에필로그|엔딩).*4권/.test(combined)) return validKeys.find(k => k.includes("04_vol4_epilogue")) || validKeys[0];
+    if (/4권.*프롤로그|프롤로그.*4권/.test(combined)) return validKeys.find(k => k.includes("04_vol4_prologue")) || validKeys[0];
+
     if (/1권|폐교|자정|과학실|손잡|전도|스파크|악령|마법진|첫\s*만남/.test(combined)) {
-      return validKeys.find(k => k.includes("01_vol1")) || validKeys[0];
+      return validKeys.find(k => k.includes("01_vol1_encounter")) || validKeys.find(k => k.includes("01_vol1")) || validKeys[0];
     }
     if (/2권|노을|옥상|순찰|라면|컵라면|따뜻|벤치|먹방/.test(combined)) {
-      return validKeys.find(k => k.includes("02_vol2")) || validKeys[0];
+      return validKeys.find(k => k.includes("02_vol2_patrol")) || validKeys.find(k => k.includes("02_vol2")) || validKeys[0];
     }
     if (/3권|소나기|비|사당|치료|붕대|다다미|상처|체온|비밀/.test(combined)) {
-      return validKeys.find(k => k.includes("03_vol3")) || validKeys[0];
+      return validKeys.find(k => k.includes("03_vol3_rain")) || validKeys.find(k => k.includes("03_vol3")) || validKeys[0];
     }
     if (/4권|텐겐|선배|질투|손깍지|은밀|어깨동무|복도|벚꽃/.test(combined)) {
-      return validKeys.find(k => k.includes("04_vol4")) || validKeys[0];
+      return validKeys.find(k => k.includes("04_vol4_tengen")) || validKeys.find(k => k.includes("04_vol4")) || validKeys[0];
     }
     return validKeys[0];
   }
