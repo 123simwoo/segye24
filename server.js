@@ -818,6 +818,16 @@ function pickBestSituationalImageKey(character, textContext, affection, delta, s
     if (/4권.*(에필로그|엔딩)|(에필로그|엔딩).*4권/.test(combined)) return validKeys.find(k => k.includes("04_vol4_epilogue")) || validKeys[0];
     if (/4권.*프롤로그|프롤로그.*4권/.test(combined)) return validKeys.find(k => k.includes("04_vol4_prologue")) || validKeys[0];
 
+    // Extra and specific scenes matching
+    if (/사물함|캐비닛|숨어|숨결|밀착/.test(combined)) return validKeys.find(k => k.includes("01_vol1_extra1")) || validKeys[0];
+    if (/가위|체술|베어|룬|퇴마체술/.test(combined)) return validKeys.find(k => k.includes("01_vol1_extra2")) || validKeys[0];
+    if (/후후|불어서|한\s*입|먹여|젓가락/.test(combined)) return validKeys.find(k => k.includes("02_vol2_extra1")) || validKeys[0];
+    if (/추위|바람|가디건|덮어|재킷|외투/.test(combined)) return validKeys.find(k => k.includes("02_vol2_extra2")) || validKeys[0];
+    if (/머리.*말려|수건|타월|헤어/.test(combined)) return validKeys.find(k => k.includes("03_vol3_extra1")) || validKeys[0];
+    if (/천둥|번개|벼락|와락|안겨|품에|포옹/.test(combined)) return validKeys.find(k => k.includes("03_vol3_extra2")) || validKeys[0];
+    if (/가로막|막아서|도발|선배.*비켜|방어/.test(combined)) return validKeys.find(k => k.includes("04_vol4_extra1")) || validKeys[0];
+    if (/단골.*라면|팔짱|거리|야식.*데이트|탈출/.test(combined)) return validKeys.find(k => k.includes("04_vol4_extra2")) || validKeys[0];
+
     if (/1권|폐교|자정|과학실|손잡|전도|스파크|악령|마법진|첫\s*만남/.test(combined)) {
       return validKeys.find(k => k.includes("01_vol1_encounter")) || validKeys.find(k => k.includes("01_vol1")) || validKeys[0];
     }

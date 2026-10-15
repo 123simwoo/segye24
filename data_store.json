@@ -919,83 +919,131 @@
         }
       },
       "profileImages": {
+        "메인/교복/부적": {
+          "url": "/assets/segye_occult/segye_main.jpg",
+          "order": 1,
+          "hidden": false,
+          "key": "메인/교복/부적"
+        },
         "01_vol1_prologue": {
           "url": "/assets/segye_occult/01_vol1_prologue.jpg",
-          "order": 1,
+          "order": 2,
           "hidden": false,
           "key": "01_vol1_prologue"
         },
         "01_vol1_encounter": {
           "url": "/assets/segye_occult/01_vol1_encounter.jpg",
-          "order": 2,
+          "order": 3,
           "hidden": false,
           "key": "01_vol1_encounter"
         },
         "01_vol1_epilogue": {
           "url": "/assets/segye_occult/01_vol1_epilogue.jpg",
-          "order": 3,
+          "order": 4,
           "hidden": false,
           "key": "01_vol1_epilogue"
         },
+        "01_vol1_extra1_locker_hide": {
+          "url": "/assets/segye_occult/01_vol1_extra1_locker_hide.jpg",
+          "order": 5,
+          "hidden": false,
+          "key": "01_vol1_extra1_locker_hide"
+        },
+        "01_vol1_extra2_talisman_cut": {
+          "url": "/assets/segye_occult/01_vol1_extra2_talisman_cut.jpg",
+          "order": 6,
+          "hidden": false,
+          "key": "01_vol1_extra2_talisman_cut"
+        },
         "02_vol2_prologue": {
           "url": "/assets/segye_occult/02_vol2_prologue.jpg",
-          "order": 4,
+          "order": 7,
           "hidden": false,
           "key": "02_vol2_prologue"
         },
         "02_vol2_patrol_rooftop": {
           "url": "/assets/segye_occult/02_vol2_patrol_rooftop.jpg",
-          "order": 5,
+          "order": 8,
           "hidden": false,
           "key": "02_vol2_patrol_rooftop"
         },
         "02_vol2_epilogue": {
           "url": "/assets/segye_occult/02_vol2_epilogue.jpg",
-          "order": 6,
+          "order": 9,
           "hidden": false,
           "key": "02_vol2_epilogue"
         },
+        "02_vol2_extra1_ramen_blow": {
+          "url": "/assets/segye_occult/02_vol2_extra1_ramen_blow.jpg",
+          "order": 10,
+          "hidden": false,
+          "key": "02_vol2_extra1_ramen_blow"
+        },
+        "02_vol2_extra2_windy_cardigan": {
+          "url": "/assets/segye_occult/02_vol2_extra2_windy_cardigan.jpg",
+          "order": 11,
+          "hidden": false,
+          "key": "02_vol2_extra2_windy_cardigan"
+        },
         "03_vol3_prologue": {
           "url": "/assets/segye_occult/03_vol3_prologue.jpg",
-          "order": 7,
+          "order": 12,
           "hidden": false,
           "key": "03_vol3_prologue"
         },
         "03_vol3_rain_hideout": {
           "url": "/assets/segye_occult/03_vol3_rain_hideout.jpg",
-          "order": 8,
+          "order": 13,
           "hidden": false,
           "key": "03_vol3_rain_hideout"
         },
         "03_vol3_epilogue": {
           "url": "/assets/segye_occult/03_vol3_epilogue.jpg",
-          "order": 9,
+          "order": 14,
           "hidden": false,
           "key": "03_vol3_epilogue"
         },
+        "03_vol3_extra1_wet_hair_dry": {
+          "url": "/assets/segye_occult/03_vol3_extra1_wet_hair_dry.jpg",
+          "order": 15,
+          "hidden": false,
+          "key": "03_vol3_extra1_wet_hair_dry"
+        },
+        "03_vol3_extra2_thunder_hug": {
+          "url": "/assets/segye_occult/03_vol3_extra2_thunder_hug.jpg",
+          "order": 16,
+          "hidden": false,
+          "key": "03_vol3_extra2_thunder_hug"
+        },
         "04_vol4_prologue": {
           "url": "/assets/segye_occult/04_vol4_prologue.jpg",
-          "order": 10,
+          "order": 17,
           "hidden": false,
           "key": "04_vol4_prologue"
         },
         "04_vol4_tengen_jealousy": {
           "url": "/assets/segye_occult/04_vol4_tengen_jealousy.jpg",
-          "order": 11,
+          "order": 18,
           "hidden": false,
           "key": "04_vol4_tengen_jealousy"
         },
         "04_vol4_epilogue": {
           "url": "/assets/segye_occult/04_vol4_epilogue.jpg",
-          "order": 12,
+          "order": 19,
           "hidden": false,
           "key": "04_vol4_epilogue"
         },
-        "메인/교복/부적": {
-          "url": "/assets/segye_occult/segye_main.jpg",
-          "order": 13,
+        "04_vol4_extra1_tengen_tease": {
+          "url": "/assets/segye_occult/04_vol4_extra1_tengen_tease.jpg",
+          "order": 20,
           "hidden": false,
-          "key": "메인/교복/부적"
+          "key": "04_vol4_extra1_tengen_tease"
+        },
+        "04_vol4_extra2_ramen_date": {
+          "url": "/assets/segye_occult/04_vol4_extra2_ramen_date.jpg",
+          "order": 21,
+          "hidden": false,
+          "key": "04_vol4_extra2_ramen_date"
         }
       },
       "situationalImages": {

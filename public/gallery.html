@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>세계 (퇴마 갸루) 1~4권 전체 일러스트 비주얼 아카이브</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    .glow-card {
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glow-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 30px rgba(236, 72, 153, 0.25);
+      border-color: rgba(236, 72, 153, 0.5);
+    }
+    .active-filter {
+      background: linear-gradient(135deg, #ec4899, #8b5cf6) !important;
+      color: white !important;
+      font-weight: 700;
+      box-shadow: 0 4px 14px rgba(236, 72, 153, 0.4);
+    }
+  </style>
+</head>
+<body class="bg-[#0b0813] text-[#e2e8f0] min-h-screen p-3 sm:p-6 antialiased selection:bg-pink-500 selection:text-white">
+
+  <!-- Header Section -->
+  <header class="max-w-7xl mx-auto mb-8 border-b border-white/10 pb-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+    <div>
+      <div class="flex items-center gap-2.5 mb-1.5">
+        <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-pink-500/20 text-pink-400 border border-pink-500/30">K-오컬트 비주얼 노벨</span>
+        <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">단다단 각색 1~4권</span>
+        <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">총 21종 고화질 화보</span>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white flex items-center gap-2">
+        <span>세계 (Segye)</span>
+        <span class="text-pink-400 text-lg font-medium">전체 일러스트 갤러리 아카이브</span>
+      </h1>
+      <p class="text-xs sm:text-sm text-slate-400 mt-1">
+        실제 인물 페르소나 기반 앵커 일러스트 · 프롤로그 · 본편 클라이맥스 · 에필로그 · 챕터별 추가 비하인드 씬
+      </p>
+    </div>
+    
+    <div class="flex items-center gap-2.5">
+      <a href="http://localhost:3024" target="_blank" class="px-4 py-2 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold text-xs shadow-lg hover:opacity-90 transition flex items-center gap-1.5">
+        <span>🌐 실시간 시뮬레이션 웹 접속</span>
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+      </a>
+      <a href="preview.html" class="px-4 py-2 rounded-xl border border-pink-500/40 bg-pink-500/10 text-pink-300 font-bold text-xs hover:bg-pink-500/20 transition">
+        📱 챕터 인터랙티브 프리뷰 &rarr;
+      </a>
+    </div>
+  </header>
+
+  <!-- Filter Category Tabs -->
+  <nav class="max-w-7xl mx-auto mb-6 flex flex-wrap items-center gap-2">
+    <button onclick="filterGallery('all')" id="btn-all" class="filter-btn active-filter px-3.5 py-2 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 hover:border-pink-500/50 transition">
+      전체 일러스트 (All)
+    </button>
+    <button onclick="filterGallery('profile')" id="btn-profile" class="filter-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 hover:border-pink-500/50 transition">
+      메인 프로필 (Profile)
+    </button>
+    <button onclick="filterGallery('vol1')" id="btn-vol1" class="filter-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 hover:border-pink-500/50 transition">
+      제1권: 자정의 폐교 👻
+    </button>
+    <button onclick="filterGallery('vol2')" id="btn-vol2" class="filter-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 hover:border-pink-500/50 transition">
+      제2권: 노을빛 옥상 🍜
+    </button>
+    <button onclick="filterGallery('vol3')" id="btn-vol3" class="filter-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 hover:border-pink-500/50 transition">
+      제3권: 소나기 사당 🌧️
+    </button>
+    <button onclick="filterGallery('vol4')" id="btn-vol4" class="filter-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 hover:border-pink-500/50 transition">
+      제4권: 텐겐과 손깍지 ✨
+    </button>
+  </nav>
+
+  <!-- Gallery Grid Container -->
+  <main class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5" id="galleryGrid">
+    <!-- Populated dynamically via JavaScript -->
+  </main>
+
+  <!-- Fullscreen Lightbox Modal -->
+  <div id="lightboxModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-6" onclick="closeLightbox()">
+    <div class="relative max-w-5xl max-h-[92vh] w-full flex flex-col items-center bg-[#150f24] border border-pink-500/40 rounded-2xl overflow-hidden shadow-2xl" onclick="event.stopPropagation()">
+      
+      <!-- Top Modal Bar -->
+      <div class="w-full px-4 py-3 border-b border-white/10 flex items-center justify-between bg-black/40">
+        <div class="flex items-center gap-2">
+          <span id="modalBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-pink-500/20 text-pink-400 border border-pink-500/30"></span>
+          <span id="modalTitle" class="text-sm font-bold text-white truncate max-w-[280px] sm:max-w-md"></span>
+        </div>
+        <button onclick="closeLightbox()" class="text-slate-400 hover:text-white text-xl px-2 font-bold leading-none">&times;</button>
+      </div>
+
+      <!-- Main Image Stage -->
+      <div class="w-full flex-1 flex items-center justify-center p-2 sm:p-4 bg-black/60 relative overflow-hidden">
+        <img id="modalImg" src="" alt="" class="max-h-[60vh] sm:max-h-[70vh] w-auto object-contain rounded-lg shadow-lg">
+        <button onclick="stepLightbox(-1)" class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/70 border border-white/20 text-white flex items-center justify-center hover:bg-pink-600 transition text-lg">&larr;</button>
+        <button onclick="stepLightbox(1)" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/70 border border-white/20 text-white flex items-center justify-center hover:bg-pink-600 transition text-lg">&rarr;</button>
+      </div>
+
+      <!-- Bottom Narrative Bar -->
+      <div class="w-full p-4 bg-[#120d20] border-t border-white/10 text-xs text-slate-300">
+        <p id="modalDesc" class="leading-relaxed mb-2 text-slate-300"></p>
+        <div class="flex items-start gap-2 p-2.5 rounded-xl bg-pink-500/10 border border-pink-500/20 text-pink-300">
+          <span class="font-bold text-pink-400 shrink-0">세계의 한마디:</span>
+          <span id="modalQuote" class="italic font-medium"></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const artworks = [
+      // Main Profile & Visual Anchor
+      {
+        id: "main_profile",
+        cat: "profile",
+        title: "세계 (퇴마 갸루) 메인 비주얼 앵커",
+        badge: "메인 프로필 · 비주얼 앵커",
+        img: "/assets/segye_occult/segye_main.jpg",
+        desc: "실제 인물 페르소나의 부드러운 눈매와 시스루 뱅, 오버핏 그레이 니트 가디건, 붉은 영력 부적, 그리고 어깨 위에 찰싹 붙어 있는 영물 라쿤 마스코트.",
+        quote: "\"야, 멍하니 있지 말고 손 꽉 잡아! 넌 오늘부터 내 전용 보조배터리야, 알겠어?!\""
+      },
+
+      // Volume 1
+      {
+        id: "vol1_pro",
+        cat: "vol1",
+        title: "자정의 구교사, 칠흑 같은 어둠과 붉은 안광",
+        badge: "제1권 · 프롤로그",
+        img: "/assets/segye_occult/01_vol1_prologue.jpg",
+        desc: "시험 끝난 금요일 자정, 낡은 사물함 틈새에서 번뜩이는 수십 개의 붉은 눈동자와 얼어붙은 공기. 악령의 기습 직전 손목을 낚아채는 세계.",
+        quote: "\"바보야! 밤에 여길 왜 기어들어와?! 죽고 싶어서 환장했어?! 꽉 잡아, 놓치면 진짜 죽어!\""
+      },
+      {
+        id: "vol1_climax",
+        cat: "vol1",
+        title: "자정의 폐교와 맞닿은 손가락",
+        badge: "제1권 · 본편 클라이맥스",
+        img: "/assets/segye_occult/01_vol1_encounter.jpg",
+        desc: "영력이 방전된 세계가 손을 맞잡는 순간, 억눌려 있던 순수 영력이 전도되며 터져 나오는 찬란한 푸른 마법진과 스파크.",
+        quote: "\"야, 너 정체가 뭐야?! 뭔 손만 잡았는데 마나가 왜 풀충전되는데...?! 손가락 풀기만 해봐, 죽는다 진짜!\""
+      },
+      {
+        id: "vol1_epi",
+        cat: "vol1",
+        title: "새벽빛 복도, 맞닿은 손가락과 새어 나온 진심",
+        badge: "제1권 · 에필로그",
+        img: "/assets/segye_occult/01_vol1_epilogue.jpg",
+        desc: "악령이 재로 흩어진 04:30 AM. 동트는 복도 바닥에 기진맥진 앉아 라쿤의 애교를 받으며 여전히 손가락 깍지를 놓지 못하는 세계.",
+        quote: "\"하아... 진짜 죽는 줄 알았네. ...야, 근데 손은 왜 안 놔? ...뭐, 네가 먼저 놓기 전까진 안 놔줄 거니까 착각하지 마.\""
+      },
+      {
+        id: "vol1_extra1",
+        cat: "vol1",
+        title: "낡은 사물함 속 초밀착과 숨결",
+        badge: "제1권 · 비하인드 씬 1",
+        img: "/assets/segye_occult/01_vol1_extra1_locker_hide.jpg",
+        desc: "복도를 배회하는 거대한 악령을 피해 좁은 철제 캐비닛 속에 단둘이 밀착해 숨은 순간. 새빨개진 얼굴로 입을 틀어막는 세계.",
+        quote: "\"쉿... 숨소리도 내지 마, 바보야... 심장 뛰는 소리 들릴 것 같단 말이야...\""
+      },
+      {
+        id: "vol1_extra2",
+        cat: "vol1",
+        title: "가위질 퇴마 체술과 푸른 폭풍",
+        badge: "제1권 · 비하인드 씬 2",
+        img: "/assets/segye_occult/01_vol1_extra2_talisman_cut.jpg",
+        desc: "전직 미용사의 신들린 가위질 손재주로 어둠의 장기를 베어 넘기며 퇴마 부적을 연속 투척하는 세계의 역동적인 퇴마 액션.",
+        quote: "\"내 가위질 맛이 어때, 이 썩은 악령 놈아?! 100km로 달려, 라쿤!\""
+      },
+
+      // Volume 2
+      {
+        id: "vol2_pro",
+        cat: "vol2",
+        title: "방과 후 옥상 철문, 비닐봉투 속 따스한 냄새",
+        badge: "제2권 · 프롤로그",
+        img: "/assets/segye_occult/02_vol2_prologue.jpg",
+        desc: "방과 후 황금빛 노을 아래, 덜컹이며 열린 철문에서 편의점 라면 봉투를 흔들며 장난스런 윙크를 건네는 세계.",
+        quote: "\"야! 너 여기서 멍때리고 있을 줄 알았다. 내가 제일 좋아하는 라면 사 왔거든? 물 선 1mm 정확하게 맞췄으니까 얼른 와서 앉아!\""
+      },
+      {
+        id: "vol2_climax",
+        cat: "vol2",
+        title: "노을빛 옥상 순찰과 컵라면의 맛",
+        badge: "제2권 · 본편 클라이맥스",
+        img: "/assets/segye_occult/02_vol2_patrol_rooftop.jpg",
+        desc: "보랏빛과 황금빛이 물든 학교 옥상 벤치. 라면에 진심인 세계가 나란히 앉아 김이 모락모락 나는 컵라면을 건네는 따스한 방과 후 썸.",
+        quote: "\"내가 라면에 얼마나 진심인지 알지? 물 선 정확하니까 불기 전에 얼른 먹어. ...바람 불어서 손 시려 보이길래 특별히 챙겨주는 거야!\""
+      },
+      {
+        id: "vol2_epi",
+        cat: "vol2",
+        title: "별빛 내리는 옥상, 어깨에 닿은 숨결과 컵라면의 여운",
+        badge: "제2권 · 에필로그",
+        img: "/assets/segye_occult/02_vol2_epilogue.jpg",
+        desc: "노을이 가라앉고 켜진 도심의 야경. 빈 라면 용기를 옆에 두고 차가워진 밤바람에 조심스레 어깨에 머리를 기대어 잠든 세계.",
+        quote: "\"...진짜 맛있다. 네가 라면 국물까지 다 먹어줘서 기분 좋아. ...바람 추우니까 10분만 이러고 있자. 가만히 있어, 바보야.\""
+      },
+      {
+        id: "vol2_extra1",
+        cat: "vol2",
+        title: "단 1mm의 물 선과 첫 입 나눔",
+        badge: "제2권 · 비하인드 씬 1",
+        img: "/assets/segye_occult/02_vol2_extra1_ramen_blow.jpg",
+        desc: "나무젓가락으로 갓 익은 라면 면발을 후후 불어 식힌 뒤, 붉어진 얼굴로 수줍게 첫 입을 내밀어 주는 세계.",
+        quote: "\"자, 아- 해. 물 선 1mm 정확하게 맞춘 내 특제니까... 딱 한 입만 주는 거야, 음미하면서 먹어!\""
+      },
+      {
+        id: "vol2_extra2",
+        cat: "vol2",
+        title: "서늘한 노을바람과 덮어준 가디건",
+        badge: "제2권 · 비하인드 씬 2",
+        img: "/assets/segye_occult/02_vol2_extra2_windy_cardigan.jpg",
+        desc: "추위에 살짝 떨던 세계의 어깨에 옷을 걸쳐주자, 옷깃을 꼬옥 쥐며 크고 맑은 눈망울로 올려다보는 설렘 가득한 순간.",
+        quote: "\"...따뜻하네. 멍청이, 너 감기 걸려도 난 안 챙겨줄 거니까 그렇게 알아.\""
+      },
+
+      // Volume 3
+      {
+        id: "vol3_pro",
+        cat: "vol3",
+        title: "쏟아지는 소나기, 신비로운 사당으로의 도주",
+        badge: "제3권 · 프롤로그",
+        img: "/assets/segye_occult/03_vol3_prologue.jpg",
+        desc: "기습적인 여름 장대비에 흠뻑 젖은 채, 붉은 토리이 계단을 손잡고 전력 질주해 비밀 사당 처마 밑으로 피신하는 두 사람.",
+        quote: "\"하아, 하아... 진짜 무식하게 쏟아지네! 야, 빨리 들어와! 우리 가문 비밀 사당이라 아무도 안 와. 옷 다 젖었잖아 바보야!\""
+      },
+      {
+        id: "vol3_climax",
+        cat: "vol3",
+        title: "소나기 내리는 사당과 젖은 셔츠의 비밀",
+        badge: "제3권 · 본편 클라이맥스",
+        img: "/assets/segye_occult/03_vol3_rain_hideout.jpg",
+        desc: "빗소리가 울려 퍼지는 다다미방. 촛불 아래 담요를 두른 세계가 붉어진 뺨으로 조심스레 상처 입은 손목에 하얀 붕대를 감아주는 애틋한 체온 교감.",
+        quote: "\"다쳤으면 다쳤다고 말을 했어야지... 왜 미련하게 숨기고 그래? ...조금만 참아, 소독약 바르면 따끔하니까. 나 지켜주려다 다친 거잖아... 바보같이.\""
+      },
+      {
+        id: "vol3_epi",
+        cat: "vol3",
+        title: "비 갠 뒤의 월광, 붕대 너머로 전해진 고백",
+        badge: "제3권 · 에필로그",
+        img: "/assets/segye_occult/03_vol3_epilogue.jpg",
+        desc: "치료가 끝난 후 비가 그치고 창문 밖 은빛 달빛이 웅덩이에 비치는 밤. 붕대 감은 손을 가슴에 모아 쥐며 평생의 인연을 맹세하는 세계.",
+        quote: "\"...네가 나 지키려다 다치는 거, 다시는 못 보겠어. 그러니까 약속해. ...그리고... 나 앞으로도 평생 네 상처 감싸줄게. 알았지?\""
+      },
+      {
+        id: "vol3_extra1",
+        cat: "vol3",
+        title: "젖은 머리칼과 수건의 온기 (미용사 스킬)",
+        badge: "제3권 · 비하인드 씬 1",
+        img: "/assets/segye_occult/03_vol3_extra1_wet_hair_dry.jpg",
+        desc: "사당 마루에 걸터앉아 부드러운 수건으로 젖은 머리를 섬세하게 말려주는 전직 미용사 세계의 다정한 손길.",
+        quote: "\"머리 그렇게 거칠게 털면 다 상해. 가만히 있어, 내가 말려줄게... 미용실 알바 짬밥이 얼만데.\""
+      },
+      {
+        id: "vol3_extra2",
+        cat: "vol3",
+        title: "천둥 번개와 불시의 포옹",
+        badge: "제3권 · 비하인드 씬 2",
+        img: "/assets/segye_occult/03_vol3_extra2_thunder_hug.jpg",
+        desc: "갑작스러운 벼락 소리에 소스라치게 놀라 품으로 파고들어 와 꽉 안긴 채 바들바들 떠는 세계의 무방비한 모습.",
+        quote: "\"꺄악-!! ...하, 하필 천둥이... 야, 절대로 나 비웃지 마... 딱 5분만 이러고 있을 거야!\""
+      },
+
+      // Volume 4
+      {
+        id: "vol4_pro",
+        cat: "vol4",
+        title: "교문의 술렁임, 198cm 은발 미남 텐겐의 등장",
+        badge: "제4권 · 프롤로그",
+        img: "/assets/segye_occult/04_vol4_prologue.jpg",
+        desc: "벚꽃 날리는 등굣길, 198cm 은발을 늘어뜨린 조각 미남 텐겐 선배의 등장으로 술렁이는 교정. 질투하는 나를 툭 치며 안심시키는 세계.",
+        quote: "\"야, 뭘 그렇게 넋 놓고 쳐다보고 있어? 키만 쓸데없이 크고 시끄러운 은발 원숭이일 뿐이거든? ...내 눈엔 네가 백 배는 더 잘생겼으니까, 얼른 들어가자.\""
+      },
+      {
+        id: "vol4_climax",
+        cat: "vol4",
+        title: "화려한 선배 텐겐과 은밀한 손깍지",
+        badge: "제4권 · 본편 클라이맥스",
+        img: "/assets/segye_occult/04_vol4_tengen_jealousy.jpg",
+        desc: "머리를 푼 텐겐 선배가 화려하게 말을 거는 순간, 텐겐 몰래 등 뒤로 손가락 사이 깊숙이 손깍지를 끼워 넣으며 윙크를 던지는 세계.",
+        quote: "\"쉿... 삐진 표정 짓지 마, 바보야. 텐겐 선배는 어릴 때부터 알던 동네 오빠일 뿐이거든? ...내 손가락 깍지 낀 거 느껴지지? 내 파트너는... 세상에서 너 하나뿐이야.\""
+      },
+      {
+        id: "vol4_epi",
+        cat: "vol4",
+        title: "노을빛 골목길, 둘만의 비밀 라면집 탈출기",
+        badge: "제4권 · 에필로그",
+        img: "/assets/segye_occult/04_vol4_epilogue.jpg",
+        desc: "방과 후 텐겐 선배를 따돌리고 골목길 단골 라면집으로 탈출! 팔짱을 꽉 끼고 활짝 웃으며 단둘만의 데이트 승리를 자축하는 세계.",
+        quote: "\"크큭... 텐겐 선배 멍때리는 표정 봤어?! 쌤통이다 진짜! ...거봐, 내가 말했지? 세상에서 제일 맛있는 라면은 너랑 단둘이 먹는 라면이라고. 가자, 오늘은 내가 쏠게!\""
+      },
+      {
+        id: "vol4_extra1",
+        cat: "vol4",
+        title: "은발 텐겐의 도발과 세계의 앞막아서기",
+        badge: "제4권 · 비하인드 씬 1",
+        img: "/assets/segye_occult/04_vol4_extra1_tengen_tease.jpg",
+        desc: "텐겐 선배가 장난스레 파트너 군을 떠보려 하자, 양팔을 활짝 벌려 앞을 막아서며 볼을 부풀리는 세계의 든든하고 귀여운 독점욕.",
+        quote: "\"텐겐 선배! 쓸데없는 소리 하지 말고 체육관이나 가시죠?! 내 파트너한테 털끝 하나 손대지 마요!\""
+      },
+      {
+        id: "vol4_extra2",
+        cat: "vol4",
+        title: "단골 라면집 골목과 다정한 팔짱",
+        badge: "제4권 · 비하인드 씬 2",
+        img: "/assets/segye_occult/04_vol4_extra2_ramen_date.jpg",
+        desc: "붉은 제등이 켜진 아늑한 골목길, 둘만의 팔짱을 단단히 엮은 채 메뉴판을 가리키며 밝게 웃는 세계와의 영원한 연인 성립.",
+        quote: "\"여기 차슈 추가가 진짜 예술이거든? 너 배 터질 때까지 먹여줄 테니까 각오해! 라쿤도 찬성이지?\""
+      }
+    ];
+
+    let currentFilter = "all";
+    let currentLightboxIdx = 0;
+
+    function renderGallery(filter = "all") {
+      currentFilter = filter;
+      const grid = document.getElementById("galleryGrid");
+      const list = filter === "all" ? artworks : artworks.filter(a => a.cat === filter);
+
+      grid.innerHTML = list.map((item, idx) => `
+        <div class="glow-card bg-[#140e22] border border-white/10 rounded-2xl overflow-hidden flex flex-col group cursor-pointer" onclick="openLightbox(${artworks.indexOf(item)})">
+          <div class="relative w-full aspect-[4/5] bg-black/40 overflow-hidden">
+            <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.onerror=null; this.src='/assets/segye_occult/segye_main.jpg';">
+            <div class="absolute top-2.5 left-2.5">
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-black/75 backdrop-blur-md text-pink-400 border border-pink-500/30">
+                ${item.badge}
+              </span>
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
+              <span class="text-xs font-bold text-white flex items-center gap-1">
+                <span>🔍 원본 크게 보기</span>
+              </span>
+            </div>
+          </div>
+          <div class="p-3.5 flex flex-col flex-1 justify-between gap-2">
+            <div>
+              <h3 class="text-sm font-bold text-white group-hover:text-pink-400 transition-colors line-clamp-1">${item.title}</h3>
+              <p class="text-[11px] text-slate-400 line-clamp-2 mt-1 leading-relaxed">${item.desc}</p>
+            </div>
+            <div class="pt-2 border-t border-white/5 text-[11px] text-pink-300 italic line-clamp-1">
+              ${item.quote}
+            </div>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function filterGallery(cat) {
+      document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active-filter"));
+      const activeBtn = document.getElementById("btn-" + cat);
+      if (activeBtn) activeBtn.classList.add("active-filter");
+      renderGallery(cat);
+    }
+
+    function openLightbox(idx) {
+      currentLightboxIdx = idx;
+      const item = artworks[idx];
+      if (!item) return;
+
+      document.getElementById("modalBadge").textContent = item.badge;
+      document.getElementById("modalTitle").textContent = item.title;
+      document.getElementById("modalImg").src = item.img;
+      document.getElementById("modalDesc").textContent = item.desc;
+      document.getElementById("modalQuote").textContent = item.quote;
+
+      document.getElementById("lightboxModal").classList.remove("hidden");
+    }
+
+    function closeLightbox() {
+      document.getElementById("lightboxModal").classList.add("hidden");
+    }
+
+    function stepLightbox(dir) {
+      currentLightboxIdx = (currentLightboxIdx + dir + artworks.length) % artworks.length;
+      openLightbox(currentLightboxIdx);
+    }
+
+    document.addEventListener("keydown", e => {
+      if (document.getElementById("lightboxModal").classList.contains("hidden")) return;
+      if (e.key === "ArrowLeft") stepLightbox(-1);
+      if (e.key === "ArrowRight") stepLightbox(1);
+      if (e.key === "Escape") closeLightbox();
+    });
+
+    window.addEventListener("DOMContentLoaded", () => {
+      renderGallery("all");
+    });
+  </script>
+
+</body>
+</html>
