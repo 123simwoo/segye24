@@ -1,0 +1,761 @@
+const fs = require('fs');
+const path = require('path');
+
+const brainDir = "C:/Users/Sim's/.gemini/antigravity/brain/d5aa5067-2fcb-48ff-987e-d41735d14a6a";
+const publicDir = "C:/Users/Sim's/.gemini/antigravity/scratch/segye24-web/public";
+
+// Complete 1권 4대 에피소드 (1화~13화) Full Script Data
+const episodesData = {
+  1: {
+    epNum: 1,
+    chapterRange: "1화~2화",
+    title: "에피소드 1: 〈심야 24시의 조우와 폭주한 영력〉",
+    subtitle: "단다단 1화~2화 모티프 · 구교사 7대 불가사의와 운명적인 영력 전도",
+    badge: "초기 호감도 25 · 파트너 성립",
+    bannerImg: "vol1.jpg",
+    summary: "호기심에 들어선 심야 24시의 폐교 구교사. 썩은 유황 냄새와 붉은 안광의 악령 무리에 포위된 절체절명의 순간, 영력이 방전된 채 사투를 벌이던 퇴마 갸루 '세계'와 조우한다. 좁은 사물함 속의 아찔한 밀착과 손을 맞잡는 순간 터져 나온 미지의 무한 영력!",
+    chapters: [
+      {
+        chapNum: "제1화",
+        title: "심야 24시, 녹슨 철문과 붉은 안광",
+        art: "vol1_prologue.jpg",
+        artCaption: "제1화 삽화 · 칠흑 같은 구교사 복도, 낡은 사물함 틈새에서 번뜩이는 붉은 안광",
+        paragraphs: [
+          "시험이 끝난 금요일 밤, 교내에 비밀스럽게 전해져 내려오던 '구교사 7대 불가사의'를 확인하기 위해 무거운 철문을 밀고 폐교 안으로 들어섰다.",
+          "낮에는 평범해 보이던 오래된 복도가 밤 12시가 넘어가자 전혀 다른 이계(異界)의 공간으로 변해 있었다. 바닥을 딛는 발소리조차 흡수해 버릴 듯한 짙은 어둠 속에서, 코끝을 찌르는 퀴퀴한 유황 냄새와 등골을 타고 흘러내리는 서늘한 냉기가 번져나갔다.",
+          "스마트폰 플래시 불빛을 비추며 낡은 복도를 조심스레 나아가던 그때, 복도 끝 녹슨 철제 사물함 틈새에서 붉은빛의 기괴한 안광 수십 개가 일제히 깜빡였다.",
+          "\"크흐흐흐... 산 놈의... 냄새가... 난다아아...\"",
+          "귀를 찢는 듯한 음산한 속삭임과 함께, 사물함 문들이 일제히 덜컹거리며 검은 그림자 손들이 바닥을 기어 나와 내 발목을 향해 뻗쳐왔다. 공포에 질려 굳어버린 다리가 한 걸음도 움직이지 않던 바로 그 찰나——",
+          "\"컁! 컁컁컁-!!\"",
+          "어둠 속에서 웬 뚱뚱하고 복슬복슬한 털 뭉치 하나가 튀어나오며 내 머리채를 붙잡고 허겁지겁 매달렸다. 꼬리에 줄무늬가 선명한 라쿤 한 마리였다! 그리고 라쿤의 뒤편에서, 바람을 가르는 날카로운 은빛 궤적과 함께 붉은 부적이 어둠을 갈랐다."
+        ],
+        dialogueBox: {
+          speaker: "세계 (퇴마 갸루)",
+          mood: "다급하게 소리치는 츤데레 눈빛",
+          text: "\"바보야!! 밤에 여길 왜 기어들어와?! 죽고 싶어서 환장했어?! 꽉 잡아, 놓치면 진짜 죽어!\"",
+          thought: "\"하필 영력 바닥났을 때 일반인이 휘말리다니... 게다가 이 녀석 손, 왜 이렇게 크고 따뜻한 건데...?\""
+        }
+      },
+      {
+        chapNum: "제2화",
+        title: "낡은 사물함의 초밀착과 맞닿은 손가락 (순수 영력 폭발)",
+        art: "vol1.jpg",
+        artCaption: "제2화 삽화 · 사물함 속 숨결 밀착 후, 손을 잡는 순간 폭발한 200% 풀충전 영력과 가위질 퇴마",
+        paragraphs: [
+          "거대한 원혼들이 복도를 메우자, 세계는 다급히 내 멱살을 잡고 복도 구석의 낡은 철제 사물함 안으로 몸을 던졌다. 쾅 소리와 함께 닫힌 사물함 안.",
+          "헐떡이는 세계의 뜨거운 숨결과 땀방울이 내 목덜미에 닿았고, 세계는 얼굴이 새빨개진 채 제 검지손가락을 내 입술 위에 얹으며 숨소리조차 삼키게 만들었다. 그러나 악령의 거대한 발톱이 사물함 문을 찢어 발기려던 절체절명의 순간——",
+          "세계가 본능적으로 내 오른손을 꽉 낚아챘다.",
+          "츠츠츳- 콰아아앙!!",
+          "내 심장 깊은 곳에 잠들어 있던 미지의 거대한 순수 영력이, 세계의 손바닥을 타고 폭포수처럼 쏟아져 들어갔다! 푸른 도깨비불과 금빛 영력의 소용돌이가 폐교 복도를 뒤흔들며 세계의 마나가 단숨에 풀충전되었다.",
+          "\"너 정체가 뭐야?! 뭔 손만 잡았는데 마나가 풀충전되는데...?! 착각하지 마! 넌 오늘부터 내 전용 보조배터리야! 손 풀기만 해봐 죽는다 진짜!!\"",
+          "손깍지를 단단히 얽어쥔 채, 세계의 은빛 미용 가위가 허공을 십자로 가르며 악령을 일도양단했다. 푸른 재가 흩날리는 새벽의 복도에서, 세계는 손을 놓지 못한 채 내일 학교에서도 손을 잡아줄 거냐며 얼굴을 붉혔다."
+        ],
+        dialogueBox: {
+          speaker: "세계 (퇴마 갸루)",
+          mood: "여명의 안도감과 숨길 수 없는 홍조",
+          text: "\"하아... 죽는 줄 알았네. 야, 근데 손은 왜 안 놔? ...뭐, 네가 먼저 놓기 전까진 안 놔줄 거니까 착각하지 마. 넌 이제 내 평생 배터리야.\"",
+          thought: "\"손깍지 낀 채로 아침까지 같이 있었네... 손끝에서 전해지는 체온이 너무 따뜻해서 평생 놓고 싶지 않아...\""
+        }
+      }
+    ]
+  },
+  2: {
+    epNum: 2,
+    chapterRange: "3화~5화",
+    title: "에피소드 2: 〈비밀 사당의 영력 동조 훈련과 컵라면의 맛〉",
+    subtitle: "단다단 3화~5화 모티프 · 영력 제어 특훈, 물 선 1mm의 진심, 눈물의 붕대",
+    badge: "호감도 50 · 스킨십 동조 파트너",
+    bannerImg: "vol3.jpg",
+    summary: "방대한 영력을 통제하지 못해 과부하가 걸린 플레이어를 위해 가문의 비밀 사당으로 향한 두 사람. 손잡기와 체온 공유를 통한 영력 동조 특훈, 땀을 닦아주며 끓여 먹는 컵라면, 그리고 사당을 기습한 원혼으로부터 세계를 감싸다 다친 플레이어의 팔에 붕대를 감아주며 눈물짓는 세계의 맹세.",
+    chapters: [
+      {
+        chapNum: "제3화",
+        title: "가문의 비밀 사당과 스킨십 영력 동조 훈련",
+        art: "vol3_extra1_wet_hair_dry.jpg",
+        artCaption: "제3화 삽화 · 사당 툇마루에서 전직 미용사의 섬세한 손길로 머리를 말려주며 체온을 맞추는 세계",
+        paragraphs: [
+          "구교사 사건 이후, 플레이어의 몸 안에서 제어되지 않은 영력이 제멋대로 요동치기 시작했다. 이러다간 몸이 터져버릴지도 모른다는 위기감에, 세계는 방과 후 비밀스러운 산길을 따라 자신의 가문 사당으로 플레이어를 데려갔다.",
+          "고요한 숲속 붉은 토리이 문을 지나 도착한 낡은 목조 사당. 다다미방에 마주 앉은 세계는 잔뜩 긴장한 얼굴로 플레이어의 양손을 꼭 감싸 쥐었다.",
+          "\"잘 들어. 네 영력은 원자로 수준인데 밸브가 고장 난 상태야. 내 영력 파장과 네 영력 파장을 1:1로 맞추려면... 피부를 맞대고 체온을 계속 동조시켜야 해.\"",
+          "양손을 맞잡은 상태에서 세계의 손끝을 통해 따스한 맥박이 흘러들었다. 훈련이 계속되자 이마에 송글송글 맺힌 땀방울. 세계는 수건을 가져와 조심스레 플레이어의 젖은 머리카락을 털어주며 말했다.",
+          "\"...미용실 알바할 때 손님 머리 감겨주던 솜씨거든? 얌전히 있어, 땀 식으면 감기 걸리니까.\""
+        ],
+        dialogueBox: {
+          speaker: "세계 (퇴마 갸루)",
+          mood: "붉어진 귓바퀴를 감추며 퉁명스러운 어투",
+          text: "\"착각하지 마! 이건 어디까지나 훈련이거든?! 손에 땀난다고 투덜거리지 마, 바보야! 네가 쓰러지면 내 배터리가 사라지는 거니까 챙겨주는 것뿐이야!\"",
+          thought: "\"이렇게 가까이서 머리 말려주니까... 샴푸 냄새랑 숨소리가 너무 가깝잖아. 심장 뛰는 소리 들킬까 봐 손이 떨려 죽겠네...\""
+        }
+      },
+      {
+        chapNum: "제4화",
+        title: "단 1mm의 물 선, 백옥 뺨의 컵라면 후후",
+        art: "vol2_extra1_ramen_blow.jpg",
+        artCaption: "제4화 삽화 · 사당 툇마루에서 백옥 도자기 피부를 발그레 물들이며 라면을 불어 먹여주는 세계",
+        paragraphs: [
+          "격렬한 영력 호흡 훈련이 끝나고 배에서 꼬르륵 소리가 울려 퍼졌다. 세계는 가방에서 소중하게 챙겨온 컵라면 두 개와 보온병을 꺼냈다. 라쿤은 이미 마루 한쪽에 얌전히 앉아 소시지를 기다리고 있었다.",
+          "\"라면은 내 인생의 전부야. 물 선 1mm 정확히 맞추고 3분 30초! 면발이 꼬들꼬들할 때가 신의 영역이거든?\"",
+          "세계는 나무젓가락으로 갓 익은 면발을 듬뿍 집어 올렸다. 모락모락 피어오르는 뜨거운 김 사이로, 그녀의 투명하고 하얀 백옥 도자기 피부가 저녁노을빛을 받아 복숭앗빛으로 물들었다.",
+          "\"후- 후-\"",
+          "정성스레 입술을 모아 면발을 식힌 세계는, 이내 쑥스러운 듯 고개를 살짝 돌리며 플레이어의 입술 앞으로 젓가락을 내밀었다. \"자, 아- 해. 딱 한 입만 주는 거니까 음미하면서 먹어라!\""
+        ],
+        dialogueBox: {
+          speaker: "세계 (퇴마 갸루)",
+          mood: "수줍은 츤데레 미소",
+          text: "\"내가 먹던 젓가락이라고 싫어하기만 해봐, 가위로 찔러버릴 테니까! ...맛있지? 내일도 끓여줄 테니까 힘내서 훈련해.\"",
+          thought: "\"내가 먹던 젓가락으로 먹여주다니... 이거 간접 키스잖아! 아 몰라, 얼굴 빨개진 건 라면 김 때문이라고 우기면 돼!\""
+        }
+      },
+      {
+        chapNum: "제5화",
+        title: "사당을 덮친 원혼과 눈물의 붕대 (천둥 포옹)",
+        art: "vol3.jpg",
+        artCaption: "제5화 삽화 · 세계를 지키려다 다친 팔에 눈물을 글썽이며 붕대를 감아주는 세계",
+        paragraphs: [
+          "라면을 다 먹은 평화로운 순간, 갑작스러운 먹구름과 함께 사당 결계를 깨부수며 수신(水神) 원혼이 들이닥쳤다! 날카로운 영력의 물줄기가 세계의 등 뒤를 노리자, 플레이어는 몸을 날려 세계를 감싸 안고 대신 오른팔을 베였다.",
+          "다다미 바닥으로 붉은 피가 떨어지는 것을 본 세계의 눈이 뒤집혔다. 분노로 폭주한 세계의 가위질이 악령을 단숨에 베어 넘긴 뒤, 세계는 바들바들 떨리는 손으로 구급상자를 안고 플레이어 앞에 주저앉았다.",
+          "\"왜 미련하게 날 감싸고 그래?! 네가 잘못되면... 난 진짜 어떡하라고...\"",
+          "큰 눈망울에서 눈물이 뚝뚝 떨어져 붕대 위를 적셨다. 정성껏 붕대를 감아준 세계는 그 손을 제 가슴께로 끌어당겼다.",
+          "그 순간, 우르릉 쾅쾅! 거대한 벼락이 치자 겁에 질린 세계가 비명을 지르며 플레이어의 품에 와락 안겨들었다. \"꺄악-! 하필 천둥이... 야, 절대 비웃지 마... 딱 5분만 이러고 있을 거야!\""
+        ],
+        dialogueBox: {
+          speaker: "세계 (퇴마 갸루)",
+          mood: "품에 안긴 채 눈물과 떨림이 뒤섞인 목소리",
+          text: "\"...약속해. 앞으로 내 허락 없이 다치지 않겠다고. ...그리고... 나 앞으로도 평생 네 상처 감싸줄게. 알았지?\"",
+          thought: "\"품이 너무 넓고 따뜻해서 못 떨어지겠어... 천둥이 더 쳤으면 좋겠다고 생각하면 나 진짜 나쁜 애지?\""
+        }
+      }
+    ]
+  },
+  3: {
+    epNum: 3,
+    chapterRange: "6화~8화",
+    title: "에피소드 3: 〈심야 터널 100km/h 질주와 손깍지 결전〉",
+    subtitle: "단다단 6화~8화 모티프 · 고속 질주 요괴 결전, 영력 부스터, 라쿤의 마스코트 정화",
+    badge: "호감도 80 · 목숨을 맡긴 손깍지 맹세",
+    bannerImg: "vol1_ep3_tunnel_chase.jpg",
+    summary: "도시 외곽 폐터널에서 발생한 거대 지박령과 폭주 요괴의 출현! 시속 100km로 도심을 향해 돌진하는 괴수를 막기 위해, 플레이어와 세계가 손가락을 빈틈없이 얽어맨 손깍지 영력 부스터로 어둠의 아스팔트를 초고속 질주한다. 은빛 가위질 결계와 영력 폭탄으로 악령을 소멸시키고 라쿤을 영구 정화하는 필사의 결전!",
+    chapters: [
+      {
+        chapNum: "제6화",
+        title: "외곽 폐터널의 폭주 요괴와 도심 침공 위기",
+        art: "vol1_ep3_tunnel_chase.jpg",
+        artCaption: "제6화 삽화 · 심야 폐터널에서 손깍지를 낀 채 시속 100km로 초고속 질주하는 세계와 플레이어",
+        paragraphs: [
+          "사당에서의 훈련 덕분에 플레이어의 영력은 안정되었지만, 도시 외곽 폐터널에서 엄청난 음기의 거대 지박령이 깨어났다.",
+          "과거 터널 공사 중 사망한 원혼들과 요괴의 기운이 합체된 거대 다족형 괴수! 놈은 시속 100km가 넘는 속도로 도심 고속도로를 향해 돌진하며 도로를 붕괴시키고 있었다.",
+          "터널 입구에 도착한 세계는 은빛 미용 가위를 단단히 쥐며 플레이어를 돌아보았다. 터널 안은 주황색 비상등이 깜빡이며 괴물의 흉포한 포효가 메아리치고 있었다.",
+          "\"저 괴물이 도심으로 나가면 수천 명이 죽어. 여기서 무조건 끝장내야 해. ...준비됐지, 파트너?\""
+        ],
+        dialogueBox: {
+          speaker: "세계 (퇴마 갸루)",
+          mood: "비장하면서도 자신만만한 카리스마 눈빛",
+          text: "\"손 단단히 잡아! 내 인생 최고의 가위질을 보여줄 테니까, 배터리 출력 최대치로 올려라!\"",
+          thought: "\"얘랑 손잡고 있으면 이상하게 아무것도 안 무서워. 저 거대 괴물도 우리가 함께라면 무조건 이길 수 있어!\""
+        }
+      },
+      {
+        chapNum: "제7화",
+        title: "100km/h 고속 질주! 손깍지 영력 부스터와 가위질 결계",
+        art: "vol1_ep3_tunnel_chase.jpg",
+        artCaption: "제7화 삽화 · 손깍지에서 뿜어져 나오는 눈부신 영력 부스터와 공기를 가르는 은빛 가위질",
+        paragraphs: [
+          "두 사람의 손가락이 단단히 얽혀 맞물리는 순간, 손끝에서 눈이 멀 것 같은 청록색과 금빛 영력 스파크가 폭발하며 제트 엔진 같은 초고속 영력 부스터가 점화되었다!",
+          "쿠구구구궁-!!",
+          "시속 100km의 맹렬한 속도로 깨진 아스팔트 바닥을 차고 내달리는 두 사람. 바람에 세계의 긴 웨이브 머리와 가디건이 미친 듯이 휘날렸고, 어깨에 매달린 라쿤도 털을 곤두세우며 괴물을 향해 캬릉거리며 앞발을 휘둘렀다.",
+          "거대 괴물이 거대한 다리를 내리찍는 찰나, 세계는 플레이어와 손깍지를 쥔 채 공중으로 높이 도약했다. 십자로 교차하는 은빛 가위날에서 수백 갈래의 빛의 참격이 뿜어져 나오며 괴물의 팔다리를 단숨에 동강 내었다!",
+          "\"놓치지 않아! 라쿤, 영력 앵커 투하!!\""
+        ],
+        dialogueBox: {
+          speaker: "세계 (퇴마 갸루)",
+          mood: "아드레날린 폭발과 짜릿한 츤데레 미소",
+          text: "\"손가락 절대 풀지 마, 바보야!! 이 속도에서 놓치면 둘 다 아스팔트에 갈려 나간다고! 끝까지 꽉 잡고 있어!!\"",
+          thought: "\"짜릿해 미칠 것 같아! 손깍지 사이로 전해지는 얘 영력이 내 온몸의 피를 끓게 만들어... 사랑해, 내 최고의 파트너!\""
+        }
+      },
+      {
+        chapNum: "제8화",
+        title: "거대 악령 대소멸과 라쿤의 마스코트 영구 정화",
+        art: "vol2_extra2_windy_cardigan.jpg",
+        artCaption: "제8화 삽화 · 터널 결전 후 탈진한 세계의 어깨 위로 겉옷을 걸쳐주며 나누는 깊은 유대감",
+        paragraphs: [
+          "마지막 일격이 괴물의 심장 핵을 꿰뚫는 순간, 터널 전체가 눈부신 백색 섬광에 휩싸였다. 거대했던 지박령은 한 줌의 푸른 재가 되어 밤바람에 흩어져 완전히 성불했다.",
+          "괴물에 깃들어 있던 흉포한 요괴 기운이 정화되자, 라쿤은 요력을 완전히 잃고 손바닥만 한 통통하고 무해한 귀여운 아기 라쿤 모습으로 퐁! 하고 변했다. 녀석은 세계의 품으로 파고들어 귀엽게 갸릉거리며 골골송을 불렀다.",
+          "모든 힘을 다 쏟아부은 세계가 휘청거리며 쓰러지려 하자, 플레이어가 겉옷을 벗어 세계의 어깨를 감싸 안으며 든든하게 받쳐주었다.",
+          "세계는 옷깃을 꼭 쥔 채, 눈물 어린 촉촉한 눈망울로 플레이어를 올려다보았다."
+        ],
+        dialogueBox: {
+          speaker: "세계 (퇴마 갸루)",
+          mood: "온기 가득한 배려와 풋풋한 설렘",
+          text: "\"...따뜻하네. 너 진짜 듬직하다... 고마워. 이번에도 네가 날 살렸어. ...이제 라쿤도 우리 가족이네? 헤헤.\"",
+          thought: "\"옷에서 좋은 냄새가 나... 심장 뛰는 소리가 옷감 너머로 다 들리는 것 같아. 영원히 이 품에 안겨 있고 싶어...\""
+        }
+      }
+    ]
+  },
+  4: {
+    epNum: 4,
+    chapterRange: "9화~13화",
+    title: "에피소드 4: 〈노을빛 옥상의 평화와 새로운 전운 (텐겐의 등장)〉",
+    subtitle: "단다단 9화~13화 모티프 · 옥상 썸, 비행 영체 요괴 격퇴, 비밀 라멘 데이트, 198cm 텐겐의 등장",
+    badge: "호감도 100 달성 · 완전한 연인 성립 & 2권 서막",
+    bannerImg: "vol2.jpg",
+    summary: "터널 결전을 끝내고 되찾은 학교 일상. 노을빛 옥상에서 컵라면을 나눠 먹으며 서로에게 어깨를 내어준 풋풋한 사랑. 학교 상공에 출현한 미확인 비행 영체를 일격에 격퇴하고 단골 라멘집으로 탈출해 맺어진 둘만의 팔짱 데이트. 그리고 다음 날 아침 교문을 뒤흔든 198cm 은발 미남 텐겐 선배의 깜짝 등장!",
+    chapters: [
+      {
+        chapNum: "제9화",
+        title: "방과 후 옥상 철문과 편의점 비닐봉투",
+        art: "vol2_prologue.jpg",
+        artCaption: "제9화 삽화 · 편의점 비닐봉투를 흔들며 옥상 문을 열고 나타난 세계",
+        paragraphs: [
+          "터널 사건 이후 평화로운 학교 일상이 돌아왔다. 라쿤은 세계의 책가방 속에 얌전히 숨어 지내며 쉬는 시간마다 소시지를 받아먹는 완벽한 마스코트가 되었다.",
+          "하교 벨이 울린 방과 후, 옥상 벤치에서 기다리고 있던 플레이어 앞에 덜컹 소리와 함께 세계가 나타났다. 한 손에 편의점 비닐봉투를 흔드는 세계의 얼굴에 장난기 가득한 윙크가 번졌다.",
+          "\"야! 너 여기서 멍때리고 있을 줄 알았다. 오늘도 내가 라면 사 왔지롱! 물 선 딱 맞췄으니까 얼른 와서 앉아!\""
+        ],
+        dialogueBox: {
+          speaker: "세계 (퇴마 갸루)",
+          mood: "장난스런 윙크와 붉어진 볼",
+          text: "\"라면 핑계 대긴 했는데... 그냥 방과 후에 너랑 단둘이 옥상에서 노을 보면서 맛있는 거 먹고 싶었을 뿐이야, 바보야.\"",
+          thought: "\"너 보러 올라오는 계단 내내 심장이 얼마나 뛰었는지 넌 평생 모를 거야...\""
+        }
+      },
+      {
+        chapNum: "제10화",
+        title: "노을빛 옥상 순찰과 컵라면의 진심",
+        art: "vol2.jpg",
+        artCaption: "제10화 삽화 · 보랏빛 황혼 아래, 옥상 벤치에서 마음을 터놓는 시간",
+        paragraphs: [
+          "보랏빛과 황금빛이 아름답게 물든 저녁 하늘 아래, 두 사람은 벤치에 나란히 앉아 김이 모락모락 피어오르는 컵라면을 먹었다. 라쿤도 벤치 한구석에서 소시지를 갉아먹으며 행복해했다.",
+          "세계는 먼 도시의 불빛을 바라보며 나직하게 속마음을 털어놓았다.",
+          "\"어릴 땐 귀신 보는 내가 너무 싫었고 다 도망치고 싶었는데... 네가 내 배터리가 되어준 뒤로는 밤이 무섭지 않아. ...너랑 먹는 라면이 세상에서 제일 맛있어.\""
+        ],
+        dialogueBox: {
+          speaker: "세계 (퇴마 갸루)",
+          mood: "따스한 온기와 깊은 애정",
+          text: "\"내일도, 모레도... 계속 내 옆에서 라면 같이 먹어줄 거지? 약속 안 하면 라면 국물 다 뺏어 먹는다!\"",
+          thought: "\"왜 쳐다만 봐도 자꾸 실실 웃음이 나지? 라면 국물 불어주는 모습, 왜 이렇게 다정해 보이는 건데... 반칙이야.\""
+        }
+      },
+      {
+        chapNum: "제11화",
+        title: "별빛 내리는 옥상, 어깨를 빌려준 10분의 시간",
+        art: "vol2_epilogue.jpg",
+        artCaption: "제11화 삽화 · 차가운 밤바람 속, 조용히 플레이어의 어깨에 머리를 기댄 세계",
+        paragraphs: [
+          "라면을 다 비우고 옥상 난간 아래로 도심의 네온사인이 보석처럼 반짝였다. 서늘해진 밤바람에 세계는 '춥다...'라며 슬그머니 플레이어의 옆으로 바짝 붙어 앉았다.",
+          "그리고는 망설임 끝에, 아주 조심스럽게 플레이어의 어깨 위로 자신의 머리를 얹어왔다.",
+          "은은한 복숭아 샴푸 향기와 규칙적인 숨결. 라쿤은 이미 세계의 무릎 위에서 새근새근 잠들어 있었다."
+        ],
+        dialogueBox: {
+          speaker: "세계 (퇴마 갸루)",
+          mood: "서늘한 밤바람 속 달콤한 밀착",
+          text: "\"...바람 추우니까 10분만 이러고 있자. 내 어깨 빌려줄 사람, 세상에서 너밖에 없으니까 가만히 있어.\"",
+          thought: "\"어깨 진짜 단단하고 따뜻해... 이대로 시간이 영원히 멈췄으면 좋겠다.\""
+        }
+      },
+      {
+        chapNum: "제12화",
+        title: "단골 라멘집 골목 밀착 팔짱 데이트 (영원한 파트너 계약)",
+        art: "vol4_extra2_ramen_date.jpg",
+        artCaption: "제12화 삽화 · 따스한 저녁 골목길, 팔짱을 꼭 끼고 환하게 웃는 세계와의 야식 데이트",
+        paragraphs: [
+          "옥상을 내려온 두 사람은 세계가 중학생 때부터 혼자 울적할 때마다 찾던 숨겨진 단골 라멘집 골목으로 향했다.",
+          "붉은 제등 불빛 아래 은은한 차슈 육수 냄새가 번지는 골목길. 세계는 플레이어의 팔에 제 팔을 꼬옥 얽어매며 한 뼘의 틈도 주지 않고 밀착했다.",
+          "\"여기 차슈 라멘이 우주 최고거든! 오늘 고생했으니까 내가 풀코스로 쏜다! 너 배 터질 때까지 먹일 거니까 각오해!\""
+        ],
+        dialogueBox: {
+          speaker: "세계 (퇴마 갸루)",
+          mood: "세상을 다 가진 듯 환한 미소",
+          text: "\"거봐, 내가 말했지? 세상에서 제일 맛있는 라면은 너랑 단둘이 먹는 라면이라고. 사랑해, 내 최고의 파트너!\"",
+          thought: "\"팔짱 낀 채로 골목 걷는 거... 진짜 연인 같아서 심장 터질 것 같아. 평생 이러고 싶다.\""
+        }
+      },
+      {
+        chapNum: "제13화",
+        title: "교문을 뒤흔든 198cm 은발 미남 텐겐의 등장 (새로운 파란의 서막)",
+        art: "vol4_prologue.jpg",
+        artCaption: "제13화 삽화 · 봄날 아침 등굣길, 교문 앞을 마비시킨 198cm 은발 쌩얼 미남 텐겐 선배의 등장",
+        paragraphs: [
+          "행복한 라멘 데이트 다음 날 아침, 벚꽃잎이 눈처럼 날리는 등굣길 교문 앞이 여학생들의 환호성으로 완전히 마비되어 있었다.",
+          "인파의 중심에는 198cm의 압도적인 피지컬에 찰랑이는 실크 은발을 어깨 뒤로 풀어헤치고 조각 같은 얼굴로 호탕하게 웃고 있는 3학년 꽃미남 우즈이 텐겐 선배가 서 있었다!",
+          "그 눈부신 위용 앞에 플레이어가 멍하니 주눅 들어 서 있던 그 찰나, 뒤에서 익숙한 손길이 교복 재킷을 툭툭 쳤다. 돌아보니 뾰로통하게 입술을 내민 세계가 팔짱을 낀 채 서 있었다.",
+          "\"야, 뭘 그렇게 넋 놓고 쳐다보고 있어? 키만 쓸데없이 크고 시끄러운 은발 원숭이일 뿐이거든? ...내 눈엔 네가 백 배는 더 잘생겼으니까, 기죽지 말고 얼른 들어가자.\"",
+          "새로운 연적의 등장과 함께, 더욱 뜨거워질 제2권의 거대한 오컬트 삼각 로맨스를 알리는 전율의 1권 피날레!"
+        ],
+        dialogueBox: {
+          speaker: "세계 (퇴마 갸루)",
+          mood: "당당한 질투 차단과 윙크",
+          text: "\"텐겐 선배가 아무리 잘생겨봤자 내 파트너는 너 하나뿐이야. 얼른 가자, 지각하겠다!\"",
+          thought: "\"질투하는 표정 봐... 귀여워 미치겠네. 텐겐 선배한테 절대 안 뺏길 거니까 걱정 마, 바보야!\""
+        }
+      }
+    ]
+  }
+};
+
+function generateHtml(isPublic) {
+  const getImgPath = (imgName) => {
+    if (!isPublic) return imgName;
+    const mapping = {
+      'main.jpg': '/assets/segye_occult/segye_main.jpg',
+      'vol1_prologue.jpg': '/assets/segye_occult/01_vol1_prologue.jpg',
+      'vol1.jpg': '/assets/segye_occult/01_vol1_encounter.jpg',
+      'vol1_epilogue.jpg': '/assets/segye_occult/01_vol1_epilogue.jpg',
+      'vol1_extra1_locker_hide.jpg': '/assets/segye_occult/01_vol1_extra1_locker_hide.jpg',
+      'vol1_extra2_talisman_cut.jpg': '/assets/segye_occult/01_vol1_extra2_talisman_cut.jpg',
+      'vol1_ep3_tunnel_chase.jpg': '/assets/segye_occult/01_vol1_ep3_tunnel_chase.jpg',
+      'vol2_prologue.jpg': '/assets/segye_occult/02_vol2_prologue.jpg',
+      'vol2.jpg': '/assets/segye_occult/02_vol2_patrol_rooftop.jpg',
+      'vol2_epilogue.jpg': '/assets/segye_occult/02_vol2_epilogue.jpg',
+      'vol2_extra1_ramen_blow.jpg': '/assets/segye_occult/02_vol2_extra1_ramen_blow.jpg',
+      'vol2_extra2_windy_cardigan.jpg': '/assets/segye_occult/02_vol2_extra2_windy_cardigan.jpg',
+      'vol3_prologue.jpg': '/assets/segye_occult/03_vol3_prologue.jpg',
+      'vol3.jpg': '/assets/segye_occult/03_vol3_rain_hideout.jpg',
+      'vol3_epilogue.jpg': '/assets/segye_occult/03_vol3_epilogue.jpg',
+      'vol3_extra1_wet_hair_dry.jpg': '/assets/segye_occult/03_vol3_extra1_wet_hair_dry.jpg',
+      'vol3_extra2_thunder_hug.jpg': '/assets/segye_occult/03_vol3_extra2_thunder_hug.jpg',
+      'vol4_prologue.jpg': '/assets/segye_occult/04_vol4_prologue.jpg',
+      'vol4.jpg': '/assets/segye_occult/04_vol4_tengen_jealousy.jpg',
+      'vol4_epilogue.jpg': '/assets/segye_occult/04_vol4_epilogue.jpg',
+      'vol4_extra1_tengen_tease.jpg': '/assets/segye_occult/04_vol4_extra1_tengen_tease.jpg',
+      'vol4_extra2_ramen_date.jpg': '/assets/segye_occult/04_vol4_extra2_ramen_date.jpg'
+    };
+    return mapping[imgName] || imgName;
+  };
+
+  const galleryUrl = isPublic ? "/gallery.html" : "gallery.html";
+  const webAppUrl = isPublic ? "/" : "http://localhost:3024";
+
+  return `<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>세계 (퇴마 갸루) 제1권 (1화~13화) 4대 에피소드 완편 뷰어</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    .active-ep-tab {
+      background: linear-gradient(135deg, #ec4899, #8b5cf6) !important;
+      color: white !important;
+      font-weight: 700;
+      box-shadow: 0 4px 14px rgba(236, 72, 153, 0.4);
+      border-color: transparent !important;
+    }
+    .active-mode-btn {
+      background: rgba(236, 72, 153, 0.25) !important;
+      color: #f472b6 !important;
+      border-color: #ec4899 !important;
+      font-weight: 700;
+    }
+    .prose-line {
+      position: relative;
+    }
+    .prose-line::before {
+      content: "";
+      position: absolute;
+      left: -0.75rem;
+      top: 0.25rem;
+      bottom: 0.25rem;
+      width: 2px;
+      background: linear-gradient(to bottom, #ec4899, #8b5cf6);
+      border-radius: 999px;
+    }
+  </style>
+</head>
+<body class="bg-[#0b0813] text-[#e2e8f0] min-h-screen antialiased p-3 sm:p-6 selection:bg-pink-500 selection:text-white">
+
+  <div class="max-w-5xl mx-auto">
+    
+    <!-- Top Global Header -->
+    <header class="border-b border-white/10 pb-5 mb-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div class="flex items-center gap-3.5">
+        <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-pink-500 shadow-lg flex-shrink-0">
+          <img src="${getImgPath('main.jpg')}" alt="세계 프로필" class="w-full h-full object-cover">
+        </div>
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <h1 class="text-2xl font-extrabold tracking-tight text-white flex items-center gap-2">
+              <span>세계 (Segye)</span>
+              <span class="text-pink-400 font-normal text-lg">제1권 (1화~13화 완편)</span>
+            </h1>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-pink-500/20 text-pink-400 border border-pink-500/30">퇴마 갸루</span>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">단다단 원작 완벽 대응</span>
+          </div>
+          <p class="text-xs text-slate-400">
+            1화~2화 에피소드 1 · 3화~5화 에피소드 2 · 6화~8화 에피소드 3 · 9화~13화 에피소드 4 (총 13화 장편 정독)
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2.5 self-end md:self-auto">
+        <a href="${galleryUrl}" class="px-3.5 py-2 rounded-xl border border-pink-500/40 bg-pink-500/10 text-pink-300 font-bold text-xs hover:bg-pink-500/20 transition flex items-center gap-1.5">
+          <span>🖼️ 22종 화보 갤러리</span>
+        </a>
+        <a href="${webAppUrl}" target="_blank" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold text-xs hover:opacity-90 transition shadow-md flex items-center gap-1.5">
+          <span>💬 실시간 AI 대화 웹앱</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+        </a>
+      </div>
+    </header>
+
+    <!-- 4 Episode Tabs Navigation -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-5">
+      <button onclick="selectEpisode(1)" id="ep-btn-1" class="ep-btn active-ep-tab p-3 rounded-2xl border border-white/10 bg-white/5 hover:border-pink-500/50 transition text-left flex flex-col gap-1">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] text-pink-300 font-bold tracking-wider uppercase">에피소드 1</span>
+          <span class="text-xs font-bold text-pink-400">1화~2화</span>
+        </div>
+        <span class="font-bold text-xs sm:text-sm truncate">심야 24시의 조우</span>
+        <span class="text-[11px] text-slate-300 truncate">영력 전도 &amp; 배터리 계약</span>
+      </button>
+
+      <button onclick="selectEpisode(2)" id="ep-btn-2" class="ep-btn p-3 rounded-2xl border border-white/10 bg-white/5 hover:border-pink-500/50 transition text-left flex flex-col gap-1">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] text-pink-300 font-bold tracking-wider uppercase">에피소드 2</span>
+          <span class="text-xs font-bold text-pink-400">3화~5화</span>
+        </div>
+        <span class="font-bold text-xs sm:text-sm truncate">사당의 영력 동조 훈련</span>
+        <span class="text-[11px] text-slate-300 truncate">라면 먹방 &amp; 눈물의 붕대</span>
+      </button>
+
+      <button onclick="selectEpisode(3)" id="ep-btn-3" class="ep-btn p-3 rounded-2xl border border-white/10 bg-white/5 hover:border-pink-500/50 transition text-left flex flex-col gap-1">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] text-pink-300 font-bold tracking-wider uppercase">에피소드 3</span>
+          <span class="text-xs font-bold text-pink-400">6화~8화</span>
+        </div>
+        <span class="font-bold text-xs sm:text-sm truncate">터널 100km/h 질주</span>
+        <span class="text-[11px] text-slate-300 truncate">손깍지 결전 &amp; 라쿤 정화</span>
+      </button>
+
+      <button onclick="selectEpisode(4)" id="ep-btn-4" class="ep-btn p-3 rounded-2xl border border-white/10 bg-white/5 hover:border-pink-500/50 transition text-left flex flex-col gap-1">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] text-pink-300 font-bold tracking-wider uppercase">에피소드 4</span>
+          <span class="text-xs font-bold text-pink-400">9화~13화</span>
+        </div>
+        <span class="font-bold text-xs sm:text-sm truncate">노을 옥상 &amp; 텐겐 등장</span>
+        <span class="text-[11px] text-slate-300 truncate">팔짱 데이트 &amp; 1권 완편</span>
+      </button>
+    </div>
+
+    <!-- Mode Selector & Episode Meta Bar -->
+    <div class="bg-[#150f24] border border-white/10 rounded-2xl p-4 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-md">
+      <div>
+        <div class="flex items-center gap-2 mb-1">
+          <h2 id="ep-title-display" class="text-lg font-bold text-white"></h2>
+          <span id="ep-badge-display" class="px-2 py-0.5 rounded text-[11px] font-bold bg-pink-500/20 text-pink-400 border border-pink-500/30"></span>
+        </div>
+        <p id="ep-subtitle-display" class="text-xs text-slate-400"></p>
+      </div>
+
+      <div class="flex items-center gap-2 self-stretch sm:self-auto">
+        <button onclick="setMode('story')" id="mode-story-btn" class="mode-btn active-mode-btn flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-bold border border-white/10 bg-white/5 hover:border-pink-500/40 transition flex items-center justify-center gap-1.5">
+          <span>📖 장편 소설 정독 모드</span>
+        </button>
+        <button onclick="setMode('interactive')" id="mode-interactive-btn" class="mode-btn flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-bold border border-white/10 bg-white/5 hover:border-pink-500/40 transition flex items-center justify-center gap-1.5">
+          <span>🎮 화수별 대화 시뮬레이션</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- MAIN DISPLAY AREA -->
+
+    <!-- 1. FULL NOVELISTIC STORY MODE CONTAINER -->
+    <div id="story-mode-container" class="space-y-8">
+      <!-- Injected via JavaScript -->
+    </div>
+
+    <!-- 2. INTERACTIVE SIMULATOR CONTAINER -->
+    <div id="interactive-mode-container" class="hidden">
+      <!-- Chapter Navigator -->
+      <div class="flex items-center gap-1.5 overflow-x-auto pb-2 mb-4" id="interactive-chap-nav">
+        <!-- Injected via JS -->
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-5 bg-[#150f24] border border-white/10 rounded-2xl p-4 sm:p-6 shadow-xl">
+        <div class="md:col-span-5 relative rounded-xl overflow-hidden border border-white/10 bg-black/60 shadow-lg">
+          <img id="interactive-img" src="" alt="Scene Artwork" class="w-full h-auto max-h-[460px] object-cover">
+          <div class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[11px] font-bold bg-black/70 backdrop-blur-md text-pink-400 border border-pink-500/30" id="interactive-badge"></div>
+        </div>
+
+        <div class="md:col-span-7 flex flex-col justify-between gap-4">
+          <div>
+            <div class="flex items-center justify-between text-xs text-pink-400 font-bold mb-1">
+              <span id="interactive-chapter-label"></span>
+              <span class="text-slate-400" id="interactive-char-name">세계 (퇴마 갸루)</span>
+            </div>
+            <h3 id="interactive-title" class="text-base sm:text-lg font-bold text-white mb-2"></h3>
+            <div id="interactive-paragraphs" class="text-xs text-slate-300 leading-relaxed space-y-2 mb-4 bg-black/30 p-3 rounded-xl border border-white/5 max-h-48 overflow-y-auto"></div>
+
+            <!-- Dialogue Bubble -->
+            <div class="p-3.5 rounded-xl bg-gradient-to-br from-pink-500/15 to-purple-500/10 border border-pink-500/30 mb-4">
+              <div class="flex items-center justify-between text-xs font-bold text-pink-400 mb-1">
+                <span>세계의 대사</span>
+                <span id="interactive-mood" class="text-slate-400 font-normal"></span>
+              </div>
+              <p id="interactive-dialogue" class="text-xs sm:text-sm font-semibold text-white leading-relaxed mb-1.5"></p>
+              <div class="text-[11px] text-purple-300 flex items-start gap-1">
+                <span class="font-bold text-pink-400 shrink-0">💭 속마음:</span>
+                <span id="interactive-thought" class="italic"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dynamic Choice Actions -->
+          <div id="interactive-actions" class="space-y-2 pt-2 border-t border-white/10">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const episodesData = ${JSON.stringify(episodesData)};
+
+    const isPublic = ${isPublic ? 'true' : 'false'};
+    const pathMapping = {
+      'main.jpg': isPublic ? '/assets/segye_occult/segye_main.jpg' : 'main.jpg',
+      'vol1_prologue.jpg': isPublic ? '/assets/segye_occult/01_vol1_prologue.jpg' : 'vol1_prologue.jpg',
+      'vol1.jpg': isPublic ? '/assets/segye_occult/01_vol1_encounter.jpg' : 'vol1.jpg',
+      'vol1_epilogue.jpg': isPublic ? '/assets/segye_occult/01_vol1_epilogue.jpg' : 'vol1_epilogue.jpg',
+      'vol1_extra1_locker_hide.jpg': isPublic ? '/assets/segye_occult/01_vol1_extra1_locker_hide.jpg' : 'vol1_extra1_locker_hide.jpg',
+      'vol1_extra2_talisman_cut.jpg': isPublic ? '/assets/segye_occult/01_vol1_extra2_talisman_cut.jpg' : 'vol1_extra2_talisman_cut.jpg',
+      'vol1_ep3_tunnel_chase.jpg': isPublic ? '/assets/segye_occult/01_vol1_ep3_tunnel_chase.jpg' : 'vol1_ep3_tunnel_chase.jpg',
+      'vol2_prologue.jpg': isPublic ? '/assets/segye_occult/02_vol2_prologue.jpg' : 'vol2_prologue.jpg',
+      'vol2.jpg': isPublic ? '/assets/segye_occult/02_vol2_patrol_rooftop.jpg' : 'vol2.jpg',
+      'vol2_epilogue.jpg': isPublic ? '/assets/segye_occult/02_vol2_epilogue.jpg' : 'vol2_epilogue.jpg',
+      'vol2_extra1_ramen_blow.jpg': isPublic ? '/assets/segye_occult/02_vol2_extra1_ramen_blow.jpg' : 'vol2_extra1_ramen_blow.jpg',
+      'vol2_extra2_windy_cardigan.jpg': isPublic ? '/assets/segye_occult/02_vol2_extra2_windy_cardigan.jpg' : 'vol2_extra2_windy_cardigan.jpg',
+      'vol3_prologue.jpg': isPublic ? '/assets/segye_occult/03_vol3_prologue.jpg' : 'vol3_prologue.jpg',
+      'vol3.jpg': isPublic ? '/assets/segye_occult/03_vol3_rain_hideout.jpg' : 'vol3.jpg',
+      'vol3_epilogue.jpg': isPublic ? '/assets/segye_occult/03_vol3_epilogue.jpg' : 'vol3_epilogue.jpg',
+      'vol3_extra1_wet_hair_dry.jpg': isPublic ? '/assets/segye_occult/03_vol3_extra1_wet_hair_dry.jpg' : 'vol3_extra1_wet_hair_dry.jpg',
+      'vol3_extra2_thunder_hug.jpg': isPublic ? '/assets/segye_occult/03_vol3_extra2_thunder_hug.jpg' : 'vol3_extra2_thunder_hug.jpg',
+      'vol4_prologue.jpg': isPublic ? '/assets/segye_occult/04_vol4_prologue.jpg' : 'vol4_prologue.jpg',
+      'vol4.jpg': isPublic ? '/assets/segye_occult/04_vol4_tengen_jealousy.jpg' : 'vol4.jpg',
+      'vol4_epilogue.jpg': isPublic ? '/assets/segye_occult/04_vol4_epilogue.jpg' : 'vol4_epilogue.jpg',
+      'vol4_extra1_tengen_tease.jpg': isPublic ? '/assets/segye_occult/04_vol4_extra1_tengen_tease.jpg' : 'vol4_extra1_tengen_tease.jpg',
+      'vol4_extra2_ramen_date.jpg': isPublic ? '/assets/segye_occult/04_vol4_extra2_ramen_date.jpg' : 'vol4_extra2_ramen_date.jpg'
+    };
+
+    function resolveImg(name) {
+      return pathMapping[name] || name;
+    }
+
+    let currentEpNum = 1;
+    let currentMode = 'story'; // 'story' | 'interactive'
+    let currentChapIdx = 0;
+
+    function selectEpisode(num) {
+      currentEpNum = num;
+      currentChapIdx = 0;
+      document.querySelectorAll('.ep-btn').forEach(btn => btn.classList.remove('active-ep-tab'));
+      const activeBtn = document.getElementById('ep-btn-' + num);
+      if (activeBtn) activeBtn.classList.add('active-ep-tab');
+
+      const ep = episodesData[num];
+      document.getElementById('ep-title-display').textContent = ep.title;
+      document.getElementById('ep-badge-display').textContent = ep.badge;
+      document.getElementById('ep-subtitle-display').textContent = ep.subtitle;
+
+      renderView();
+    }
+
+    function setMode(mode) {
+      currentMode = mode;
+      document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active-mode-btn'));
+      if (mode === 'story') {
+        document.getElementById('mode-story-btn').classList.add('active-mode-btn');
+        document.getElementById('story-mode-container').classList.remove('hidden');
+        document.getElementById('interactive-mode-container').classList.add('hidden');
+      } else {
+        document.getElementById('mode-interactive-btn').classList.add('active-mode-btn');
+        document.getElementById('story-mode-container').classList.add('hidden');
+        document.getElementById('interactive-mode-container').classList.remove('hidden');
+      }
+      renderView();
+    }
+
+    function renderView() {
+      const ep = episodesData[currentEpNum];
+      if (!ep) return;
+
+      if (currentMode === 'story') {
+        renderStoryMode(ep);
+      } else {
+        renderInteractiveMode(ep);
+      }
+    }
+
+    function renderStoryMode(ep) {
+      const container = document.getElementById('story-mode-container');
+      
+      let html = \`
+        <div class="bg-[#150f24] border border-white/10 rounded-2xl p-5 mb-6 flex flex-col md:flex-row gap-5 items-center">
+          <div class="w-full md:w-1/3 rounded-xl overflow-hidden border border-white/10 shadow-lg">
+            <img src="\${resolveImg(ep.bannerImg)}" alt="Episode Banner" class="w-full h-48 md:h-56 object-cover hover:scale-105 transition duration-500">
+          </div>
+          <div class="w-full md:w-2/3">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="px-2 py-0.5 rounded text-[11px] font-extrabold bg-pink-500 text-white">\${ep.chapterRange}</span>
+              <span class="text-xs text-pink-400 font-bold">\${ep.subtitle}</span>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">\${ep.title}</h3>
+            <p class="text-xs text-slate-300 leading-relaxed mb-4">\${ep.summary}</p>
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-pink-500/20 text-pink-300 border border-pink-500/30">총 \${ep.chapters.length}개 챕터 정독</span>
+              <span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">라쿤 정령 동행</span>
+              <span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">스킨십 호감도 연동</span>
+            </div>
+          </div>
+        </div>
+      \`;
+
+      ep.chapters.forEach((chap, idx) => {
+        html += \`
+          <article class="bg-[#150f24] border border-white/10 rounded-2xl overflow-hidden shadow-xl hover:border-pink-500/30 transition duration-300">
+            <!-- Chapter Header -->
+            <div class="px-5 py-3.5 border-b border-white/10 bg-black/40 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-extrabold bg-pink-500 text-white">\${chap.chapNum}</span>
+                <h4 class="text-sm sm:text-base font-bold text-white">\${chap.title}</h4>
+              </div>
+              <span class="text-xs text-slate-400">Chapter \${idx + 1} of \${ep.chapters.length}</span>
+            </div>
+
+            <!-- Chapter Body -->
+            <div class="p-5 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+              
+              <!-- Left: Artwork with Caption -->
+              <div class="lg:col-span-5 rounded-xl overflow-hidden border border-white/10 shadow-lg bg-black/50">
+                <img src="\${resolveImg(chap.art)}" alt="\${chap.title}" class="w-full h-auto max-h-[420px] object-cover hover:scale-105 transition duration-500">
+                <div class="p-2.5 bg-black/80 text-[11px] text-pink-300 border-t border-white/10 text-center font-medium">
+                  \${chap.artCaption}
+                </div>
+              </div>
+
+              <!-- Right: Prose & Dialogues -->
+              <div class="lg:col-span-7 flex flex-col gap-4">
+                <div class="text-xs sm:text-sm text-slate-300 leading-relaxed space-y-3 pl-3">
+                  \${chap.paragraphs.map(p => \`<p class="prose-line leading-relaxed">\${p}</p>\`).join('')}
+                </div>
+
+                <!-- Tsundere Dialogue Callout Box -->
+                <div class="mt-2 p-4 rounded-xl bg-gradient-to-br from-pink-500/15 to-purple-500/10 border border-pink-500/30 shadow-md">
+                  <div class="flex items-center justify-between text-xs font-bold text-pink-400 mb-1.5">
+                    <span class="flex items-center gap-1.5">
+                      <span class="w-2 h-2 rounded-full bg-pink-500 animate-pulse"></span>
+                      \${chap.dialogueBox.speaker}
+                    </span>
+                    <span class="text-slate-400 text-[11px] font-normal">\${chap.dialogueBox.mood}</span>
+                  </div>
+                  <p class="text-xs sm:text-sm font-semibold text-white leading-relaxed mb-2">
+                    \${chap.dialogueBox.text}
+                  </p>
+                  <div class="pt-2 border-t border-pink-500/20 text-xs text-purple-300 flex items-start gap-1.5">
+                    <span class="font-bold text-pink-400 shrink-0">💭 속마음:</span>
+                    <span class="italic text-slate-300">\${chap.dialogueBox.thought}</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </article>
+        \`;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function selectChap(idx) {
+      currentChapIdx = idx;
+      renderInteractiveMode(episodesData[currentEpNum]);
+    }
+
+    function renderInteractiveMode(ep) {
+      // Build chapter tabs for this episode
+      const nav = document.getElementById('interactive-chap-nav');
+      nav.innerHTML = ep.chapters.map((chap, i) => \`
+        <button onclick="selectChap(\${i})" class="px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition \${i === currentChapIdx ? 'border border-pink-500 bg-pink-500/20 text-pink-300' : 'border border-white/10 bg-white/5 text-slate-300'}">
+          \${chap.chapNum}: \${chap.title.split('(')[0].trim()}
+        </button>
+      \`).join('');
+
+      const chap = ep.chapters[currentChapIdx];
+      if (!chap) return;
+
+      document.getElementById('interactive-img').src = resolveImg(chap.art);
+      document.getElementById('interactive-badge').textContent = chap.chapNum;
+      document.getElementById('interactive-chapter-label').textContent = \`\${ep.title.split(':')[0]} · \${chap.chapNum}\`;
+      document.getElementById('interactive-title').textContent = chap.title;
+      document.getElementById('interactive-paragraphs').innerHTML = chap.paragraphs.map(p => \`<p>\${p}</p>\`).join('');
+      document.getElementById('interactive-mood').textContent = chap.dialogueBox.mood;
+      document.getElementById('interactive-dialogue').textContent = chap.dialogueBox.text;
+      document.getElementById('interactive-thought').textContent = chap.dialogueBox.thought;
+
+      const actions = document.getElementById('interactive-actions');
+      actions.innerHTML = \`
+        <div class="text-xs font-bold text-pink-400 mb-2 flex items-center justify-between">
+          <span>⚡ 플레이어 대화 선택지</span>
+          <span class="text-[11px] text-slate-400">실시간 심쿵 반응</span>
+        </div>
+        <div class="space-y-1.5">
+          <button onclick="handleSimChoice('romantic')" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-pink-500/40 bg-pink-500/10 hover:bg-pink-500/20 transition text-xs flex items-center justify-between group">
+            <span class="font-bold text-pink-200">💖 \"네 손이 너무 따뜻해서 평생이라도 꼭 쥐고 있을 수 있어.\"</span>
+            <span class="text-[10px] font-extrabold text-pink-400 bg-pink-500/20 px-2 py-0.5 rounded-full">+10 호감도 상승</span>
+          </button>
+          <button onclick="handleSimChoice('care')" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-emerald-500/40 bg-emerald-500/10 hover:bg-emerald-500/20 transition text-xs flex items-center justify-between group">
+            <span class="font-bold text-emerald-200">🌿 \"다친 덴 없어? 배터리든 뭐든 내 영력 얼마든지 가져다 써.\"</span>
+            <span class="text-[10px] font-extrabold text-emerald-400 bg-emerald-500/20 px-2 py-0.5 rounded-full">+8 호감도 상승</span>
+          </button>
+          <button onclick="handleSimChoice('playful')" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20 transition text-xs flex items-center justify-between group">
+            <span class="font-bold text-amber-200">⚡ \"배터리라고 부르더니, 아까 손깍지는 왜 먼저 쥐었어?\"</span>
+            <span class="text-[10px] font-extrabold text-amber-400 bg-amber-500/20 px-2 py-0.5 rounded-full">+7 호감도 상승</span>
+          </button>
+        </div>
+        <div id="choice-feedback-box" class="hidden mt-2 p-3 rounded-xl bg-pink-500/20 border border-pink-500/40 text-xs">
+          <div class="font-bold text-pink-300 mb-1" id="feedback-delta"></div>
+          <p class="text-white font-medium mb-1" id="feedback-dialogue"></p>
+          <p class="italic text-purple-300 text-[11px]" id="feedback-thought"></p>
+        </div>
+      \`;
+    }
+
+    function handleSimChoice(type) {
+      const fbBox = document.getElementById('choice-feedback-box');
+      if (!fbBox) return;
+      fbBox.classList.remove('hidden');
+
+      if (type === 'romantic') {
+        document.getElementById('feedback-delta').textContent = "⚡ +10 호감도 대폭 상승! (세계의 심박수 152 BPM)";
+        document.getElementById('feedback-dialogue').textContent = "\"평, 평생...?! 너 진짜 겁도 없이 무슨 말을 그렇게 쉽게 해?! ...하, 하지만 손 풀면 위험하니까... 딱 오늘만 잡아주는 거야, 바보야!\"";
+        document.getElementById('feedback-thought').textContent = "속마음: (얼굴 화끈거려서 죽을 것 같아... 평생이라니, 방금 고백한 거 아니야?! 미치겠네 진짜...)";
+      } else if (type === 'care') {
+        document.getElementById('feedback-delta').textContent = "⚡ +8 호감도 상승! (신뢰도와 유대감 강화)";
+        document.getElementById('feedback-dialogue').textContent = "\"흥, 내가 누굴 걱정해야 할 판에 날 걱정해? ...그래도 고마워. 네 영력 덕분에 저 흉측한 놈 한 방에 날려버렸으니까.\"";
+        document.getElementById('feedback-thought').textContent = "속마음: (생각보다 되게 든든하네... 맨날 혼자 귀신 잡느라 무서웠는데, 얘가 옆에 있으니까 하나도 안 무서워.)";
+      } else {
+        document.getElementById('feedback-delta').textContent = "⚡ +7 호감도 상승! (장난스러운 심쿵)";
+        document.getElementById('feedback-dialogue').textContent = "\"죽을래 진짜?! 괴물이 움직일까 봐 꽉 잡은 거거든?! ...라쿤 너까지 왜 옆에서 낄낄대는데! 둘 다 한 대씩 맞아볼래?!\"";
+        document.getElementById('feedback-thought').textContent = "속마음: (깍지 낀 거 다 기억하고 있었어?! 아 창피해 죽겠네 진짜! 이불킥 100번 각이다...)";
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      selectEpisode(1);
+    });
+  </script>
+
+</body>
+</html>
+`;
+}
+
+// Generate brain version
+fs.writeFileSync(path.join(brainDir, 'preview.html'), generateHtml(false), 'utf8');
+console.log('Successfully generated brain/preview.html');
+
+// Generate public version
+fs.writeFileSync(path.join(publicDir, 'preview.html'), generateHtml(true), 'utf8');
+console.log('Successfully generated public/preview.html');

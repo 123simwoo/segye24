@@ -11,6 +11,7 @@ const mapping = [
   ['vol1_epilogue.jpg', '/assets/segye_occult/01_vol1_epilogue.jpg'],
   ['vol1_extra1_locker_hide.jpg', '/assets/segye_occult/01_vol1_extra1_locker_hide.jpg'],
   ['vol1_extra2_talisman_cut.jpg', '/assets/segye_occult/01_vol1_extra2_talisman_cut.jpg'],
+  ['vol1_ep3_tunnel_chase.jpg', '/assets/segye_occult/01_vol1_ep3_tunnel_chase.jpg'],
   ['vol2_prologue.jpg', '/assets/segye_occult/02_vol2_prologue.jpg'],
   ['vol2.jpg', '/assets/segye_occult/02_vol2_patrol_rooftop.jpg'],
   ['vol2_epilogue.jpg', '/assets/segye_occult/02_vol2_epilogue.jpg'],
