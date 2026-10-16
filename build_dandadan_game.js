@@ -1167,9 +1167,9 @@ const episodesData = {
   // EPISODE 4: 9화~13화 (사라사라 & 텐겐 등장)
   // ==========================================
   4: {
-    title: "에피소드 4: 〈사라진 황금 구슬, 옥상 라멘 썸, 아크로바틱 사라사라, 198cm 은발 미남 지진의 등장〉",
+    title: "에피소드 4: 〈사라진 황금 구슬, 미소녀 아이라와 아크로바틱 사라사라, 198cm 은발 미남 지진의 등장〉",
     range: "9화~13화",
-    desc: "화장실에서 확인한 충격의 진실: 바나나는 돌아왔는데 불알이 사라졌다?! 옥상 썸, 황금 구슬을 주운 자칭 미소녀 전사 아이라와 빨간 원피스 요괴 아크로바틱 사라사라와의 빗속 사투, 그리고 198cm 은발 미남 지진의 등장!",
+    desc: "화장실에서 확인한 충격의 진실: 바나나는 돌아왔는데 불알이 사라졌다?! 터보 할멈의 요력이 담긴 황금 구슬, 구슬을 줍고 영력이 각성한 자칭 미소녀 전사 아이라와 빨간 원피스 요괴 아크로바틱 사라사라와의 사투, 그리고 198cm 은발 미남 지진의 등장!",
     badge: "단다단 원작 9화~13화 · 1권 피날레",
     script: [
       {
@@ -1202,31 +1202,31 @@ const episodesData = {
       },
       {
         id: 3,
-        chapter: "제9화: 사라진 황금 구슬",
-        sceneTitle: "노을빛 옥상 어깨 기대기 썸",
-        bg: "/assets/manga/24_rooftop_shoulder_lean.jpg",
+        chapter: "제9화: 화장실의 비명과 사라진 황금 구슬",
+        sceneTitle: "모모의 경악: 터보 할멈의 요력이 담긴 구슬!",
+        bg: "/assets/manga/23_missing_golden_ball.jpg",
         speaker: "아야세 모모",
         speakerType: "momo",
-        text: "...서늘한 밤바람 춥다. 10분만 이러고 있자. ...내 어깨 빌려줄 사람, 세상에서 너밖에 없으니까 가만히 있어, 바보야.",
-        thought: "어깨 진짜 단단하고 따뜻해... 이대로 시간이 영원히 멈췄으면 좋겠다.",
-        mangaNote: "만화 9화 3p: 노을 지는 학교 옥상 벤치에서, 모모가 오카룬의 단단한 어깨 위로 조용히 머리를 기대는 설레는 썸 컷!",
-        expression: "momo-blush",
-        effect: "flash-white",
-        sfx: "heartbeat"
+        text: "...아니, 웃을 때가 아니잖아?! 터보 할멈의 강력한 요력이 그 구슬에 농축되어 봉인되어 있었다고! 만약 영력이 없는 일반인이 그걸 주우면 끔찍한 악령이 꼬여서 목숨을 잃는단 말이야!!",
+        thought: "위험해... 학교에 엄청난 요기가 퍼질 수도 있어. 당장 찾아내야 해!",
+        mangaNote: "만화 9화 3p: 얼굴이 굳어지며 사태의 심각성을 깨닫고 당장 구슬을 수색하자고 외치는 모모.",
+        expression: "momo-angry",
+        effect: "shake-light",
+        sfx: ""
       },
       {
         id: 4,
-        chapter: "제9화: 사라진 황금 구슬",
-        sceneTitle: "두근거리는 오카룬의 심장",
-        bg: "/assets/manga/24_rooftop_shoulder_lean.jpg",
+        chapter: "제9화: 화장실의 비명과 사라진 황금 구슬",
+        sceneTitle: "수색 개시와 오카룬의 비장한 각오",
+        bg: "/assets/manga/23_missing_golden_ball.jpg",
         speaker: "오카룬 (타카쿠라 켄)",
         speakerType: "okarun",
-        text: "아, 아야세 씨... 심장 뛰는 소리가 들릴 것 같습니다... 가만히... 있겠습니다.",
-        thought: "아야세 씨의 머리카락에서 샴푸 향기가 나... 숨도 못 쉬겠어. 너무 행복해...",
-        mangaNote: "만화 9화 4p: 얼굴이 새빨개진 채 가만히 어깨를 내어주는 오카룬의 순수한 클로즈업 컷.",
-        expression: "okarun-blush",
-        effect: "",
-        sfx: ""
+        text: "제... 제 불알 때문에 무고한 사람이 다칠 수도 있다는 겁니까...?! 아야세 씨, 무슨 일이 있어도 제 손으로 황금 구슬을 찾아내겠습니다!!",
+        thought: "다른 사람에게 피해를 줄 순 없어... 내 소중한 킨타마는 반드시 내가 회수한다!",
+        mangaNote: "만화 9화 4p: 안경을 고쳐 쓰며 비장하게 교내 수색을 결의하는 오카룬과 모모.",
+        expression: "okarun-determined",
+        effect: "flash-white",
+        sfx: "talisman"
       },
       {
         id: 5,
