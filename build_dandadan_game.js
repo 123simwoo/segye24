@@ -753,7 +753,7 @@ const episodesData = {
   2: {
     title: "에피소드 2: 〈할머니 세이코의 특훈 & 화장실의 신 & 결전 준비〉",
     range: "3화~5화",
-    desc: "전설의 동안 미녀 영매사 세이코 할머니 등장! 터보 할멈 야구 배트 응징 홈런, 화장실의 신 결계 훈련, 툇마루 컵라면 썸, 그리고 쇼타 터널 결전 전야의 비장한 출진!",
+    desc: "전설의 동안 미녀 영매사 세이코 할머니 등장! 터보 할멈 야구 배트 응징 홈런, 화장실의 신 결계 훈련, 그리고 쇼타 터널 결전 전야의 비장한 출진!",
     badge: "단다단 원작 3화~5화 · 결전의 준비",
     script: [
       {
@@ -912,62 +912,6 @@ const episodesData = {
       },
       {
         id: 12,
-        chapter: "제4화: 화장실의 신 결계 훈련",
-        sceneTitle: "노을 지는 툇마루의 휴식",
-        bg: "/assets/manga/13_porch_ramen_blow.jpg",
-        speaker: "나레이션",
-        speakerType: "narration",
-        text: "온종일 이어진 혹독한 특훈 끝에 마침내 해가 뉘엿뉘엿 저물었다. 붉은 저녁노을이 신사 툇마루를 황금빛으로 물들였다.",
-        thought: "",
-        mangaNote: "만화 4화 4p: 탈진하여 툇마루에 털썩 걸터앉은 오카룬과 보송보송한 면 수건을 들고 다가오는 모모.",
-        expression: "narration",
-        effect: "",
-        sfx: ""
-      },
-      {
-        id: 13,
-        chapter: "제4화: 화장실의 신 결계 훈련",
-        sceneTitle: "모모의 다정한 머리 말려주기",
-        bg: "/assets/manga/13_porch_ramen_blow.jpg",
-        speaker: "아야세 모모",
-        speakerType: "momo",
-        text: "가만히 있어, 바보야. 땀 식으면 감기 걸리니까. ...미용실 알바할 때 다져진 솜씨니까 얌전히 머리나 맡기라고.",
-        thought: "머릿결이 생각보다 부드럽네... 땀 뻘뻘 흘리면서도 포기 안 하고 버티는 모습, 꽤 기특하잖아.",
-        mangaNote: "만화 4화 5p: 수건으로 오카룬의 젖은 머리를 조심스럽고 다정하게 털어주는 모모의 은은한 미소 컷.",
-        expression: "momo-gentle",
-        effect: "",
-        sfx: ""
-      },
-      {
-        id: 14,
-        chapter: "제4화: 화장실의 신 결계 훈련",
-        sceneTitle: "후- 후- 컵라면 썸 먹방",
-        bg: "/assets/manga/13_porch_ramen_blow.jpg",
-        speaker: "아야세 모모",
-        speakerType: "momo",
-        text: "자, 아- 해봐. 특제 컵라면 면발 후- 후- 불어서 식혀줬으니까! 딱 한 입만 주는 거니까 감지덕지하라고!",
-        thought: "내가 먹던 젓가락으로 먹여주는 건데... 설마 간접 키스라고 생각하는 건 아니겠지?! 으으 왜 내가 긴장해!",
-        mangaNote: "만화 4화 6p: 컵라면 면발을 입술로 후- 불어서 오카룬 입앞에 내미는 홍조 띤 모모의 심쿵 컷!",
-        expression: "momo-blush",
-        effect: "shake-light",
-        sfx: "heartbeat"
-      },
-      {
-        id: 15,
-        chapter: "제4화: 화장실의 신 결계 훈련",
-        sceneTitle: "오카룬의 감동",
-        bg: "/assets/manga/13_porch_ramen_blow.jpg",
-        speaker: "오카룬 (타카쿠라 켄)",
-        speakerType: "okarun",
-        text: "냠... 꿀꺽. ...정말... 세상에서 제일 맛있습니다, 아야세 씨. 제 인생에서 먹어본 라면 중에 제일 따뜻해요.",
-        thought: "이렇게 다정한 아이였구나... 나 같은 오타쿠를 위해 머리도 말려주고 라면도 먹여주고... 눈물이 날 것 같아.",
-        mangaNote: "만화 4화 7p: 눈을 반짝이며 라면을 먹고 감동하는 오카룬의 벅찬 표정.",
-        expression: "okarun-tears",
-        effect: "",
-        sfx: ""
-      },
-      {
-        id: 16,
         chapter: "제5화: 터널 결전 준비",
         sceneTitle: "세이코의 작전 브리핑",
         bg: "/assets/manga/14_tunnel_briefing.jpg",
@@ -981,7 +925,7 @@ const episodesData = {
         sfx: ""
       },
       {
-        id: 17,
+        id: 13,
         chapter: "제5화: 터널 결전 준비",
         sceneTitle: "손을 꽉 맞잡은 두 사람",
         bg: "/assets/manga/15_holding_hands_departure.jpg",
@@ -995,7 +939,7 @@ const episodesData = {
         sfx: "talisman"
       },
       {
-        id: 18,
+        id: 14,
         chapter: "제5화: 터널 결전 준비",
         sceneTitle: "쇼타 터널을 향한 출진!",
         bg: "/assets/manga/15_holding_hands_departure.jpg",
