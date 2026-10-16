@@ -1164,13 +1164,13 @@ const episodesData = {
   },
 
   // ==========================================
-  // EPISODE 4: 9화~13화 (사라사라 & 텐겐 등장)
+  // EPISODE 4: 9화~17화 (사라진 황금 구슬과 아크로바틱 사라사라 편 완결)
   // ==========================================
   4: {
-    title: "에피소드 4: 〈사라진 황금 구슬, 미소녀 아이라와 아크로바틱 사라사라, 198cm 은발 미남 지진의 등장〉",
-    range: "9화~13화",
-    desc: "화장실에서 확인한 충격의 진실: 바나나는 돌아왔는데 불알이 사라졌다?! 터보 할멈의 요력이 담긴 황금 구슬, 구슬을 줍고 영력이 각성한 자칭 미소녀 전사 아이라와 빨간 원피스 요괴 아크로바틱 사라사라와의 사투, 그리고 198cm 은발 미남 지진의 등장!",
-    badge: "단다단 원작 9화~13화 · 1권 피날레",
+    title: "에피소드 4: 〈사라진 황금 구슬, 시라토리 아이라와 아크로바틱 사라사라 편〉",
+    range: "9화~17화",
+    desc: "화장실에서 확인한 충격의 진실: 바나나는 돌아왔는데 불알이 사라졌다?! 터보 할멈의 요력이 담긴 황금 구슬을 줍고 영력이 각성한 시라토리 아이라, 아이라를 딸로 착각해 납치한 요괴 아크로바틱 사라사라와의 도심 공중전, 그리고 슬픈 모성애의 성불과 아이라의 기적적인 소생!",
+    badge: "단다단 원작 9화~17화 · 아크로바틱 사라사라 완결편",
     script: [
       {
         id: 1,
@@ -1230,114 +1230,156 @@ const episodesData = {
       },
       {
         id: 5,
-        chapter: "제10화: 시라토리 아이라와 사라사라",
+        chapter: "제10화~13화: 시라토리 아이라와 사라사라",
         sceneTitle: "구슬을 주운 자칭 미소녀 전사 아이라",
         bg: "/assets/manga/25_aira_intro_ball.jpg",
         speaker: "시라토리 아이라",
         speakerType: "aira",
         text: "오호호호! 이 황금 구슬의 성스러운 빛... 역시 나는 신에게 선택받은 미소녀 전사였어! 아야세 모모, 네가 악마라는 걸 내 영력이 꿰뚫어 보고 있단다!",
         thought: "이 황금 구슬을 손에 넣은 뒤로 괴이한 영들이 보이기 시작했어. 모모 녀석, 악마의 하수인임에 틀림없어!",
-        mangaNote: "만화 10화 1~2p: 손에 오카룬의 황금 구슬을 쥐고 도도하게 포즈를 취하는 자칭 미소녀 전사 시라토리 아이라의 첫 등장!",
+        mangaNote: "만화 10화~13화: 손에 오카룬의 황금 구슬을 쥐고 도도하게 포즈를 취하는 자칭 미소녀 전사 시라토리 아이라의 첫 등장!",
         expression: "aira-smug",
         effect: "",
         sfx: "sparkle"
       },
       {
         id: 6,
-        chapter: "제10화: 시라토리 아이라와 사라사라",
+        chapter: "제13화: 시라토리 아이라와 사라사라",
         sceneTitle: "아크로바틱 사라사라의 습격!",
         bg: "/assets/manga/26_acrobatic_sarasa_abduct.jpg",
         speaker: "아크로바틱 사라사라",
         speakerType: "sarasa",
         text: "내 딸... 내 딸이야아아아-!! (빨간 원피스를 휘날리며 관절을 꺾어 옥상 너머로 아이라를 낚아채 도약한다!)",
         thought: "",
-        mangaNote: "만화 10화 3p: 옥상을 뛰어넘으며 아이라를 품에 안고 유괴해 달아나는 빨간 원피스의 장신 요괴 아크로바틱 사라사라의 호러 컷!",
+        mangaNote: "만화 13화: 옥상을 뛰어넘으며 아이라를 품에 안고 유괴해 달아나는 빨간 원피스의 장신 요괴 아크로바틱 사라사라의 호러 컷!",
         expression: "sarasa-creep",
         effect: "shake-heavy",
         sfx: "screamer"
       },
       {
         id: 7,
-        chapter: "제11화~12화: 빗속 사당 사투",
-        sceneTitle: "쏟아지는 폭우 속 목숨 건 격투",
-        bg: "/assets/manga/27_rain_shrine_battle.jpg",
+        chapter: "제14화~15화: 아크로바틱 사라사라 격투",
+        sceneTitle: "도심 상공의 곡예 격투: 오카룬 변신과 모모의 초능력 손!",
+        bg: "/assets/manga/27_acro_silky_battle.jpg",
         speaker: "오카룬 (타카쿠라 켄)",
         speakerType: "okarun",
-        text: "아야세 씨와 아이라를... 다치게 두지 않습니다아아!! 터보 질주우우우-!!",
-        thought: "몸이 찢어지더라도 저 괴물의 공격을 내가 막아내야 해!",
-        mangaNote: "만화 11~12p: 폭우가 쏟아지는 사당에서 피투성이가 되면서도 모모와 아이라를 감싸 안으며 돌진하는 오카룬의 비장한 투혼!",
+        text: "아야세 씨, 아이라 양을 구해야 합니다!! 제 킨타마 때문에 말려든 사람을 죽게 둘 순 없어요!! ...변신(헤타레 폼), 100km 질주우우우-!!",
+        thought: "변신 제한은 딱 두 번... 온 힘을 다해 사라사라의 머리카락을 뚫어야 해!",
+        mangaNote: "만화 14~15화: 변신한 오카룬과 모모의 거대 초능력 손이 도심 건물 옥상과 허공을 넘나들며 아크로바틱 사라사라의 날카로운 머리카락 공격에 맞서 격돌하는 다이내믹 배틀 컷!",
         expression: "okarun-berserk",
         effect: "shake-heavy",
         sfx: "punch"
       },
       {
         id: 8,
-        chapter: "제11화~12화: 빗속 사당 사투",
-        sceneTitle: "사라사라의 슬픈 성불과 눈물의 붕대",
-        bg: "/assets/manga/28_sarasa_salvation_tears.jpg",
+        chapter: "제14화~15화: 아크로바틱 사라사라 격투",
+        sceneTitle: "아이라를 삼킨 사라사라와 절체절명의 공방",
+        bg: "/assets/manga/27_acro_silky_battle.jpg",
         speaker: "아야세 모모",
         speakerType: "momo",
-        text: "다쳤으면 말을 했어야지, 바보야아아... 네가 잘못되면 난 진짜 어떡하라고... 흐흑... 평생 네 상처 내가 감싸줄 테니까 약속해, 다신 다치지 마...",
-        thought: "피 흘리는 거 보는데 가슴이 찢어지는 줄 알았어... 나 얘 없으면 이제 평생 못 살아...",
-        mangaNote: "만화 12화 4p: 빗물이 갠 사당 다다미방에서, 눈물을 뚝뚝 흘리며 오카룬의 피투성이 팔에 붕대를 감아주는 모모의 애절한 진심 컷!",
-        expression: "momo-crying",
+        text: "오카룬, 저 녀석 아이라를 머리카락 속으로 삼켜버렸어!! 내가 초능력으로 붙잡을 테니까, 틈을 노려서 아이라를 낚아채!!",
+        thought: "요괴의 체내에 갇히면 일반인 영혼은 버티지 못해... 서둘러야 해!",
+        mangaNote: "만화 15화: 붉은 원피스를 펄럭이며 관절을 비틀어 기괴하게 도약하는 사라사라와, 초능력으로 요괴를 옭아매는 모모의 결사적인 공방!",
+        expression: "momo-determined",
         effect: "flash-white",
-        sfx: "tear"
+        sfx: "magic"
       },
       {
         id: 9,
-        chapter: "제13화: 1권 피날레 라스트",
-        sceneTitle: "단골 라멘집 팔짱 데이트",
-        bg: "/assets/manga/29_street_ramen_arm_link.jpg",
+        chapter: "제16화: 아크로바틱 사라사라의 슬픈 과거",
+        sceneTitle: "흘러들어온 기억: 비극적인 어머니의 모성애",
+        bg: "/assets/manga/28_sarasa_past_revelation.jpg",
         speaker: "나레이션",
         speakerType: "narration",
-        text: "사라사라 사건을 해결한 뒤, 모모는 오카룬의 팔에 제 팔을 꼬옥 얽어맨 채 단골 라멘집으로 이끌었다. 붉은 제등 아래서 마주 보며 웃던 그 밤, 두 사람은 세상 누구보다 단단한 영혼의 파트너가 되었다.",
+        text: "사라사라의 영력에 연결된 순간, 그녀의 생전 기억이 모모와 오카룬의 가슴을 짓눌렀다. 가난 속에서도 딸 하나만을 위해 필사적으로 발레를 추며 살아가던 어머니... 그러나 빚쟁이들에게 딸을 강제로 빼앗기고 절망 속에서 스스로 생을 마감했던 비극. 그리고 어릴 적 길 잃은 아이라가 건넸던 한마디—'엄마...?'",
         thought: "",
-        mangaNote: "만화 13화 1p: 골목 라멘집 앞에서 사랑스럽게 팔짱을 꼭 끼고 웃는 모모와 오카룬의 달콤한 데이트 투샷!",
-        expression: "momo-smile",
-        effect: "",
+        mangaNote: "만화 16화: 비극적인 생전 기억 속에서 딸을 부둥켜안고 울부짖는 어머니의 회상과, 그 기억을 마주하며 눈물을 글썽이는 모모와 오카룬.",
+        expression: "momo-crying",
+        effect: "flash-white",
         sfx: "heartbeat"
       },
       {
         id: 10,
-        chapter: "제13화: 1권 피날레 라스트",
-        sceneTitle: "198cm 은발 미남 지진의 깜짝 등장!",
-        bg: "/assets/manga/30_jiji_grand_entrance.jpg",
-        speaker: "엔죠지 진 (지진)",
-        speakerType: "jiji",
-        text: "와하하하! 모모오오! 오랜만이다!! 잘 지냈냐?! 내가 돌아왔다고오오-!!",
-        thought: "",
-        mangaNote: "만화 1권 피날레 라스트 스프레드: 198cm의 압도적인 피지컬에 찰랑이는 실크 은발을 풀어헤치고 조각 같은 얼굴로 호탕하게 웃으며 교문 앞을 마비시킨 3학년 꽃미남 엔죠지 진(지진)의 화려한 등장 컷!",
-        expression: "jiji-smile",
-        effect: "flash-white",
-        sfx: "fanfare"
+        chapter: "제16화: 아크로바틱 사라사라의 슬픈 과거",
+        sceneTitle: "모모의 눈물: \"이 사람... 그저 딸을 사랑했던 엄마였어...\"",
+        bg: "/assets/manga/28_sarasa_past_revelation.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "괴물이 아니었어... 그저 딸을 지키지 못했던 슬픔 때문에... 아이라를 딸로 착각해서 필사적으로 지켜주려고 했던 거잖아... 흐흑...",
+        thought: "나쁜 요괴가 아니었어. 너무 가엽고 안타까운 사람이야...",
+        mangaNote: "만화 16화: 사라사라의 가슴 아픈 진심을 깨닫고 눈물을 흘리며 요괴를 향한 적의를 거두는 모모.",
+        expression: "momo-crying",
+        effect: "",
+        sfx: "tear"
       },
       {
         id: 11,
-        chapter: "제13화: 1권 피날레 라스트",
-        sceneTitle: "모모의 귓속말: \"내 눈엔 네가 백 배 더 잘생겼어\"",
-        bg: "/assets/manga/30_jiji_grand_entrance.jpg",
-        speaker: "아야세 모모",
-        speakerType: "momo",
-        text: "야, 오카룬. 뭘 그렇게 넋 놓고 쳐다보고 있어? 키만 쓸데없이 크고 시끄러운 은발 원숭이일 뿐이거든? ...내 눈엔 네가 백 배는 더 잘생겼으니까, 기죽지 말고 얼른 들어가자.",
-        thought: "질투하는 표정 봐... 귀여워 미치겠네. 텐겐... 아니 지진한테 절대 안 뺏길 거니까 걱정 마, 내 바보 파트너!",
-        mangaNote: "만화 1권 에필로그 라스트 컷: 주눅 든 오카룬의 옷깃을 잡아당기며 귓가에 속삭이고 윙크하는 모모! 새로운 라이벌의 등장과 거대한 오컬트 삼각 로맨스를 알리며 제1권 대단원의 막!",
-        expression: "momo-wink",
+        chapter: "제17화: 다정한 세상으로",
+        sceneTitle: "멈춰버린 아이라의 심장, 그리고 사라사라의 생명 양도",
+        bg: "/assets/manga/29_aira_revival_salvation.jpg",
+        speaker: "아크로바틱 사라사라",
+        speakerType: "sarasa",
+        text: "...내 딸... 널 또 잃을 수는 없어... 내 모든 힘과 오라를 너에게 줄게... 부디... 건강하고 다정한 세상에서 살아다오...",
+        thought: "",
+        mangaNote: "만화 17화: 체내 독기로 숨이 멎은 아이라를 살리기 위해 자신의 남은 모든 생명과 영력을 아이라에게 건네주며 온화한 미소를 짓는 사라사라의 성불 명장면!",
+        expression: "sarasa-creep",
         effect: "flash-white",
-        sfx: "heartbeat"
+        sfx: "magic"
       },
       {
         id: 12,
-        chapter: "제13화: 1권 피날레 라스트",
-        sceneTitle: "단다단 제1권 완편 클리어!",
-        bg: "/assets/manga/30_jiji_grand_entrance.jpg",
+        chapter: "제17화: 다정한 세상으로",
+        sceneTitle: "기적의 부활과 눈물의 성불",
+        bg: "/assets/manga/29_aira_revival_salvation.jpg",
         speaker: "나레이션",
         speakerType: "narration",
-        text: "🎉 축하합니다! 단다단 원작 정통 스토리 제1권 (1화부터 13화까지) 완편 라이트노벨 게임 클리어!!\n\n모모와 오카룬의 유대는 이제 누구도 끊을 수 없습니다. 다음 제2권: 〈지진의 저주받은 폐가 & 거대 지렁이 요괴 사투〉로 이어집니다!",
+        text: "눈부신 영력의 빛이 아이라의 가슴속으로 스며들며 멈췄던 심장이 다시 뛰기 시작했다! 아이라를 되살려낸 아크로바틱 사라사라는 더없는 평온과 안식의 눈물을 흘리며, 따스한 여명 속으로 조용히 성불했다. 그것은 진정한 사랑이 만들어낸 기적이었다.",
         thought: "",
-        mangaNote: "🎉 CONGRATULATIONS! VOLUME 1 COMPLETE!",
+        mangaNote: "만화 17화: 사라사라가 눈물을 흘리며 평온하게 승천하고, 기적처럼 숨을 몰아쉬며 깨어나는 아이라와 눈물 흘리는 모모와 오카룬.",
         expression: "momo-smile",
+        effect: "flash-white",
+        sfx: "talisman"
+      },
+      {
+        id: 13,
+        chapter: "제17화 에필로그: 다정한 세상으로",
+        sceneTitle: "오카룬에게 반해버린 아이라와 츤데레 신경전!",
+        bg: "/assets/manga/30_daily_trio_epilogue.jpg",
+        speaker: "시라토리 아이라",
+        speakerType: "aira",
+        text: "...저기... 타카쿠라 군... 날 위험에서 구해준 거... 너 맞지...? (얼굴을 새빨갛게 붉히며 배배 꼬다가, 모모를 째려보며) 벼, 별로 아야세 너한테 고마운 건 아니거든?! 내가 타카쿠라 군을 악마에게서 구원해 줄 거니까 두고 봐!",
+        thought: "뭐야 저 찌질해 보이던 안경잡이... 변신했을 때 너무 멋있었잖아... 심장이 터질 것 같아...!",
+        mangaNote: "만화 17화 에필로그: 사라사라의 영력(트윈테일 헤어 능력)을 품게 된 아이라가 오카룬에게 완전히 반해 홍조를 띠고, 모모에게 츤데레 라이벌 선언을 하는 코믹 삼각관계 컷!",
+        expression: "aira-smug",
         effect: "",
+        sfx: "sparkle"
+      },
+      {
+        id: 14,
+        chapter: "제17화 에필로그: 다정한 세상으로",
+        sceneTitle: "모모의 발끈: \"누가 누굴 구원한다는 거야?!\"",
+        bg: "/assets/manga/30_daily_trio_epilogue.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "하아?! 구해줬더니 은혜도 모르고 누구한테 큰소리야?! 야, 오카룬! 넌 왜 멍하니 얼굴 붉히고 있어?! 얼른 안 따라오면 빵셔틀 곱빼기로 시킨다!!",
+        thought: "아이라 저 계집애가 오카룬한테 꼬리치는 꼴을 그냥 두고 볼 줄 알고?! 절대 못 넘겨줘!",
+        mangaNote: "만화 17화 라스트 컷: 모모와 아이라 사이에 끼어 쩔쩔매는 오카룬과, 새로운 유대와 삼각관계로 떠들썩해진 일상 복귀!",
+        expression: "momo-angry",
+        effect: "shake-light",
+        sfx: "laugh"
+      },
+      {
+        id: 15,
+        chapter: "제17화 에필로그: 다정한 세상으로",
+        sceneTitle: "단다단 에피소드 4 아크로바틱 사라사라 편 완결!",
+        bg: "/assets/manga/30_daily_trio_epilogue.jpg",
+        speaker: "나레이션",
+        speakerType: "narration",
+        text: "🎉 축하합니다! 단다단 정통 원작 스토리 1화부터 17화까지(아크로바틱 사라사라 편) 대단원 완결!\n\n소중한 황금 구슬을 찾는 여정 속에서 만난 새로운 동료 아이라와, 한층 더 깊어진 모모와 오카룬의 유대. 기괴하고도 다정한 오컬트 청춘 러브코미디는 앞으로도 계속됩니다!",
+        thought: "",
+        mangaNote: "🎉 CONGRATULATIONS! EPISODE 4 COMPLETE!",
+        expression: "momo-smile",
+        effect: "flash-white",
         sfx: "fanfare"
       }
     ]
@@ -1352,7 +1394,7 @@ function buildFullGameHtml() {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>단다단 라이트노벨 게임 (1화~13화 완편 플레이어)</title>
+  <title>단다단 라이트노벨 게임 (1화~17화 완편 플레이어)</title>
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -1463,7 +1505,7 @@ function buildFullGameHtml() {
       <button onclick="changeEpisode(1)" id="ep-btn-1" class="px-2.5 py-1 rounded-xl font-bold transition active-ep-tab">1화~2화</button>
       <button onclick="changeEpisode(2)" id="ep-btn-2" class="px-2.5 py-1 rounded-xl font-bold transition text-slate-300 hover:text-white">3화~5화</button>
       <button onclick="changeEpisode(3)" id="ep-btn-3" class="px-2.5 py-1 rounded-xl font-bold transition text-slate-300 hover:text-white">6화~8화</button>
-      <button onclick="changeEpisode(4)" id="ep-btn-4" class="px-2.5 py-1 rounded-xl font-bold transition text-slate-300 hover:text-white">9화~13화</button>
+      <button onclick="changeEpisode(4)" id="ep-btn-4" class="px-2.5 py-1 rounded-xl font-bold transition text-slate-300 hover:text-white">9화~17화</button>
     </div>
 
     <!-- Stats & QoL Bar -->
@@ -1802,23 +1844,26 @@ function buildFullGameHtml() {
         2: [
           { name: '3화: 세이코 등장', idx: 0 },
           { name: '3화: 배트 홈런', idx: 4 },
+          { name: '3화: 손자사위 드립', idx: 7 },
           { name: '4화: 결계 훈련', idx: 9 },
-          { name: '4화: 툇마루 라면 썸', idx: 11 },
-          { name: '5화: 터널 출진', idx: 15 }
+          { name: '5화: 터널 출진', idx: 12 }
         ],
         3: [
           { name: '6화: 터널 100km 질주', idx: 0 },
           { name: '7화: 거대 대게 요괴', idx: 4 },
           { name: '7화: 손깍지 부스터', idx: 6 },
           { name: '8화: 신사 결계 대폭발', idx: 8 },
-          { name: '8화: 마스코트 정화', idx: 9 }
+          { name: '8화: 마스코트 정화', idx: 9 },
+          { name: '8화: 복도 뽀뽀 해프닝', idx: 11 }
         ],
         4: [
           { name: '9화: 사라진 황금 구슬', idx: 0 },
-          { name: '9화: 옥상 어깨 기대기', idx: 2 },
           { name: '10화: 아이라 등장', idx: 4 },
-          { name: '11~12화: 사라사라 빗속 사투', idx: 6 },
-          { name: '13화: 은발 미남 지진 등장', idx: 9 }
+          { name: '13화: 사라사라 습격', idx: 5 },
+          { name: '14~15화: 도심 공중전', idx: 6 },
+          { name: '16화: 슬픈 모성애 회상', idx: 8 },
+          { name: '17화: 성불과 아이라 소생', idx: 10 },
+          { name: '17화: 삼각관계 에필로그', idx: 12 }
         ]
       };
 
