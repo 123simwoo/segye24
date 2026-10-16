@@ -476,9 +476,56 @@
       document.getElementById('manga-note-label').textContent = scene.mangaNote || '';
       document.getElementById('dialogue-counter').textContent = (currentIndex + 1) + ' / ' + script.length;
 
-      // Background Image
+      // Background Image with Auto-detect for /assets/manga/ user uploads
       const bgLayer = document.getElementById('bg-layer');
-      if (scene.bg) {
+      const mangaMapping = {
+        1: '/assets/manga/01_kick.jpg',
+        2: '/assets/manga/01_kick.jpg',
+        3: '/assets/manga/01_kick.jpg',
+        4: '/assets/manga/01_kick.jpg',
+        5: '/assets/manga/01_kick.jpg',
+        6: '/assets/manga/02_argue.jpg',
+        7: '/assets/manga/02_argue.jpg',
+        8: '/assets/manga/02_argue.jpg',
+        9: '/assets/manga/02_argue.jpg',
+        10: '/assets/manga/02_argue.jpg',
+        16: '/assets/manga/03_turbo.jpg',
+        17: '/assets/manga/03_turbo.jpg',
+        18: '/assets/manga/03_turbo.jpg',
+        19: '/assets/manga/04_serpo_abduction.jpg',
+        20: '/assets/manga/04_serpo_abduction.jpg',
+        21: '/assets/manga/04_serpo_abduction.jpg',
+        23: '/assets/manga/04_serpo_abduction.jpg',
+        24: '/assets/manga/05_jaw_grab.jpg',
+        25: '/assets/manga/05_jaw_grab.jpg',
+        26: '/assets/manga/05_jaw_grab.jpg',
+        27: '/assets/manga/05_jaw_grab.jpg',
+        28: '/assets/manga/05_jaw_grab.jpg',
+        29: '/assets/manga/05_jaw_grab.jpg',
+        34: '/assets/manga/06_banana_shock.jpg',
+        35: '/assets/manga/06_banana_shock.jpg',
+        36: '/assets/manga/06_banana_shock.jpg',
+        37: '/assets/manga/06_banana_shock.jpg',
+        39: '/assets/manga/07_sumo_tackle.jpg',
+        42: '/assets/manga/07_sumo_tackle.jpg',
+        43: '/assets/manga/07_sumo_tackle.jpg',
+        44: '/assets/manga/07_sumo_tackle.jpg',
+        45: '/assets/manga/07_sumo_tackle.jpg',
+        49: '/assets/manga/08_epilogue.jpg',
+        50: '/assets/manga/08_epilogue.jpg'
+      };
+
+      const customManga = mangaMapping[scene.id];
+      if (customManga) {
+        const testImg = new Image();
+        testImg.onload = () => {
+          bgLayer.style.backgroundImage = 'url(' + customManga + ')';
+        };
+        testImg.onerror = () => {
+          if (scene.bg) bgLayer.style.backgroundImage = 'url(' + scene.bg + ')';
+        };
+        testImg.src = customManga;
+      } else if (scene.bg) {
         bgLayer.style.backgroundImage = 'url(' + scene.bg + ')';
       }
 
