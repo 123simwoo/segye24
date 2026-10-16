@@ -4,803 +4,1383 @@ const path = require('path');
 const brainDir = "C:/Users/Sim's/.gemini/antigravity/brain/d5aa5067-2fcb-48ff-987e-d41735d14a6a";
 const publicDir = "C:/Users/Sim's/.gemini/antigravity/scratch/segye24-web/public";
 
-// Complete Dialogue Script for Dandadan Episode 1 (Chapters 1 & 2)
-// Faithful to canonical manga scenes, dialogue, and pacing.
-const dandadanEpisode1Script = [
-  // ==========================================
-  // CHAPTER 1: 그것이 사랑의 시작이었어
-  // PART 1: 복도의 결별과 오카룬의 구출
-  // ==========================================
-  {
-    id: 1,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "방과 후 복도의 결별",
-    bg: "/assets/segye_occult/01_vol1_prologue.jpg",
-    speaker: "아야세 모모",
-    speakerType: "momo",
-    text: "웃기지 마! 양다리 걸친 주제에 어디서 혓바닥을 놀려?! 당장 내 눈앞에서 꺼져!!",
-    thought: "하아... 진짜 어이없네. 내 이상형은 터프하고 우직한 '타카쿠라 켄' 같은 상남자란 말이야! 저런 날라리 바람둥이 따위!",
-    mangaNote: "만화 1화 2~3p: 복도에서 바람둥이 전남친을 매몰차게 차버리고 뒤돌아서는 당찬 갸루 아야세 모모의 첫 등장 컷!",
-    expression: "momo-angry",
-    effect: "shake-light",
-    sfx: "slap"
-  },
-  {
-    id: 2,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "불량배들의 괴롭힘 현장",
-    bg: "/assets/segye_occult/01_vol1_prologue.jpg",
-    speaker: "불량배 1",
-    speakerType: "delinquent",
-    text: "야, 외계인 오타쿠 녀석! 오늘도 화성인이랑 텔레파시 통했냐? 크큭, 안경이나 벗어봐!",
-    thought: "",
-    mangaNote: "만화 1화 4p: 복도 구석에서 불량배 세 명이 안경 쓴 남학생을 에워싸고 오컬트 잡지 『무(MU)』를 빼앗으며 비웃는 장면.",
-    expression: "delinquent",
-    effect: "",
-    sfx: ""
-  },
-  {
-    id: 3,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "오카룬의 저항",
-    bg: "/assets/segye_occult/01_vol1_prologue.jpg",
-    speaker: "오카룬 (타카쿠라 켄)",
-    speakerType: "okarun",
-    text: "큭... 제 『무(MU)』 잡지 돌려주세요! 외계인은 비과학적 장난이 아닙니다! 실제로 존재한다고요...!",
-    thought: "또 시작이야... 친구 한 명 없이 외계인만 파고들다 보니 늘 이런 꼴이지. 하지만 외계인은 진짜란 말입니다...",
-    mangaNote: "만화 1화 5p: 안경을 뺏긴 채 웅크리고 있지만 외계인에 대한 신념만큼은 꺾지 않는 오카룬의 첫 모습.",
-    expression: "okarun-nervous",
-    effect: "",
-    sfx: ""
-  },
-  {
-    id: 4,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "모모의 회전 날아차기!",
-    bg: "/assets/segye_occult/01_vol1_prologue.jpg",
-    speaker: "아야세 모모",
-    speakerType: "momo",
-    text: "야—!! 찌질하게 떼거지로 몰려와서 남의 물건 뺏고 뭐 하는 짓이야?! 뒈져라, 이 멍청이들아!!",
-    thought: "남자가 치사하게 셋이서 하나를 괴롭혀? 내 성격에 저 꼴은 절대로 못 넘어가!",
-    mangaNote: "만화 1화 6p: 교복 치마 아래로 늘씬하고 탄탄한 다리를 뻗어 불량배의 뒤통수에 꽂아 넣는 다이내믹 하이앵글 로우킥!",
-    expression: "momo-kick",
-    effect: "shake-heavy",
-    sfx: "punch"
-  },
-  {
-    id: 5,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "불량배 격퇴 후",
-    bg: "/assets/segye_occult/01_vol1_prologue.jpg",
-    speaker: "나레이션",
-    speakerType: "narration",
-    text: "콰아앙-! 호쾌한 소리와 함께 앞장서던 불량배의 머리가 복도 바닥에 내리꽂혔다. 겁에 질린 불량배 패거리들은 비명을 지르며 꽁무니를 뺐다.",
-    thought: "",
-    mangaNote: "만화 1화 7p: 흩어진 『무』 잡지를 툭툭 털며 건네주는 모모와, 얼떨떨하게 안경을 고쳐 쓰는 오카룬의 투샷.",
-    expression: "momo-confident",
-    effect: "",
-    sfx: ""
-  },
-  {
-    id: 6,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "교실에서의 오해와 열변",
-    bg: "/assets/segye_occult/01_vol1_prologue.jpg",
-    speaker: "오카룬 (타카쿠라 켄)",
-    speakerType: "okarun",
-    text: "저, 저기... 구해줘서 감사합니다! 호, 혹시... 당신도 오컬트를 좋아하십니까?! 외계인의 존재를 믿으시는 건가요?!",
-    thought: "날 구해줬어... 그것도 이렇게 예쁜 갸루가 내 잡지를 주워줬다고?! 혹시 나와 같은 오컬트 마니아인 걸까?!",
-    mangaNote: "만화 1화 8p: 얼굴을 붉히며 흥분한 채 잡지를 가슴에 품고 다가오는 오카룬의 간절한 표정.",
-    expression: "okarun-passionate",
-    effect: "",
-    sfx: ""
-  },
-  {
-    id: 7,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "모모의 반격: 유령 vs 외계인",
-    bg: "/assets/segye_occult/01_vol1_prologue.jpg",
-    speaker: "아야세 모모",
-    speakerType: "momo",
-    text: "하아?! 외계인? 멍청아, 그딴 징그러운 외계인이 세상에 어딨어! 유령이라면 모를까! 우리 할머니가 영매사란 말이야!",
-    thought: "뭐야 이 녀석, 내가 구해줬더니 이상한 외계인 타령을 늘어놓네? 으, 눈치 없는 건 딱 질색인데.",
-    mangaNote: "만화 1화 9p: 손가락으로 이마를 짚으며 혀를 차는 모모. 유령 잡지와 외계인 잡지를 들이대며 불꽃 튀는 눈싸움 개시!",
-    expression: "momo-disgust",
-    effect: "",
-    sfx: ""
-  },
-  {
-    id: 8,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "자존심을 건 초자연 논쟁",
-    bg: "/assets/segye_occult/01_vol1_prologue.jpg",
-    speaker: "오카룬 (타카쿠라 켄)",
-    speakerType: "okarun",
-    text: "유령 따윈 뇌내 망상이 만들어낸 비과학적 미신입니다! 관측 가능한 우주에 천억 개의 은하계가 있는데 지적 생명체가 없을 확률은 0%라고요!",
-    thought: "외계인을 모욕하는 건 참을 수 없습니다! NASA와 로스웰 사건의 기록을 들이대서라도 증명해 보이겠습니다!",
-    mangaNote: "만화 1화 10p: 안경을 치켜올리며 삿대질하는 오카룬과 책상을 탕 치며 일어서는 모모의 격렬한 분할 컷.",
-    expression: "okarun-angry",
-    effect: "shake-light",
-    sfx: ""
-  },
-  {
-    id: 9,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "모모의 승부수",
-    bg: "/assets/segye_occult/01_vol1_prologue.jpg",
-    speaker: "아야세 모모",
-    speakerType: "momo",
-    text: "시끄러워! 영혼은 진짜 존재해! 할머니 밑에서 자란 내가 모를 줄 알아?! 그렇게 자신 있으면 어디 한번 직접 가서 증명해 보든가!!",
-    thought: "이 녀석, 소심한 줄 알았더니 말대꾸 하나는 기가 막히네. 절대 질 수 없어!",
-    mangaNote: "만화 1화 11p: 자존심이 폭발하여 내기를 제안하는 모모의 당당하고 불타는 눈빛.",
-    expression: "momo-angry",
-    effect: "",
-    sfx: ""
-  },
+// ==============================================================
+// COMPLETE CANONICAL DANDADAN SCRIPT FOR VOLUME 1 (EPISODES 1 ~ 4)
+// ==============================================================
 
-  // ==========================================
-  // CHOICE 1: 심야의 내기 조건 설정
-  // ==========================================
-  {
-    id: 10,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "플레이어 선택의 순간: 내기 조건",
-    bg: "/assets/segye_occult/01_vol1_prologue.jpg",
-    speaker: "아야세 모모",
-    speakerType: "momo",
-    text: "좋아, 오타쿠 녀석! 말 나온 김에 오늘 밤 자정에 끝장을 보자!",
-    thought: "어떤 조건을 걸어야 저 콧대를 납작하게 누를 수 있을까?",
-    mangaNote: "플레이어 인터랙티브 분기: 원작 정통 대사 vs 모모의 츤데레 도발",
-    expression: "momo-confident",
-    choice: {
-      prompt: "오카룬에게 제시할 내기 조건을 선택하세요:",
-      options: [
-        {
-          text: "\"넌 심령 스폿 '쇼타 터널'로 가. 난 UFO 출몰지 '폐병원'으로 갈 테니까! 지는 쪽이 이기는 쪽의 노예야!\"",
-          reactionText: "좋습니다! 지는 쪽이 이기는 쪽의 노예가 되는 겁니다! 통화 켜놓고 각자 진입합시다!",
-          reactionThought: "노예라니... 무섭지만 외계인의 진실을 위해서라면 피하지 않습니다!",
-          delta: "⚡ 원작 정통 루트 확정! 승부욕 +15 상승"
-        },
-        {
-          text: "\"안경 벗으니까 생각보다 눈은 맑은 녀석이 왜 이렇게 똥고집이야?! 좋아, 진 사람이 내일 학교 매점에서 빵 사주기다!\"",
-          reactionText: "제, 제 눈이 맑다고요...?! 아, 아무튼 빵이든 뭐든 외계인의 존재를 증명하면 그만입니다!",
-          reactionThought: "갸루한테 눈이 맑다는 칭찬을 들었어... 심장이 덜컥 내려앉네. 하지만 질 순 없습니다!",
-          delta: "💖 모모의 숨겨진 심쿵! 호감도 +20 상승"
+const episodesData = {
+  1: {
+    title: "에피소드 1: 〈그것이 사랑의 시작이었어 & 그게 바로 외계인이잖아〉",
+    range: "1화~2화",
+    desc: "외계인 vs 유령의 자존심 내기, 폐병원 세르포 성인 납치와 거대 초능력 손 각성, 턱 잡기 명장면, 신사에서의 킨타마 소실과 3m 플랫우즈 몬스터 100km/h 스모 결전!",
+    badge: "단다단 원작 1화~2화 · 운명의 서막",
+    script: [
+      {
+        id: 1,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "방과 후 복도의 결별",
+        bg: "/assets/manga/01_kick.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "웃기지 마! 양다리 걸친 주제에 어디서 혓바닥을 놀려?! 당장 내 눈앞에서 꺼져!!",
+        thought: "하아... 진짜 어이없네. 내 이상형은 터프하고 우직한 '타카쿠라 켄' 같은 상남자란 말이야! 저런 날라리 바람둥이 따위!",
+        mangaNote: "만화 1화 2~3p: 복도에서 바람둥이 전남친을 매몰차게 차버리고 뒤돌아서는 당찬 갸루 아야세 모모의 첫 등장 컷!",
+        expression: "momo-angry",
+        effect: "shake-light",
+        sfx: "slap"
+      },
+      {
+        id: 2,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "불량배들의 괴롭힘 현장",
+        bg: "/assets/manga/01_kick.jpg",
+        speaker: "불량배 1",
+        speakerType: "delinquent",
+        text: "야, 외계인 오타쿠 녀석! 오늘도 화성인이랑 텔레파시 통했냐? 크큭, 안경이나 벗어봐!",
+        thought: "",
+        mangaNote: "만화 1화 4p: 복도 구석에서 불량배 세 명이 안경 쓴 남학생을 에워싸고 오컬트 잡지 『무(MU)』를 빼앗으며 비웃는 장면.",
+        expression: "delinquent",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 3,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "오카룬의 저항",
+        bg: "/assets/manga/01_kick.jpg",
+        speaker: "오카룬 (타카쿠라 켄)",
+        speakerType: "okarun",
+        text: "큭... 제 『무(MU)』 잡지 돌려주세요! 외계인은 비과학적 장난이 아닙니다! 실제로 존재한다고요...!",
+        thought: "또 시작이야... 친구 한 명 없이 외계인만 파고들다 보니 늘 이런 꼴이지. 하지만 외계인은 진짜란 말입니다...",
+        mangaNote: "만화 1화 5p: 안경을 뺏긴 채 웅크리고 있지만 외계인에 대한 신념만큼은 꺾지 않는 오카룬의 첫 모습.",
+        expression: "okarun-nervous",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 4,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "모모의 회전 날아차기!",
+        bg: "/assets/manga/01_kick.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "야—!! 찌질하게 떼거지로 몰려와서 남의 물건 뺏고 뭐 하는 짓이야?! 뒈져라, 이 멍청이들아!!",
+        thought: "남자가 치사하게 셋이서 하나를 괴롭혀? 내 성격에 저 꼴은 절대로 못 넘어가!",
+        mangaNote: "만화 1화 6p: 교복 치마 아래로 늘씬하고 탄탄한 다리를 뻗어 불량배의 뒤통수에 꽂아 넣는 다이내믹 하이앵글 로우킥!",
+        expression: "momo-kick",
+        effect: "shake-heavy",
+        sfx: "punch"
+      },
+      {
+        id: 5,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "불량배 격퇴 후",
+        bg: "/assets/manga/01_kick.jpg",
+        speaker: "나레이션",
+        speakerType: "narration",
+        text: "콰아앙-! 호쾌한 소리와 함께 앞장서던 불량배의 머리가 복도 바닥에 내리꽂혔다. 겁에 질린 불량배 패거리들은 비명을 지르며 꽁무니를 뺐다.",
+        thought: "",
+        mangaNote: "만화 1화 7p: 흩어진 『무』 잡지를 툭툭 털며 건네주는 모모와, 얼떨떨하게 안경을 고쳐 쓰는 오카룬의 투샷.",
+        expression: "momo-confident",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 6,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "교실에서의 오해와 열변",
+        bg: "/assets/manga/02_argue.jpg",
+        speaker: "오카룬 (타카쿠라 켄)",
+        speakerType: "okarun",
+        text: "저, 저기... 구해줘서 감사합니다! 호, 혹시... 당신도 오컬트를 좋아하십니까?! 외계인의 존재를 믿으시는 건가요?!",
+        thought: "날 구해줬어... 그것도 이렇게 예쁜 갸루가 내 잡지를 주워줬다고?! 혹시 나와 같은 오컬트 마니아인 걸까?!",
+        mangaNote: "만화 1화 8p: 얼굴을 붉히며 흥분한 채 잡지를 가슴에 품고 다가오는 오카룬의 간절한 표정.",
+        expression: "okarun-passionate",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 7,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "모모의 반격: 유령 vs 외계인",
+        bg: "/assets/manga/02_argue.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "하아?! 외계인? 멍청아, 그딴 징그러운 외계인이 세상에 어딨어! 유령이라면 모를까! 우리 할머니가 영매사란 말이야!",
+        thought: "뭐야 이 녀석, 내가 구해줬더니 이상한 외계인 타령을 늘어놓네? 으, 눈치 없는 건 딱 질색인데.",
+        mangaNote: "만화 1화 9p: 손가락으로 이마를 짚으며 혀를 차는 모모. 유령 잡지와 외계인 잡지를 들이대며 불꽃 튀는 눈싸움 개시!",
+        expression: "momo-disgust",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 8,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "자존심을 건 초자연 논쟁",
+        bg: "/assets/manga/02_argue.jpg",
+        speaker: "오카룬 (타카쿠라 켄)",
+        speakerType: "okarun",
+        text: "유령 따윈 뇌내 망상이 만들어낸 비과학적 미신입니다! 관측 가능한 우주에 천억 개의 은하계가 있는데 지적 생명체가 없을 확률은 0%라고요!",
+        thought: "외계인을 모욕하는 건 참을 수 없습니다! NASA와 로스웰 사건의 기록을 들이대서라도 증명해 보이겠습니다!",
+        mangaNote: "만화 1화 10p: 안경을 치켜올리며 삿대질하는 오카룬과 책상을 탕 치며 일어서는 모모의 격렬한 분할 컷.",
+        expression: "okarun-angry",
+        effect: "shake-light",
+        sfx: ""
+      },
+      {
+        id: 9,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "모모의 승부수",
+        bg: "/assets/manga/02_argue.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "시끄러워! 영혼은 진짜 존재해! 할머니 밑에서 자란 내가 모를 줄 알아?! 그렇게 자신 있으면 어디 한번 직접 가서 증명해 보든가!!",
+        thought: "이 녀석, 소심한 줄 알았더니 말대꾸 하나는 기가 막히네. 절대 질 수 없어!",
+        mangaNote: "만화 1화 11p: 자존심이 폭발하여 내기를 제안하는 모모의 당당하고 불타는 눈빛.",
+        expression: "momo-angry",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 10,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "플레이어 선택의 순간: 내기 조건",
+        bg: "/assets/manga/02_argue.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "좋아, 오타쿠 녀석! 말 나온 김에 오늘 밤 자정에 끝장을 보자!",
+        thought: "어떤 조건을 걸어야 저 콧대를 납작하게 누를 수 있을까?",
+        mangaNote: "플레이어 인터랙티브 분기: 원작 정통 대사 vs 모모의 츤데레 도발",
+        expression: "momo-confident",
+        choice: {
+          prompt: "오카룬에게 제시할 내기 조건을 선택하세요:",
+          options: [
+            {
+              text: "\"넌 심령 스폿 '쇼타 터널'로 가. 난 UFO 출몰지 '폐병원'으로 갈 테니까! 지는 쪽이 이기는 쪽의 빵셔틀이야!\"",
+              reactionText: "좋습니다! 지는 쪽이 빵셔틀이 되는 겁니다! 통화 켜놓고 각자 진입합시다!",
+              reactionThought: "빵셔틀이라니... 무섭지만 외계인의 진실을 위해서라면 피하지 않습니다!",
+              delta: "⚡ 원작 100% 반영! 승부욕 +15 상승"
+            },
+            {
+              text: "\"안경 벗으니까 생각보다 눈은 맑은 녀석이 왜 이렇게 똥고집이야?! 좋아, 진 사람이 내일 학교 매점에서 빵 사주기다!\"",
+              reactionText: "제, 제 눈이 맑다고요...?! 아, 아무튼 빵이든 뭐든 외계인의 존재를 증명하면 그만입니다!",
+              reactionThought: "갸루한테 눈이 맑다는 칭찬을 들었어... 심장이 덜컥 내려앉네. 하지만 질 순 없습니다!",
+              delta: "💖 모모의 숨겨진 심쿵! 호감도 +20 상승"
+            }
+          ]
         }
-      ]
-    }
-  },
-
-  {
-    id: 11,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "이름의 충격: 타카쿠라 켄?!",
-    bg: "/assets/segye_occult/01_vol1_prologue.jpg",
-    speaker: "아야세 모모",
-    speakerType: "momo",
-    text: "난 1학년 아야세 모모야. 그러는 네 이름은 뭔데?",
-    thought: "노예 계약서라도 쓰려면 이름은 알아둬야지.",
-    mangaNote: "만화 1화 12p: 모모가 팔짱을 끼며 이름을 묻는 컷.",
-    expression: "momo-smug",
-    effect: "",
-    sfx: ""
-  },
-  {
-    id: 12,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "충격의 자기소개",
-    bg: "/assets/segye_occult/01_vol1_prologue.jpg",
-    speaker: "오카룬 (타카쿠라 켄)",
-    speakerType: "okarun",
-    text: "저... 타카쿠라 켄(高倉 健)이라고 합니다.",
-    thought: "늘 오타쿠라고만 불려서 내 이름을 말하는 건 참 오랜만이네...",
-    mangaNote: "만화 1화 13p: 수줍게 자기 이름을 말하는 오카룬의 컷.",
-    expression: "okarun-nervous",
-    effect: "",
-    sfx: ""
-  },
-  {
-    id: 13,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "경악하는 모모",
-    bg: "/assets/segye_occult/01_vol1_prologue.jpg",
-    speaker: "아야세 모모",
-    speakerType: "momo",
-    text: "하아아아아아?!?!?! 타, 타카쿠라 켄이라고오오오?!?!",
-    thought: "타카쿠라 켄?! 내 인생 최고의 이상형이자 카리스마 배우와 동성동명이라고?! 이 찌질하고 비쩍 마른 외계인 오타쿠가?! 말도 안 돼!!",
-    mangaNote: "만화 1화 14p: 눈알이 튀어나올 듯 경악하며 얼굴이 새빨개지는 모모의 충격 클로즈업 컷!",
-    expression: "momo-shock",
-    effect: "flash-white",
-    sfx: "heartbeat"
-  },
-  {
-    id: 14,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "별명 '오카룬'의 탄생",
-    bg: "/assets/segye_occult/01_vol1_prologue.jpg",
-    speaker: "아야세 모모",
-    speakerType: "momo",
-    text: "절대로 안 돼!! 그 성스러운 이름을 네 입으로 부르지도 마!! 넌 이제부터 '오카룬(오컬트 군)'이야! 알겠어?!",
-    thought: "저 얼굴을 보고 '켄 군'이라고 부르면 내 심장이 터져버릴지도 모른다고! 절대 안 돼!",
-    mangaNote: "만화 1화 15p: 삿대질하며 강제로 별명을 붙여버리는 모모와 당황하는 오카룬.",
-    expression: "momo-blush",
-    effect: "",
-    sfx: ""
-  },
-  {
-    id: 15,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "자정의 현장 진입 (통화 연결)",
-    bg: "/assets/segye_occult/01_vol1_prologue.jpg",
-    speaker: "아야세 모모",
-    speakerType: "momo",
-    text: "여보세요, 오카룬? 난 산속 외계인 출몰지 '폐병원'에 도착했거든? 외계인 같은 건 눈 씻고 찾아봐도 없어! 넌 이제 내 노예 확정이다!",
-    thought: "으... 솔직히 밤이라 분위기가 좀 오싹하긴 하네. 폐병원 냄새도 고약하고...",
-    mangaNote: "만화 1화 16p: 손전등을 켜고 폐병원 계단을 오르는 모모와 스마트폰 스피커폰 컷.",
-    expression: "momo-nervous",
-    effect: "",
-    sfx: ""
-  },
-  {
-    id: 16,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "쇼타 터널의 이변",
-    bg: "/assets/segye_occult/01_vol1_ep3_tunnel_chase.jpg",
-    speaker: "오카룬 (타카쿠라 켄)",
-    speakerType: "okarun",
-    text: "아야세 씨, 저도 악명 높은 심령 스폿 '쇼타 터널' 한복판에 와 있습니다. 하지만 귀신 같은 건 과학적으로... 어? 어라...?",
-    thought: "뭐지? 터널 안쪽에서 묘한 바람이 불어오는데... 온도가 순식간에 영하로 떨어진 것 같아...",
-    mangaNote: "만화 1화 17p: 주황색 비상등이 기괴하게 깜빡이는 터널 천장을 올려다보며 얼어붙는 오카룬.",
-    expression: "okarun-fear",
-    effect: "shake-light",
-    sfx: ""
-  },
-  {
-    id: 17,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "터보 할멈의 습격!",
-    bg: "/assets/segye_occult/01_vol1_ep3_tunnel_chase.jpg",
-    speaker: "터보 할멈",
-    speakerType: "turbo",
-    text: "우헤헤헤헤헤!! 거시기 빨게 해줘어어어어어-!!!!",
-    thought: "",
-    mangaNote: "만화 1화 18p: 시속 100km의 속도로 터널 벽을 타고 네 발로 질주해 오며 광기 어린 괴성을 지르는 터보 할멈의 충격 컷!",
-    expression: "turbo-granny",
-    effect: "flash-red",
-    sfx: "screamer"
-  },
-  {
-    id: 18,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "오카룬의 절규와 통화 두절",
-    bg: "/assets/segye_occult/01_vol1_ep3_tunnel_chase.jpg",
-    speaker: "오카룬 (타카쿠라 켄)",
-    speakerType: "okarun",
-    text: "으아아아아아악!! 할머니 귀신이 시속 100km로 쫓아와요오오!! 살려주세요오오오-!! (치지직— 뚝!)",
-    thought: "말도 안 돼, 유령이 진짜 있었어?! 거시기를 달라고?! 으아악 내 몸이 잠식당한다아아!!",
-    mangaNote: "만화 1화 19p: 스마트폰을 떨어뜨리며 저주에 침식당하는 오카룬과 통화가 끊기는 연출.",
-    expression: "okarun-screaming",
-    effect: "shake-heavy",
-    sfx: "static"
-  },
-  {
-    id: 19,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "폐병원의 이변: 견인 광선!",
-    bg: "/assets/segye_occult/01_vol1_encounter.jpg",
-    speaker: "아야세 모모",
-    speakerType: "momo",
-    text: "오카룬?! 야, 오카룬!! 대답해 봐!! ...어? 이 빛은 뭐야...?! 몸이 안 움직여?!",
-    thought: "통화가 끊겼어... 그 녀석 진짜 귀신을 만난 거야?! 근데 내 몸이 왜 공중에 떠오르지?!",
-    mangaNote: "만화 1화 20p: 천장에서 쏟아지는 정체불명의 네온 초록빛 빔에 결박되어 공중에 띄워지는 모모.",
-    expression: "momo-shock",
-    effect: "flash-green",
-    sfx: "beam"
-  },
-  {
-    id: 20,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "세르포 성인의 등장",
-    bg: "/assets/segye_occult/01_vol1_encounter.jpg",
-    speaker: "세르포 성인",
-    speakerType: "serpo",
-    text: "지구의 암컷 개체를 포획했다. 우리는 클론 복제로 인해 생식 기능이 퇴화했다. 생식기(바나나)의 유전 정보를 채취하기 위해 신체검사를 개시한다.",
-    thought: "",
-    mangaNote: "만화 1화 21~22p: 회색 슈트를 입고 모노클을 낀 똑같은 얼굴의 외계인 클론들이 메스를 들고 접근하는 호러 연출.",
-    expression: "serpo-alien",
-    effect: "",
-    sfx: ""
-  },
-  {
-    id: 21,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "모모의 절체절명 위기",
-    bg: "/assets/segye_occult/01_vol1_encounter.jpg",
-    speaker: "아야세 모모",
-    speakerType: "momo",
-    text: "손대지 마!! 저리 가, 이 변태 외계인 괴물들아!! 만지지 말라고오오!!",
-    thought: "투명한 힘으로 내 옷이 찢겨나가고 있어... 무서워... 할머니... 오카룬, 제발 날 구해줘...!!",
-    mangaNote: "만화 1화 23p: 눈물을 뚝뚝 흘리며 공포에 질려 절규하는 모모의 처절한 표정.",
-    expression: "momo-crying",
-    effect: "shake-light",
-    sfx: "tear"
+      },
+      {
+        id: 11,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "이름의 충격: 타카쿠라 켄?!",
+        bg: "/assets/manga/02_argue.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "난 1학년 아야세 모모야. 그러는 네 이름은 뭔데?",
+        thought: "셔틀 계약서라도 쓰려면 이름은 알아둬야지.",
+        mangaNote: "만화 1화 12p: 모모가 팔짱을 끼며 이름을 묻는 컷.",
+        expression: "momo-smug",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 12,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "충격의 자기소개",
+        bg: "/assets/manga/02_argue.jpg",
+        speaker: "오카룬 (타카쿠라 켄)",
+        speakerType: "okarun",
+        text: "저... 타카쿠라 켄(高倉 健)이라고 합니다.",
+        thought: "늘 오타쿠라고만 불려서 내 이름을 말하는 건 참 오랜만이네...",
+        mangaNote: "만화 1화 13p: 수줍게 자기 이름을 말하는 오카룬의 컷.",
+        expression: "okarun-nervous",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 13,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "경악하는 모모",
+        bg: "/assets/manga/02_argue.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "하아아아아아?!?!?! 타, 타카쿠라 켄이라고오오오?!?!",
+        thought: "타카쿠라 켄?! 내 인생 최고의 이상형이자 카리스마 배우와 동성동명이라고?! 이 찌질하고 비쩍 마른 외계인 오타쿠가?! 말도 안 돼!!",
+        mangaNote: "만화 1화 14p: 눈알이 튀어나올 듯 경악하며 얼굴이 새빨개지는 모모의 충격 클로즈업 컷!",
+        expression: "momo-shock",
+        effect: "flash-white",
+        sfx: "heartbeat"
+      },
+      {
+        id: 14,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "별명 '오카룬'의 탄생",
+        bg: "/assets/manga/02_argue.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "절대로 안 돼!! 그 성스러운 이름을 네 입으로 부르지도 마!! 넌 이제부터 '오카룬(오컬트 군)'이야! 알겠어?!",
+        thought: "저 얼굴을 보고 '켄 군'이라고 부르면 내 심장이 터져버릴지도 모른다고! 절대 안 돼!",
+        mangaNote: "만화 1화 15p: 삿대질하며 강제로 별명을 붙여버리는 모모와 당황하는 오카룬.",
+        expression: "momo-blush",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 15,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "자정의 현장 진입 (통화 연결)",
+        bg: "/assets/manga/02_argue.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "여보세요, 오카룬? 난 산속 외계인 출몰지 '폐병원'에 도착했거든? 외계인 같은 건 눈 씻고 찾아봐도 없어! 넌 이제 내 빵셔틀 확정이다!",
+        thought: "으... 솔직히 밤이라 분위기가 좀 오싹하긴 하네. 폐병원 냄새도 고약하고...",
+        mangaNote: "만화 1화 16p: 손전등을 켜고 폐병원 계단을 오르는 모모와 스마트폰 스피커폰 컷.",
+        expression: "momo-nervous",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 16,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "쇼타 터널의 이변",
+        bg: "/assets/manga/03_turbo.jpg",
+        speaker: "오카룬 (타카쿠라 켄)",
+        speakerType: "okarun",
+        text: "아야세 씨, 저도 악명 높은 심령 스폿 '쇼타 터널' 한복판에 와 있습니다. 하지만 귀신 같은 건 과학적으로... 어? 어라...?",
+        thought: "뭐지? 터널 안쪽에서 묘한 바람이 불어오는데... 온도가 순식간에 영하로 떨어진 것 같아...",
+        mangaNote: "만화 1화 17p: 주황색 비상등이 기괴하게 깜빡이는 터널 천장을 올려다보며 얼어붙는 오카룬.",
+        expression: "okarun-fear",
+        effect: "shake-light",
+        sfx: ""
+      },
+      {
+        id: 17,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "터보 할멈의 습격!",
+        bg: "/assets/manga/03_turbo.jpg",
+        speaker: "터보 할멈",
+        speakerType: "turbo",
+        text: "우헤헤헤헤헤!! 거시기 빨게 해줘어어어어어-!!!!",
+        thought: "",
+        mangaNote: "만화 1화 18p: 시속 100km의 속도로 자전거를 탄 오카룬을 덮쳐오는 터보 할멈의 충격 컷!",
+        expression: "turbo-granny",
+        effect: "flash-red",
+        sfx: "screamer"
+      },
+      {
+        id: 18,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "오카룬의 절규와 통화 두절",
+        bg: "/assets/manga/03_turbo.jpg",
+        speaker: "오카룬 (타카쿠라 켄)",
+        speakerType: "okarun",
+        text: "으아아아아아악!! 할머니 귀신이 시속 100km로 쫓아와요오오!! 달리기에서 지면 저주받는단 말야아아-!! (치지직— 뚝!)",
+        thought: "말도 안 돼, 유령이 진짜 있었어?! 거시기를 달라고?! 으아악 내 몸이 잠식당한다아아!!",
+        mangaNote: "만화 1화 19p: 스마트폰을 떨어뜨리며 저주에 침식당하는 오카룬과 통화가 끊기는 연출.",
+        expression: "okarun-screaming",
+        effect: "shake-heavy",
+        sfx: "static"
+      },
+      {
+        id: 19,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "폐병원의 이변: 견인 광선!",
+        bg: "/assets/manga/04_serpo_abduction.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "오카룬?! 야, 오카룬!! 대답해 봐!! ...어? 이 빛은 뭐야...?! 몸이 안 움직여?!",
+        thought: "통화가 끊겼어... 그 녀석 진짜 귀신을 만난 거야?! 근데 내 몸이 왜 공중에 떠오르지?!",
+        mangaNote: "만화 1화 20p: 천장에서 쏟아지는 정체불명의 네온 초록빛 빔에 결박되어 공중에 띄워지는 모모.",
+        expression: "momo-shock",
+        effect: "flash-green",
+        sfx: "beam"
+      },
+      {
+        id: 20,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "세르포 성인의 등장",
+        bg: "/assets/manga/04_serpo_abduction.jpg",
+        speaker: "세르포 성인",
+        speakerType: "serpo",
+        text: "지구의 암컷 개체를 포획했다. 우리는 클론 복제로 인해 생식 기능이 퇴화했다. 생식기(바나나)의 유전 정보를 채취하기 위해 신체검사를 개시한다.",
+        thought: "",
+        mangaNote: "만화 1화 21~22p: 회색 슈트를 입고 모노클을 낀 똑같은 얼굴의 외계인 클론들이 메스를 들고 접근하는 호러 연출.",
+        expression: "serpo-alien",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 21,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "모모의 절체절명 위기",
+        bg: "/assets/manga/04_serpo_abduction.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "손대지 마!! 저리 가, 이 변태 외계인 괴물들아!! 만지지 말라고오오!!",
+        thought: "투명한 힘으로 내 옷이 찢겨나가고 있어... 무서워... 할머니... 오카룬, 제발 날 구해줘...!!",
+        mangaNote: "만화 1화 23p: 눈물을 뚝뚝 흘리며 공포에 질려 절규하는 모모의 처절한 표정.",
+        expression: "momo-crying",
+        effect: "shake-light",
+        sfx: "tear"
+      },
+      {
+        id: 22,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "잠재 영력의 폭발",
+        bg: "/assets/manga/04_serpo_abduction.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "꺼져라, 변태 자식들아!! 내 몸에 손끝 하나라도 대면 가루로 만들어버린다아아아-!!",
+        thought: "우리 할머니 영매사의 피를 얕보지 마! 내 모든 힘을 끌어내겠어!",
+        mangaNote: "만화 1화 24p: 모모의 등 뒤로 솟구쳐 오른 영적 거대 초능력 손의 웅장한 각성 컷!",
+        expression: "momo-awakened",
+        effect: "flash-white",
+        sfx: "magic"
+      },
+      {
+        id: 23,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "거대 염동력 손 각성!",
+        bg: "/assets/manga/04_serpo_abduction.jpg",
+        speaker: "나레이션",
+        speakerType: "narration",
+        text: "콰아아아아앙!! 눈부신 푸른 영력의 불꽃과 함께, 허공에 거대한 초능력 염동력 손이 실체화되었다! 거대 손이 세르포 성인들을 벽으로 패대기쳤다!",
+        thought: "",
+        mangaNote: "만화 1화 24p: 모모의 등 뒤로 솟구쳐 오른 영적 거대 초능력 손의 웅장한 각성 컷!",
+        expression: "momo-awakened",
+        effect: "flash-white",
+        sfx: "magic"
+      },
+      {
+        id: 24,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "벽을 부수고 난입한 요괴 오카룬!",
+        bg: "/assets/manga/05_jaw_grab.jpg",
+        speaker: "요괴 오카룬",
+        speakerType: "demon-okarun",
+        text: "내 거시기이이이이!! 내 거시기 내놔아아아아아-!!!!",
+        thought: "머릿속이 피로 물든다... 하지만 저 녀석들을 찢어발겨야 내 바나나를 찾을 수 있어...!",
+        mangaNote: "만화 1화 25p: 폐병원 콘크리트 벽을 뚫고 시속 100km로 날아 들어온 은발의 요괴 오카룬!",
+        expression: "okarun-berserk",
+        effect: "shake-heavy",
+        sfx: "explosion"
+      },
+      {
+        id: 25,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "세르포 성인 학살과 폭주",
+        bg: "/assets/manga/05_jaw_grab.jpg",
+        speaker: "나레이션",
+        speakerType: "narration",
+        text: "터보 할멈의 저주를 온몸에 두른 오카룬은 광속의 스피드로 세르포 성인의 우주선 기기를 산산조각 내며 외계인들을 도륙했다! 그러나—살육의 흥분에 휩싸인 오카룬의 붉은 눈동자가 모모를 향했다!",
+        thought: "",
+        mangaNote: "만화 1화 26~27p: 피아식별을 잃고 이빨을 드러내며 모모에게 달려드는 요괴 오카룬.",
+        expression: "okarun-berserk",
+        effect: "flash-red",
+        sfx: "screamer"
+      },
+      {
+        id: 26,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "도망치지 않는 모모",
+        bg: "/assets/manga/05_jaw_grab.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "오카룬...?! 저 몰골은 대체 뭐야...?! 하지만... 저 녀석은 날 구하려고 여기까지 온 거잖아!!",
+        thought: "도망치면 얜 완전히 괴물이 되어버려. 내가 막아야 해!",
+        mangaNote: "만화 1화 28p: 날아오는 괴물 오카룬을 피하지 않고 두 발로 단단히 버티고 서는 모모.",
+        expression: "momo-determined",
+        effect: "",
+        sfx: "heartbeat"
+      },
+      {
+        id: 27,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "명장면: 턱을 틀어잡은 거대 손! (1화 클라이맥스)",
+        bg: "/assets/manga/05_jaw_grab.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "오카룬!! 정신 차려, 이 바보야아아아!! 날 봐!! 네가 날 구하러 여기까지 온 거잖아!!",
+        thought: "제발 돌아와... 오카룬, 네 눈빛을 보여줘!!",
+        mangaNote: "만화 1화 29~31p 더블 스프레드: 거대한 염동력 손으로 포효하는 오카룬의 턱을 단단히 쥐고 시선을 맞추며 포효하는 모모의 결정적 투샷!",
+        expression: "momo-jaw-grab",
+        effect: "shake-heavy",
+        sfx: "whoosh"
+      },
+      {
+        id: 28,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "되찾은 이성과 탈출",
+        bg: "/assets/manga/05_jaw_grab.jpg",
+        speaker: "오카룬 (타카쿠라 켄)",
+        speakerType: "okarun",
+        text: "...아... 야세... 씨...? 당신... 무사했군요...",
+        thought: "따뜻한 손길이야... 아야세 씨의 눈동자가 보여. 날 두려워하지 않고 바라봐주고 있어...",
+        mangaNote: "만화 1화 32p: 붉은 안광이 사그라들며 모모를 알아보고 눈물을 글썽이는 오카룬.",
+        expression: "okarun-tears",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 29,
+        chapter: "제1화: 그것이 사랑의 시작이었어",
+        sceneTitle: "1화 피날레: 그것이 사랑의 시작이었어",
+        bg: "/assets/manga/05_jaw_grab.jpg",
+        speaker: "나레이션",
+        speakerType: "narration",
+        text: "콰아아앙! 세르포 성인의 모선이 대폭발을 일으키며 폐병원이 화염에 휩싸였다. 모모는 오카룬의 손을 꼭 쥔 채 새벽의 여명 속으로 뛰어내렸다. 유령도, 외계인도... 둘 다 진짜였다. 그리고 이것이, 두 사람의 운명적인 사랑의 시작이었다.",
+        thought: "",
+        mangaNote: "만화 1화 33p 라스트 컷: 불타는 병원을 등지고 손을 잡고 달리는 두 사람의 실루엣과 1화 타이틀 회수.",
+        expression: "momo-smile",
+        effect: "flash-white",
+        sfx: "explosion"
+      },
+      {
+        id: 30,
+        chapter: "제2화: 그게 바로 외계인이잖아",
+        sceneTitle: "아야세 신사의 아침",
+        bg: "/assets/manga/06_banana_shock.jpg",
+        speaker: "오카룬 (타카쿠라 켄)",
+        speakerType: "okarun",
+        text: "으으... 머리가 깨질 것 같습니다... 어라? 여긴 다다미방...? 제가 살아서 아침을 맞이한 겁니까...?",
+        thought: "어젯밤 폐병원에서 괴물로 변했던 기억이 주마등처럼 스쳐 지나가는데... 대체 여긴 어디지?",
+        mangaNote: "만화 2화 1p: 전통 다다미방 이불 위에서 눈을 비비며 일어나는 오카룬.",
+        expression: "okarun-confused",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 31,
+        chapter: "제2화: 그게 바로 외계인이잖아",
+        sceneTitle: "모모의 등장과 얼음주머니",
+        bg: "/assets/manga/06_banana_shock.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "일어났냐, 오타쿠? 정신이 좀 들어? 자, 이마에 얼음주머니나 대고 있어.",
+        thought: "진짜 밤새 끙끙 앓아서 죽는 줄 알았잖아... 그래도 눈 뜨니까 다행이네.",
+        mangaNote: "만화 2화 2p: 사복 반바지에 티셔츠를 입고 얼음주머니를 툭 던져주는 츤데레 모모.",
+        expression: "momo-gentle",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 32,
+        chapter: "제2화: 그게 바로 외계인이잖아",
+        sceneTitle: "신사 결계의 안전지대",
+        bg: "/assets/manga/06_banana_shock.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "여긴 우리 할머니 신사야. 입구에 대대로 내려오는 강력한 결계 부적이 붙어 있어서 악령도 외계인도 함부로 못 들어와.",
+        thought: "밖으로 나갔다간 너 또 터보 할멈 저주로 폭주할 테니까 말이지.",
+        mangaNote: "만화 2화 3p: 신사 마당의 도리이와 결계 부적을 가리키는 모모.",
+        expression: "momo-confident",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 33,
+        chapter: "제2화: 그게 바로 외계인이잖아",
+        sceneTitle: "화장실 가려던 오카룬의 이변",
+        bg: "/assets/manga/06_banana_shock.jpg",
+        speaker: "오카룬 (타카쿠라 켄)",
+        speakerType: "okarun",
+        text: "아야세 씨, 살려주셔서 정말 감사합니다... 저, 화장실 좀 다녀오겠습니다... 으응? 어라...?",
+        thought: "걸을 때마다 가랑이 사이가 뭔가... 너무 가볍고 이상한데...? 통풍이 왜 이렇게 잘 되지...?",
+        mangaNote: "만화 2화 4p: 일어서서 바지 앞섶을 만지작거리며 동공지진을 일으키는 오카룬.",
+        expression: "okarun-sweat",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 34,
+        chapter: "제2화: 그게 바로 외계인이잖아",
+        sceneTitle: "사라진 바나나(킨타마)의 충격!!",
+        bg: "/assets/manga/06_banana_shock.jpg",
+        speaker: "오카룬 (타카쿠라 켄)",
+        speakerType: "okarun",
+        text: "어?! 어어어?! 어어어어어어어?!?!?! 없어요!! 없습니다아아아아-!!!!",
+        thought: "매끈해... 아무것도 없어... 내 바나나가... 내 소중한 킨타마(불알)가 통째로 사라졌다고오오오!!",
+        mangaNote: "만화 2화 5p: 바지 속으로 손을 집어넣었다가 핏기가 싹 가시며 절규하는 오카룬의 멘붕 컷!",
+        expression: "okarun-crying",
+        effect: "shake-heavy",
+        sfx: "scream"
+      },
+      {
+        id: 35,
+        chapter: "제2화: 그게 바로 외계인이잖아",
+        sceneTitle: "모모의 극대노 & 경악",
+        bg: "/assets/manga/06_banana_shock.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "꺄아아아아악!! 대낮부터 바지에 손 넣고 무슨 짓이야, 이 변태 새끼야!!",
+        thought: "미쳤어, 진짜 미쳤어!! 내 앞에서 거시기 만지면서 소리를 지르고 난리야!!",
+        mangaNote: "만화 2화 6p: 베개를 오카룬의 얼굴에 풀스윙으로 집어던지는 모모.",
+        expression: "momo-angry",
+        effect: "shake-light",
+        sfx: "punch"
+      },
+      {
+        id: 36,
+        chapter: "제2화: 그게 바로 외계인이잖아",
+        sceneTitle: "오카룬의 피눈물 고백",
+        bg: "/assets/manga/06_banana_shock.jpg",
+        speaker: "오카룬 (타카쿠라 켄)",
+        speakerType: "okarun",
+        text: "변태가 아닙니다!! 제 바나나가 진짜로 사라졌단 말입니다!! 터보 할멈 놈이 '거시기 빨게 해줘' 하더니 진짜로 뜯어갔어요!!",
+        thought: "난 이제 남자가 아니야... 인간으로 살아갈 수 없어... 흑흑흑...",
+        mangaNote: "만화 2화 7p: 바닥에 이마를 찧으며 피눈물을 흘리는 오카룬.",
+        expression: "okarun-crying",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 37,
+        chapter: "제2화: 그게 바로 외계인이잖아",
+        sceneTitle: "모모의 확인과 부끄러움",
+        bg: "/assets/manga/06_banana_shock.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "거, 거짓말하지 마! ...잠깐 슬쩍만 볼 테니까 가만히 있어봐! ...으아악!! 진짜로 아무것도 없이 매끈하잖아?! 이 녀석 어떡해!!",
+        thought: "얼굴 빨개져서 미치겠네... 근데 진짜 없잖아?! 평생 고자로 살면 어떡해!!",
+        mangaNote: "만화 2화 8p: 손가락 틈새로 훔쳐보며 얼굴이 폭발하는 모모의 코믹 컷.",
+        expression: "momo-blush",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 38,
+        chapter: "제2화: 그게 바로 외계인이잖아",
+        sceneTitle: "결계의 틈: 부적이 떨어지다!",
+        bg: "/assets/manga/07_sumo_tackle.jpg",
+        speaker: "나레이션",
+        speakerType: "narration",
+        text: "휘이이이잉—! 갑자기 차가운 돌풍이 불어 닥치며, 신사 도리이에 붙어 있던 강력한 퇴마 결계 부적 한 장이 펄럭이며 땅으로 떨어졌다!",
+        thought: "",
+        mangaNote: "만화 2화 8p: 결계 부적이 떨어지며 신사 주변의 공기가 뒤틀리는 불길한 컷.",
+        expression: "momo-shock",
+        effect: "shake-light",
+        sfx: "wind"
+      },
+      {
+        id: 39,
+        chapter: "제2화: 그게 바로 외계인이잖아",
+        sceneTitle: "3m 플랫우즈 몬스터 강림!!",
+        bg: "/assets/manga/07_sumo_tackle.jpg",
+        speaker: "나레이션",
+        speakerType: "narration",
+        text: "쿠구구구궁— 콰아아앙!! 하늘이 보랏빛으로 갈라지며, 신사 마당 한가운데 3m가 넘는 거대한 괴물이 쿵! 하고 착지했다! 면사포를 쓴 스모 선수 형상의 외계인, '플랫우즈 몬스터'였다!",
+        thought: "",
+        mangaNote: "만화 2화 9~10p: 마당에 착지한 거대 플랫우즈 몬스터의 위압적인 풀샷!",
+        expression: "flatwoods-monster",
+        effect: "shake-heavy",
+        sfx: "explosion"
+      },
+      {
+        id: 40,
+        chapter: "제2화: 그게 바로 외계인이잖아",
+        sceneTitle: "검은 독안개 살포",
+        bg: "/assets/manga/07_sumo_tackle.jpg",
+        speaker: "플랫우즈 몬스터",
+        speakerType: "monster",
+        text: "쉬이이이이익—!! (치명적인 검은 독안개를 마당 전체로 뿜어낸다!)",
+        thought: "",
+        mangaNote: "만화 2화 11p: 마당을 가득 채우는 치명적인 독가스 연기.",
+        expression: "flatwoods-monster",
+        effect: "flash-green",
+        sfx: "gas"
+      },
+      {
+        id: 41,
+        chapter: "제2화: 그게 바로 외계인이잖아",
+        sceneTitle: "모모의 마비와 위기",
+        bg: "/assets/manga/07_sumo_tackle.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "쿨럭! 콜록콜록...! 독가스야... 몸이 마비돼서 손가락 하나 안 움직여...!",
+        thought: "안 돼... 초능력 손을 쓸 힘도 안 들어가... 저 괴물이 다가오고 있어...!",
+        mangaNote: "만화 2화 12p: 마루에 쓰러져 기침을 토하는 모모와 다가오는 3m 외계인의 거구.",
+        expression: "momo-crying",
+        effect: "shake-light",
+        sfx: ""
+      },
+      {
+        id: 42,
+        chapter: "제2화: 그게 바로 외계인이잖아",
+        sceneTitle: "오카룬의 부분 요괴화 각성",
+        bg: "/assets/manga/07_sumo_tackle.jpg",
+        speaker: "오카룬 (타카쿠라 켄)",
+        speakerType: "okarun",
+        text: "아야세 씨를... 건드리지 마라아아아-!!!!",
+        thought: "아야세 씨가 날 구해줬어. 날 믿어줬어. 이번엔 내가 아야세 씨를 지킬 차례야!! 터보 할멈의 힘이든 뭐든 다 써주마!!",
+        mangaNote: "만화 2화 13p: 터보 저주를 의지력으로 끌어올려 백발과 날카로운 이빨의 부분 요괴화 상태로 각성하는 오카룬!",
+        expression: "okarun-berserk",
+        effect: "flash-red",
+        sfx: "screamer"
+      },
+      {
+        id: 43,
+        chapter: "제2화: 그게 바로 외계인이잖아",
+        sceneTitle: "작전 제안: 초능력 손의 고삐!",
+        bg: "/assets/manga/07_sumo_tackle.jpg",
+        speaker: "오카룬 (타카쿠라 켄)",
+        speakerType: "okarun",
+        text: "아야세 씨! 초능력 손으로 제 목(턱끈)을 쥐고 조종해 주세요!! 제 몸을 탄환 삼아 저 녀석에게 돌진하겠습니다!!",
+        thought: "내 몸의 스피드는 시속 100km! 아야세 씨의 손이 조준해주면 절대 빗나가지 않습니다!",
+        mangaNote: "만화 2화 14p: 낮은 스모 자세(돗시리)를 잡고 모모를 돌아보며 외치는 오카룬의 결의!",
+        expression: "okarun-determined",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 44,
+        chapter: "제2화: 그게 바로 외계인이잖아",
+        sceneTitle: "모모의 고삐 쥐기 & 전력 신뢰",
+        bg: "/assets/manga/07_sumo_tackle.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "알았어, 오카룬!! 널 믿을게!! 내 염동력 손으로 고삐 꽉 쥐고 있을 테니까, 시원하게 날려버려, 파트너!!!!",
+        thought: "이 녀석, 눈빛이 완전히 바뀌었어... 진짜 믿음직스럽잖아!",
+        mangaNote: "만화 2화 15p: 마루에서 거대 염동력 손을 펼쳐 오카룬의 목덜미를 고삐처럼 움켜쥐는 모모!",
+        expression: "momo-determined",
+        effect: "flash-white",
+        sfx: "magic"
+      },
+      {
+        id: 45,
+        chapter: "제2화: 그게 바로 외계인이잖아",
+        sceneTitle: "시속 100km 초고속 스모 태클 작렬!!",
+        bg: "/assets/manga/07_sumo_tackle.jpg",
+        speaker: "나레이션",
+        speakerType: "narration",
+        text: "도도도도동— 콰아아아아앙!! 시속 100km의 맹렬한 가속력과 모모의 초능력 손이 합체된 초고속 스모 태클이 플랫우즈 몬스터의 명치에 정확히 꽂혔다! 3m 거구의 외계인이 담장을 뚫고 허공으로 솟구쳤다!",
+        thought: "",
+        mangaNote: "만화 2화 16~17p 더블 스프레드: 광각 왜곡 로우앵글로 괴물의 복부를 뚫어버릴 듯 작렬하는 오카룬의 호쾌한 스모 박치기!",
+        expression: "okarun-berserk",
+        effect: "shake-heavy",
+        sfx: "explosion"
+      },
+      {
+        id: 46,
+        chapter: "제2화: 그게 바로 외계인이잖아",
+        sceneTitle: "괴물 격퇴와 논바닥 추락",
+        bg: "/assets/manga/07_sumo_tackle.jpg",
+        speaker: "나레이션",
+        speakerType: "narration",
+        text: "푸화아아악! 담장 밖 저 멀리 논바닥으로 처박힌 플랫우즈 몬스터는 흙탕물을 뒤집어쓴 채 비명을 지르며 도망쳤다!",
+        thought: "",
+        mangaNote: "만화 2화 18p: 논바닥에 거꾸로 처박혀 다리를 버둥거리는 괴물의 코믹 격퇴 컷.",
+        expression: "flatwoods-monster",
+        effect: "",
+        sfx: "splash"
+      },
+      {
+        id: 47,
+        chapter: "제2화: 그게 바로 외계인이잖아",
+        sceneTitle: "결계 부적 복구",
+        bg: "/assets/manga/07_sumo_tackle.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "지금이야!! (도리이 기둥으로 달려가 떨어진 결계 부적을 찰싹 붙인다!) 에잇! 절대 못 들어오게 꽁꽁 묶여라!!",
+        thought: "휴... 황금빛 결계가 다시 작동했어. 이제 안으로 못 들어와!",
+        mangaNote: "만화 2화 19p: 결계 부적을 다시 붙이며 안도하는 모모의 뒷모습.",
+        expression: "momo-confident",
+        effect: "flash-white",
+        sfx: "talisman"
+      },
+      {
+        id: 48,
+        chapter: "제2화: 그게 바로 외계인이잖아",
+        sceneTitle: "탈진한 오카룬과 수건 닦아주기",
+        bg: "/assets/manga/08_epilogue.jpg",
+        speaker: "오카룬 (타카쿠라 켄)",
+        speakerType: "okarun",
+        text: "하아... 하아... 아야세 씨... 해치웠... 군요... 털썩.",
+        thought: "온몸의 뼈마디가 부서질 것 같아... 하지만 아야세 씨를 지켰어...",
+        mangaNote: "만화 2화 20p: 인간 모습으로 돌아와 툇마루에 쓰러지듯 눕는 오카룬.",
+        expression: "okarun-tired",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 49,
+        chapter: "제2화: 그게 바로 외계인이잖아",
+        sceneTitle: "모모의 진심 어린 온기",
+        bg: "/assets/manga/08_epilogue.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "수고했어, 오카룬. 너 진짜 대단하더라... 자, 흙먼지 묻었잖아. 가만히 있어, 닦아줄 테니까.",
+        thought: "날 지키겠다고 목숨 걸고 돌진하는 모습... 솔직히 좀 멋있었어.",
+        mangaNote: "만화 2화 21p: 보송보송한 면 수건으로 오카룬의 뺨과 이마를 정성껏 닦아주는 모모의 다정한 얼굴.",
+        expression: "momo-gentle",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 50,
+        chapter: "제2화: 그게 바로 외계인이잖아",
+        sceneTitle: "마지막 결의: 바나나 탈환 100km 결전!",
+        bg: "/assets/manga/08_epilogue.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "겁먹지 마, 오카룬. 네 소중한 거시기, 내가 반드시 되찾아줄 테니까! 터보 할멈이 시속 100km로 달리면, 우리도 100km로 달려서 엉덩이를 걷어차 주자고! 넌 내 최고의 파트너니까!",
+        thought: "너랑 손잡고 있으니까 알겠어. 네 소중한 것도, 네 목숨도... 내가 끝까지 함께 지켜줄 거야.",
+        mangaNote: "만화 2화 22p 라스트 컷: 툇마루에서 굳게 손을 맞잡으며 서로를 바라보고 웃는 모모와 오카룬. 1권 에피소드 1 대단원의 막!",
+        expression: "momo-smile",
+        effect: "flash-white",
+        sfx: "heartbeat"
+      },
+      {
+        id: 51,
+        chapter: "제2화: 그게 바로 외계인이잖아",
+        sceneTitle: "에피소드 1 클리어!",
+        bg: "/assets/manga/08_epilogue.jpg",
+        speaker: "나레이션",
+        speakerType: "narration",
+        text: "축하합니다! 단다단 제1권 에피소드 1 (1화~2화: 그것이 사랑의 시작이었어 & 그게 바로 외계인이잖아) 라이트노벨 게임 클리어!\n\n다음 에피소드 2: 〈3화~5화 동안 미녀 영매사 세이코의 특훈 & 화장실의 신 결계 훈련〉으로 이어집니다!",
+        thought: "",
+        mangaNote: "🎉 EPISODE 1 COMPLETE!",
+        expression: "momo-smile",
+        effect: "",
+        sfx: "fanfare"
+      }
+    ]
   },
 
   // ==========================================
-  // CHOICE 2: 모모의 잠재 영력 폭발
+  // EPISODE 2: 3화~5화 (할머니 세이코의 특훈)
   // ==========================================
-  {
-    id: 22,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "플레이어 선택의 순간: 극한의 감정 폭발",
-    bg: "/assets/segye_occult/01_vol1_encounter.jpg",
-    speaker: "아야세 모모",
-    speakerType: "momo",
-    text: "외계인 손이 닿기 직전, 모모의 가슴 깊은 곳에서 뜨거운 불길이 치솟는다!",
-    thought: "내가 이딴 놈들한테 당할 것 같아?!",
-    mangaNote: "플레이어 인터랙티브 분기: 영매사의 피 각성 vs 오카룬을 향한 부르짖음",
-    expression: "momo-crying",
-    choice: {
-      prompt: "모모의 극한 감정을 어디로 폭발시킬까요?",
-      options: [
-        {
-          text: "\"꺼져라, 변태 자식들아!! 내 몸에 손끝 하나라도 대면 가루로 만들어버린다!!\"",
-          reactionText: "모모의 온몸에서 눈부신 푸른 영력 오라가 폭풍처럼 뿜어져 나온다!",
-          reactionThought: "우리 할머니 영매사의 피를 얕보지 마! 내 모든 힘을 끌어내겠어!",
-          delta: "⚡ 영력 잠재력 100% 개방! 초능력 각성 +25"
-        },
-        {
-          text: "\"오카룬!! 날 구하러 와줘!! 제발 살려줘어어어!!\"",
-          reactionText: "모모의 간절한 목소리가 허공의 영적 주파수를 타고 퍼져나간다!",
-          reactionThought: "그 녀석이 약속했어... 내 파트너가 되어주겠다고! 믿고 있어, 오카룬!",
-          delta: "💖 오카룬과의 영혼 결속! 유대감 +30 상승"
-        }
-      ]
-    }
+  2: {
+    title: "에피소드 2: 〈할머니 세이코의 특훈 & 화장실의 신 & 결전 준비〉",
+    range: "3화~5화",
+    desc: "전설의 동안 미녀 영매사 세이코 할머니 등장! 터보 할멈 야구 배트 응징 홈런, 화장실의 신 결계 훈련, 툇마루 컵라면 썸, 그리고 쇼타 터널 결전 전야의 비장한 출진!",
+    badge: "단다단 원작 3화~5화 · 결전의 준비",
+    script: [
+      {
+        id: 1,
+        chapter: "제3화: 할머니 세이코 등장",
+        sceneTitle: "나막신 소리와 수수께끼의 미녀",
+        bg: "/assets/manga/09_seiko_intro.jpg",
+        speaker: "나레이션",
+        speakerType: "narration",
+        text: "또각, 또각, 또각—. 아침 햇살이 비치는 아야세 신사의 무거운 나무 대문이 열리며 경쾌한 나막신 소리가 다다미 복도에 울려 퍼졌다.",
+        thought: "",
+        mangaNote: "만화 3화 1p: 신사 입구 대문이 열리며 긴 담뱃대를 손에 든 인물의 그림자가 드리워지는 컷.",
+        expression: "narration",
+        effect: "",
+        sfx: "footsteps"
+      },
+      {
+        id: 2,
+        chapter: "제3화: 할머니 세이코 등장",
+        sceneTitle: "20대 동안 미녀의 압도적 자태",
+        bg: "/assets/manga/09_seiko_intro.jpg",
+        speaker: "오카룬 (타카쿠라 켄)",
+        speakerType: "okarun",
+        text: "히익...?! 저, 저기 아야세 씨... 저 아름다운 누님은 대체 누구십니까...?! 할머니가 아니라 모델 같은 미녀분이 들어오셨는데요...?!",
+        thought: "믿을 수 없어... 주름 하나 없는 도자기 피부에 화려한 기모노풍 자태... 설마 모모의 친언니인가?!",
+        mangaNote: "만화 3화 2p: 꼬부랑 노인을 상상하던 오카룬의 눈알이 튀어나올 듯 경악하는 클로즈업 컷!",
+        expression: "okarun-shock",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 3,
+        chapter: "제3화: 할머니 세이코 등장",
+        sceneTitle: "당당한 영매사 세이코의 등장",
+        bg: "/assets/manga/09_seiko_intro.jpg",
+        speaker: "아야세 세이코",
+        speakerType: "seiko",
+        text: "어이, 모모. 집에 웬 냄새나는 저주 찌꺼기를 질질 끌고 온 게냐? 콧물이나 찔찔 짜는 계집애가 사내놈을 끌어들이다니 배짱도 좋군.",
+        thought: "호오... 저 사내 녀석, 보통 원령이 들러붙은 게 아니로구만. 쇼타 터널의 악명 높은 고속 지박령인가...",
+        mangaNote: "만화 3화 3p: 담뱃대를 꼬나물고 눈썹을 찌푸리며 오카룬을 날카롭게 꿰뚫어 보는 세이코의 카리스마 컷!",
+        expression: "seiko-cool",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 4,
+        chapter: "제3화: 할머니 세이코 등장",
+        sceneTitle: "모모의 반발",
+        bg: "/assets/manga/09_seiko_intro.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "할머니, 말 좀 예쁘게 해! 저주 찌꺼기라니, 어젯밤에 날 구해준 파트너란 말이야! 그리고 얜 지금 터보 할멈한테 소중한 거시기를 뺏겼다고!",
+        thought: "할머니는 오자마자 또 짓궂게 사람을 긁네. 그래도 할머니가 오니까 든든하긴 하다...",
+        mangaNote: "만화 3화 4p: 팔짱을 끼고 할머니를 향해 삐죽거리는 모모의 츤데레 컷.",
+        expression: "momo-pout",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 5,
+        chapter: "제3화: 할머니 세이코 등장",
+        sceneTitle: "터보 할멈의 기습 발작!",
+        bg: "/assets/manga/10_bat_homerun.jpg",
+        speaker: "터보 할멈 (빙의)",
+        speakerType: "turbo",
+        text: "우헤헤헤헤!! 늙은 영감탱이 마녀 주제에 주둥이가 살았구나!! 이 년의 뼈마디를 분질러 피를 빨아먹어 주마아아-!!",
+        thought: "",
+        mangaNote: "만화 3화 5p: 오카룬의 가슴팍에서 거대한 터보 할멈의 악령 머리가 솟구쳐 오르며 세이코를 향해 이빨을 드러내는 공포 컷!",
+        expression: "turbo-granny",
+        effect: "shake-heavy",
+        sfx: "screamer"
+      },
+      {
+        id: 6,
+        chapter: "제3화: 할머니 세이코 등장",
+        sceneTitle: "세이코의 배트 풀스윙 응징!",
+        bg: "/assets/manga/10_bat_homerun.jpg",
+        speaker: "아야세 세이코",
+        speakerType: "seiko",
+        text: "시건방진 요괴 쥐새끼가 어디서 어른한테 주둥이를 놀려?! 딱 대라, 홈런이다아아-!!",
+        thought: "신성한 내 신사에서 감히 주둥이를 함부로 놀리다니, 엉덩이를 쪼개주마!",
+        mangaNote: "만화 3화 6p: 품에서 목검 야구 배트를 꺼내 거대한 퇴마 영력을 실어 콰아아앙! 풀스윙을 날리는 세이코의 호쾌한 액션 컷!",
+        expression: "seiko-angry",
+        effect: "shake-heavy",
+        sfx: "punch"
+      },
+      {
+        id: 7,
+        chapter: "제3화: 할머니 세이코 등장",
+        sceneTitle: "다다미 벽에 처박힌 망령",
+        bg: "/assets/manga/10_bat_homerun.jpg",
+        speaker: "나레이션",
+        speakerType: "narration",
+        text: "콰아아아앙!! 야구공처럼 얻어맞은 터보 할멈의 악령이 비명을 지르며 다다미방 반대편 벽에 푹 처박혔다! 오카룬은 고통에 몸부림치며 바닥을 굴렀다.",
+        thought: "",
+        mangaNote: "만화 3화 7p: 벽에 거미줄 모양 금이 가며 뻗어버린 터보 할멈의 영혼 실루엣.",
+        expression: "narration",
+        effect: "flash-white",
+        sfx: "explosion"
+      },
+      {
+        id: 8,
+        chapter: "제3화: 할머니 세이코 등장",
+        sceneTitle: "세이코의 짓궂은 손자사위 드립",
+        bg: "/assets/manga/11_son_in_law_blush.jpg",
+        speaker: "아야세 세이코",
+        speakerType: "seiko",
+        text: "흥, 버릇없는 쥐새끼 녀석. ...그나저나 사내 녀석아, 우리 손녀딸 손을 잡고 들어온 손자사위 될 놈이면 인사부터 똑바로 넙죽 해야지, 안 그러냐?",
+        thought: "녀석... 눈빛 하나는 오롯이 맑고 우직하군. 우리 모모 녀석이 반할 만도 해.",
+        mangaNote: "만화 3화 8p: 배트를 어깨에 걸치고 씩 웃으며 오카룬을 놀리는 세이코의 장난기 가득한 얼굴.",
+        expression: "seiko-smirk",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 9,
+        chapter: "제3화: 할머니 세이코 등장",
+        sceneTitle: "토마토처럼 폭발하는 모모!",
+        bg: "/assets/manga/11_son_in_law_blush.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "할머니 미쳤어?! 손자사위라니 무슨 헛소리를 지껄이는 거야!! 그냥 저주에 걸려 불쌍해서 데려온 빵셔틀 배터리일 뿐이거든?!",
+        thought: "얼굴이 화끈거려서 미칠 것 같아!! 오카룬 쟤가 이상하게 오해하면 어떡하라고 진짜!!",
+        mangaNote: "만화 3화 9p: 머리에서 폭풍처럼 연기를 뿜어내며 베개를 집어던지는 모모의 귀여운 츤데레 폭발 컷!",
+        expression: "momo-blush",
+        effect: "shake-light",
+        sfx: "blush"
+      },
+      {
+        id: 10,
+        chapter: "제4화: 화장실의 신 결계 훈련",
+        sceneTitle: "터보 할멈의 저주 봉인법",
+        bg: "/assets/manga/12_toilet_god_training.jpg",
+        speaker: "아야세 세이코",
+        speakerType: "seiko",
+        text: "터보 할멈의 저주는 너무나 흉포해서, 오카룬 녀석의 정신을 갉아먹고 있다. 결전 전까지 버티려면 정화의 영력을 지닌 '화장실의 신(카와야가미)'의 기운을 몸에 묶어야 해.",
+        thought: "부정한 것을 깨끗이 씻어내는 화장실의 신만이 악령의 음기를 억누를 수 있지.",
+        mangaNote: "만화 4화 1~2p: 방울 달린 결계 부적을 꺼내 오카룬의 가슴과 이마에 붙이며 진지하게 설명하는 세이코.",
+        expression: "seiko-cool",
+        effect: "",
+        sfx: "talisman"
+      },
+      {
+        id: 11,
+        chapter: "제4화: 화장실의 신 결계 훈련",
+        sceneTitle: "방울 부적과 결계 호흡 수련",
+        bg: "/assets/manga/12_toilet_god_training.jpg",
+        speaker: "오카룬 (타카쿠라 켄)",
+        speakerType: "okarun",
+        text: "딸랑, 딸랑... 흡! 하아! 세이코 할머님, 이 방울이 울릴 때마다 몸속에서 타오르는 화염 같은 괴기가 정화되는 느낌입니다...!",
+        thought: "아야세 씨의 할머니는 진짜 대단한 영매사야... 이 훈련을 버텨내야 내 바나나를 되찾을 수 있어!",
+        mangaNote: "만화 4화 3p: 땀을 비 오듯 흘리며 결계 호흡을 다듬는 오카룬과 옆에서 영력을 보태는 모모.",
+        expression: "okarun-determined",
+        effect: "",
+        sfx: "chime"
+      },
+      {
+        id: 12,
+        chapter: "제4화: 화장실의 신 결계 훈련",
+        sceneTitle: "노을 지는 툇마루의 휴식",
+        bg: "/assets/manga/13_porch_ramen_blow.jpg",
+        speaker: "나레이션",
+        speakerType: "narration",
+        text: "온종일 이어진 혹독한 특훈 끝에 마침내 해가 뉘엿뉘엿 저물었다. 붉은 저녁노을이 신사 툇마루를 황금빛으로 물들였다.",
+        thought: "",
+        mangaNote: "만화 4화 4p: 탈진하여 툇마루에 털썩 걸터앉은 오카룬과 보송보송한 면 수건을 들고 다가오는 모모.",
+        expression: "narration",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 13,
+        chapter: "제4화: 화장실의 신 결계 훈련",
+        sceneTitle: "모모의 다정한 머리 말려주기",
+        bg: "/assets/manga/13_porch_ramen_blow.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "가만히 있어, 바보야. 땀 식으면 감기 걸리니까. ...미용실 알바할 때 다져진 솜씨니까 얌전히 머리나 맡기라고.",
+        thought: "머릿결이 생각보다 부드럽네... 땀 뻘뻘 흘리면서도 포기 안 하고 버티는 모습, 꽤 기특하잖아.",
+        mangaNote: "만화 4화 5p: 수건으로 오카룬의 젖은 머리를 조심스럽고 다정하게 털어주는 모모의 은은한 미소 컷.",
+        expression: "momo-gentle",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 14,
+        chapter: "제4화: 화장실의 신 결계 훈련",
+        sceneTitle: "후- 후- 컵라면 썸 먹방",
+        bg: "/assets/manga/13_porch_ramen_blow.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "자, 아- 해봐. 특제 컵라면 면발 후- 후- 불어서 식혀줬으니까! 딱 한 입만 주는 거니까 감지덕지하라고!",
+        thought: "내가 먹던 젓가락으로 먹여주는 건데... 설마 간접 키스라고 생각하는 건 아니겠지?! 으으 왜 내가 긴장해!",
+        mangaNote: "만화 4화 6p: 컵라면 면발을 입술로 후- 불어서 오카룬 입앞에 내미는 홍조 띤 모모의 심쿵 컷!",
+        expression: "momo-blush",
+        effect: "shake-light",
+        sfx: "heartbeat"
+      },
+      {
+        id: 15,
+        chapter: "제4화: 화장실의 신 결계 훈련",
+        sceneTitle: "오카룬의 감동",
+        bg: "/assets/manga/13_porch_ramen_blow.jpg",
+        speaker: "오카룬 (타카쿠라 켄)",
+        speakerType: "okarun",
+        text: "냠... 꿀꺽. ...정말... 세상에서 제일 맛있습니다, 아야세 씨. 제 인생에서 먹어본 라면 중에 제일 따뜻해요.",
+        thought: "이렇게 다정한 아이였구나... 나 같은 오타쿠를 위해 머리도 말려주고 라면도 먹여주고... 눈물이 날 것 같아.",
+        mangaNote: "만화 4화 7p: 눈을 반짝이며 라면을 먹고 감동하는 오카룬의 벅찬 표정.",
+        expression: "okarun-tears",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 16,
+        chapter: "제5화: 터널 결전 준비",
+        sceneTitle: "세이코의 작전 브리핑",
+        bg: "/assets/manga/14_tunnel_briefing.jpg",
+        speaker: "아야세 세이코",
+        speakerType: "seiko",
+        text: "잘 들어라. 터보 할멈은 쇼타 터널의 수많은 처녀 지박령들과 융합되어 있어서 터널 안에서는 불사신이다. 놈을 완전히 성불시키려면 터널 밖, 우리 신사 결계 경계선까지 끌고 나와야 해!",
+        thought: "시속 100km의 추격을 맨몸으로 버텨내야 하는 목숨을 건 레이스다. 두 녀석의 호흡이 어긋나면 죽는다.",
+        mangaNote: "만화 5화 1~2p: 다다미방에 지도를 펼쳐놓고 터널과 신사 사이의 유인 경로를 짚어주는 세이코.",
+        expression: "seiko-cool",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 17,
+        chapter: "제5화: 터널 결전 준비",
+        sceneTitle: "손을 꽉 맞잡은 두 사람",
+        bg: "/assets/manga/15_holding_hands_departure.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "겁먹지 마, 오카룬. 네 손은 내가 절대로 안 놓을 거니까. 네 소중한 거시기, 내가 반드시 되찾아줄게!",
+        thought: "어떤 괴물이 나와도 내가 지켜줄 거야. 내 최고의 파트너니까!",
+        mangaNote: "만화 5화 3p: 어두운 밤하늘 아래, 서로의 손가락을 단단히 얽어쥐며 눈을 맞추는 모모와 오카룬의 클로즈업 컷!",
+        expression: "momo-determined",
+        effect: "flash-white",
+        sfx: "talisman"
+      },
+      {
+        id: 18,
+        chapter: "제5화: 터널 결전 준비",
+        sceneTitle: "쇼타 터널을 향한 출진!",
+        bg: "/assets/manga/15_holding_hands_departure.jpg",
+        speaker: "오카룬 (타카쿠라 켄)",
+        speakerType: "okarun",
+        text: "네, 아야세 씨!! 당신을 믿고 전력으로 달리겠습니다! 가자, 쇼타 터널로!!",
+        thought: "아야세 씨와 함께라면 아무것도 두렵지 않습니다!",
+        mangaNote: "만화 5화 4p 라스트 컷: 신사 계단을 박차고 심야의 터널로 향해 달려나가는 두 사람의 비장한 뒷모습!",
+        expression: "okarun-determined",
+        effect: "shake-light",
+        sfx: "whoosh"
+      }
+    ]
   },
 
-  {
-    id: 23,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "거대 염동력 손 각성!",
-    bg: "/assets/segye_occult/01_vol1_encounter.jpg",
-    speaker: "나레이션",
-    speakerType: "narration",
-    text: "콰아아아아앙!! 눈부신 푸른 영력의 불꽃과 함께, 허공에 거대한 초능력 염동력 손이 실체화되었다! 거대 손이 세르포 성인들을 벽으로 패대기쳤다!",
-    thought: "",
-    mangaNote: "만화 1화 24p: 모모의 등 뒤로 솟구쳐 오른 영적 거대 초능력 손의 웅장한 각성 컷!",
-    expression: "momo-awakened",
-    effect: "flash-white",
-    sfx: "magic"
-  },
-  {
-    id: 24,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "벽을 부수고 난입한 요괴 오카룬!",
-    bg: "/assets/segye_occult/01_vol1_encounter.jpg",
-    speaker: "요괴 오카룬",
-    speakerType: "demon-okarun",
-    text: "내 거시기이이이이!! 내 거시기 내놔아아아아아-!!!!",
-    thought: "머릿속이 피로 물든다... 하지만 저 녀석들을 찢어발겨야 내 바나나를 찾을 수 있어...!",
-    mangaNote: "만화 1화 25p: 폐병원 콘크리트 벽을 뚫고 시속 100km로 날아 들어온 은발의 요괴 오카룬!",
-    expression: "okarun-berserk",
-    effect: "shake-heavy",
-    sfx: "explosion"
-  },
-  {
-    id: 25,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "세르포 성인 학살과 폭주",
-    bg: "/assets/segye_occult/01_vol1_encounter.jpg",
-    speaker: "나레이션",
-    speakerType: "narration",
-    text: "터보 할멈의 저주를 온몸에 두른 오카룬은 광속의 스피드로 세르포 성인의 우주선 기기를 산산조각 내며 외계인들을 도륙했다! 그러나—살육의 흥분에 휩싸인 오카룬의 붉은 눈동자가 모모를 향했다!",
-    thought: "",
-    mangaNote: "만화 1화 26~27p: 피아식별을 잃고 이빨을 드러내며 모모에게 달려드는 요괴 오카룬.",
-    expression: "okarun-berserk",
-    effect: "flash-red",
-    sfx: "screamer"
-  },
-  {
-    id: 26,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "도망치지 않는 모모",
-    bg: "/assets/segye_occult/01_vol1_encounter.jpg",
-    speaker: "아야세 모모",
-    speakerType: "momo",
-    text: "오카룬...?! 저 몰골은 대체 뭐야...?! 하지만... 저 녀석은 날 구하려고 여기까지 온 거잖아!!",
-    thought: "도망치면 얜 완전히 괴물이 되어버려. 내가 막아야 해!",
-    mangaNote: "만화 1화 28p: 날아오는 괴물 오카룬을 피하지 않고 두 발로 단단히 버티고 서는 모모.",
-    expression: "momo-determined",
-    effect: "",
-    sfx: "heartbeat"
-  },
-  {
-    id: 27,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "명장면: 턱을 틀어잡은 거대 손! (1화 클라이맥스)",
-    bg: "/assets/segye_occult/01_vol1_encounter.jpg",
-    speaker: "아야세 모모",
-    speakerType: "momo",
-    text: "정신 차려, 이 바보야아아아!! 날 봐!! 네가 날 구하러 여기까지 온 거잖아!!",
-    thought: "제발 돌아와... 오카룬, 네 눈빛을 보여줘!!",
-    mangaNote: "만화 1화 29~31p 더블 스프레드: 거대한 염동력 손으로 포효하는 오카룬의 턱을 단단히 쥐고 시선을 맞추며 포효하는 모모의 결정적 투샷!",
-    expression: "momo-jaw-grab",
-    effect: "shake-heavy",
-    sfx: "whoosh"
-  },
-  {
-    id: 28,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "되찾은 이성과 탈출",
-    bg: "/assets/segye_occult/01_vol1_encounter.jpg",
-    speaker: "오카룬 (타카쿠라 켄)",
-    speakerType: "okarun",
-    text: "...아... 야세... 씨...? 당신... 무사했군요...",
-    thought: "따뜻한 손길이야... 아야세 씨의 눈동자가 보여. 날 두려워하지 않고 바라봐주고 있어...",
-    mangaNote: "만화 1화 32p: 붉은 안광이 사그라들며 모모를 알아보고 눈물을 글썽이는 오카룬.",
-    expression: "okarun-tears",
-    effect: "",
-    sfx: ""
-  },
-  {
-    id: 29,
-    chapter: "제1화: 그것이 사랑의 시작이었어",
-    sceneTitle: "1화 피날레: 그것이 사랑의 시작이었어",
-    bg: "/assets/segye_occult/01_vol1_epilogue.jpg",
-    speaker: "나레이션",
-    speakerType: "narration",
-    text: "콰아아앙! 세르포 성인의 모선이 대폭발을 일으키며 폐병원이 화염에 휩싸였다. 모모는 오카룬의 손을 꼭 쥔 채 새벽의 여명 속으로 뛰어내렸다. 유령도, 외계인도... 둘 다 진짜였다. 그리고 이것이, 두 사람의 운명적인 사랑의 시작이었다.",
-    thought: "",
-    mangaNote: "만화 1화 33p 라스트 컷: 불타는 병원을 등지고 손을 잡고 달리는 두 사람의 실루엣과 1화 타이틀 회수.",
-    expression: "momo-smile",
-    effect: "flash-white",
-    sfx: "explosion"
+  // ==========================================
+  // EPISODE 3: 6화~8화 (터널 100km 결전 & 대게 요괴)
+  // ==========================================
+  3: {
+    title: "에피소드 3: 〈심야 쇼타 터널 100km/h 질주 & 거대 대게 요괴 결전〉",
+    range: "6화~8화",
+    desc: "심야의 쇼타 터널 안에서 벌어지는 시속 100km 극한의 고속 술래잡기! 거대 대게 합체 요괴의 도심 폭주 위기, 손깍지 영력 부스터 질주, 신사 결계 대폭발 성불과 터보 할멈 마스코트 정화!",
+    badge: "단다단 원작 6화~8화 · 전설의 고속 결전",
+    script: [
+      {
+        id: 1,
+        chapter: "제6화: 달려라 터보 할멈!",
+        sceneTitle: "심야 쇼타 터널의 살기",
+        bg: "/assets/manga/16_tunnel_run_start.jpg",
+        speaker: "나레이션",
+        speakerType: "narration",
+        text: "자정의 쇼타 터널 안. 주황색 비상등이 기괴하게 깜빡이는 터널 아스팔트 위에 두 사람이 서자, 터널 천장 전체에서 뼛속까지 시린 냉기와 함께 광기 어린 괴성이 쏟아져 내렸다.",
+        thought: "",
+        mangaNote: "만화 6화 1p: 어두운 터널 내부의 음산한 원근감과 비상등 불빛 아래 선 두 사람.",
+        expression: "narration",
+        effect: "",
+        sfx: "wind"
+      },
+      {
+        id: 2,
+        chapter: "제6화: 달려라 터보 할멈!",
+        sceneTitle: "터보 할멈의 100km/h 돌진!",
+        bg: "/assets/manga/16_tunnel_run_start.jpg",
+        speaker: "터보 할멈",
+        speakerType: "turbo",
+        text: "우헤헤헤헤!! 제 발로 거시기를 바치러 기어들어 왔구나아아-!! 몽땅 씹어 삼켜주마아아-!!",
+        thought: "",
+        mangaNote: "만화 6화 2p: 시속 100km의 맹렬한 각력으로 아스팔트를 박차며 터널 벽을 타고 돌진해오는 터보 할멈의 공포스러운 풀샷!",
+        expression: "turbo-granny",
+        effect: "shake-heavy",
+        sfx: "screamer"
+      },
+      {
+        id: 3,
+        chapter: "제6화: 달려라 터보 할멈!",
+        sceneTitle: "백발 요괴화와 100km 스타트!",
+        bg: "/assets/manga/16_tunnel_run_start.jpg",
+        speaker: "오카룬 (타카쿠라 켄)",
+        speakerType: "okarun",
+        text: "아야세 씨, 꽉 잡으세요!! 달립니다아아아-!!",
+        thought: "터보 저주를 다리에 집중시킨다! 아스팔트를 찢어발기며 100km로 가속한다!",
+        mangaNote: "만화 6화 3p: 백발 스파이크와 톱니 마스크로 변신한 오카룬이 모모의 손을 잡고 터널 출구를 향해 전력 발진하는 컷!",
+        expression: "okarun-berserk",
+        effect: "shake-heavy",
+        sfx: "explosion"
+      },
+      {
+        id: 4,
+        chapter: "제6화: 달려라 터보 할멈!",
+        sceneTitle: "등 뒤 10cm의 극한 추격전",
+        bg: "/assets/manga/17_turbo_chase_close.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "손 놓치지 마, 바보야!! 이 속도에서 놓치면 둘 다 아스팔트에 갈려 나간다고! 끝까지 꽉 잡고 있어!!",
+        thought: "짜릿해 미칠 것 같아! 손끝 사이로 전해지는 얘 영력이 내 온몸의 피를 끓게 만들어!",
+        mangaNote: "만화 6화 4p: 터널 벽면에서 불꽃 스파크를 튀기며 등 뒤 10cm까지 쫓아온 터보 할멈의 날카로운 손톱 클로즈업!",
+        expression: "momo-determined",
+        effect: "flash-red",
+        sfx: "whoosh"
+      },
+      {
+        id: 5,
+        chapter: "제7화: 거대 대게 요괴 합체",
+        sceneTitle: "처녀 지박령 흡수와 거대화",
+        bg: "/assets/manga/18_crab_monster_merge.jpg",
+        speaker: "나레이션",
+        speakerType: "narration",
+        text: "터널 출구가 눈앞에 보인 순간, 터보 할멈이 터널 벽에 깃든 수백 명의 처녀 지박령 원혼들을 빨아들이더니, 아파트 3층 크기의 거대한 '대게 합체 요괴'로 융합 팽창했다!",
+        thought: "",
+        mangaNote: "만화 7화 1~2p 더블 스프레드: 터널 천장을 뚫고 솟구쳐 오른 아파트 크기 거대 갑각류 괴수의 압도적인 위용!",
+        expression: "monster",
+        effect: "shake-heavy",
+        sfx: "explosion"
+      },
+      {
+        id: 6,
+        chapter: "제7화: 거대 대게 요괴 합체",
+        sceneTitle: "도심 붕괴의 위기",
+        bg: "/assets/manga/18_crab_monster_merge.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "저 거대한 집게발 좀 봐!! 저 괴물이 고속도로로 빠져나가면 수천 명이 압사당해!! 여기서 끝장내야 해!",
+        thought: "내 초능력 손의 최대 출력, 여기서 전부 쏟아붓는다!!",
+        mangaNote: "만화 7화 3p: 집게발이 도로 아스팔트를 짓이기며 콘크리트 파편이 비 오듯 쏟아지는 아비규환 컷.",
+        expression: "momo-angry",
+        effect: "shake-light",
+        sfx: "punch"
+      },
+      {
+        id: 7,
+        chapter: "제7화: 거대 대게 요괴 합체",
+        sceneTitle: "손깍지 영력 부스터 도약!",
+        bg: "/assets/manga/19_interlocking_fingers_boost.jpg",
+        speaker: "오카룬 (타카쿠라 켄)",
+        speakerType: "okarun",
+        text: "아야세 씨, 손깍지를 끼어주세요!! 둘의 영력을 하나로 합쳐서 뛰어넘는 겁니다!!",
+        thought: "손가락이 얽히는 순간, 온몸에서 엄청난 에너지가 솟구쳐 오른다!!",
+        mangaNote: "만화 7화 4p: 두 사람의 손가락이 꽉 맞물리며 찬란한 푸른빛과 황금빛 스파크가 폭발하는 손깍지 클로즈업 컷!",
+        expression: "okarun-determined",
+        effect: "flash-white",
+        sfx: "magic"
+      },
+      {
+        id: 8,
+        chapter: "제7화: 거대 대게 요괴 합체",
+        sceneTitle: "허공을 가르는 광속 비행",
+        bg: "/assets/manga/19_interlocking_fingers_boost.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "내 미용 가위가 머리만 자르는 줄 알아?! 이 거대 갑각류 녀석, 오늘 게장으로 담가주마아아-!! 날아올라라, 오카룬!!",
+        thought: "절대 얘 다치게 안 해... 우리 둘이서 신사 결계선까지 뛰어넘는다!!",
+        mangaNote: "만화 7화 5p: 거대 집게발 사이를 아슬아슬하게 통과하며 신사 도리이를 향해 허공으로 솟구치는 두 사람의 다이내믹 공중 컷!",
+        expression: "momo-determined",
+        effect: "shake-heavy",
+        sfx: "whoosh"
+      },
+      {
+        id: 9,
+        chapter: "제8화: 신사 결계 대폭발 성불",
+        sceneTitle: "세이코의 황금빛 결계 폭발!",
+        bg: "/assets/manga/20_shrine_barrier_explosion.jpg",
+        speaker: "나레이션",
+        speakerType: "narration",
+        text: "콰아아아아앙!! 괴물의 집게발을 아슬아슬하게 피하며 신사 도리이 안으로 뛰어든 그 찰나! 대기하고 있던 아야세 세이코의 거대한 퇴마 결계진이 작동하며 눈부신 황금빛 폭풍이 밤하늘을 밝혔다!",
+        thought: "",
+        mangaNote: "만화 8화 1~2p 더블 스프레드: 도리이 결계선 안으로 유인된 괴수가 눈부신 황금빛 결계 폭발과 함께 한 줌의 푸른 재가 되어 성불하는 클라이맥스 컷!",
+        expression: "narration",
+        effect: "flash-white",
+        sfx: "explosion"
+      },
+      {
+        id: 10,
+        chapter: "제8화: 신사 결계 대폭발 성불",
+        sceneTitle: "터보 할멈의 귀여운 마스코트화",
+        bg: "/assets/manga/21_turbo_cat_purified.jpg",
+        speaker: "터보 할멈 (정화)",
+        speakerType: "turbo",
+        text: "퐁—! 갸릉...? 냐아앙... (요력을 완전히 잃고 손바닥만 한 통통하고 무해한 귀여운 마네키네코 인형으로 변신해 모모 품으로 쏙 파고든다)",
+        thought: "젠장... 내 흉포한 요력이 싹 정화당했잖아... 그래도 따뜻하긴 하네...",
+        mangaNote: "만화 8화 3p: 흉포함을 잃고 통통하고 귀여운 고양이 인형 마스코트 모습으로 변해 갸릉거리는 코믹 라스트 컷!",
+        expression: "turbo-cat",
+        effect: "",
+        sfx: "pop"
+      },
+      {
+        id: 11,
+        chapter: "제8화: 신사 결계 대폭발 성불",
+        sceneTitle: "새벽녘 겉옷의 온기",
+        bg: "/assets/manga/22_dawn_jacket_warmth.jpg",
+        speaker: "오카룬 (타카쿠라 켄)",
+        speakerType: "okarun",
+        text: "아야세 씨... 정말 고생 많으셨습니다. ...추우실 텐데 제 겉옷이라도 걸치세요.",
+        thought: "모든 힘을 다 쓰고 휘청거리는 아야세 씨를 보는데 가슴이 찡해... 든든하게 받쳐주고 싶어.",
+        mangaNote: "만화 8화 4p: 겉옷을 벗어 지친 모모의 어깨에 포근하게 감싸 안아주는 오카룬의 듬직한 모습.",
+        expression: "okarun-gentle",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 12,
+        chapter: "제8화: 신사 결계 대폭발 성불",
+        sceneTitle: "에피소드 3 클리어: 깊어진 유대",
+        bg: "/assets/manga/22_dawn_jacket_warmth.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "...따뜻하네. 고마워, 오카룬. 이번에도 네가 날 살렸어. ...이제 터보 할멈도 우리 가족이네? 헤헤.",
+        thought: "옷에서 좋은 냄새가 나... 심장 뛰는 소리가 옷감 너머로 다 들리는 것 같아. 영원히 이 품에 안겨 있고 싶어...",
+        mangaNote: "만화 8화 5p 라스트 컷: 새벽안개 속에서 서로의 어깨를 감싸 안고 미소 짓는 두 사람. 제3화 완편!",
+        expression: "momo-smile",
+        effect: "flash-white",
+        sfx: "heartbeat"
+      }
+    ]
   },
 
   // ==========================================
-  // CHAPTER 2: 그게 바로 외계인이잖아
-  // PART 2: 신사의 아침과 킨타마 소실 비극
+  // EPISODE 4: 9화~13화 (사라사라 & 텐겐 등장)
   // ==========================================
-  {
-    id: 30,
-    chapter: "제2화: 그게 바로 외계인이잖아",
-    sceneTitle: "아야세 신사의 아침",
-    bg: "/assets/segye_occult/01_vol1_extra1_locker_hide.jpg",
-    speaker: "오카룬 (타카쿠라 켄)",
-    speakerType: "okarun",
-    text: "으으... 머리가 깨질 것 같습니다... 어라? 여긴 다다미방...? 제가 살아서 아침을 맞이한 겁니까...?",
-    thought: "어젯밤 폐병원에서 괴물로 변했던 기억이 주마등처럼 스쳐 지나가는데... 대체 여긴 어디지?",
-    mangaNote: "만화 2화 1p: 전통 다다미방 이불 위에서 눈을 비비며 일어나는 오카룬.",
-    expression: "okarun-confused",
-    effect: "",
-    sfx: ""
-  },
-  {
-    id: 31,
-    chapter: "제2화: 그게 바로 외계인이잖아",
-    sceneTitle: "모모의 등장과 얼음주머니",
-    bg: "/assets/segye_occult/01_vol1_extra1_locker_hide.jpg",
-    speaker: "아야세 모모",
-    speakerType: "momo",
-    text: "일어났냐, 오타쿠? 정신이 좀 들어? 자, 이마에 얼음주머니나 대고 있어.",
-    thought: "진짜 밤새 끙끙 앓아서 죽는 줄 알았잖아... 그래도 눈 뜨니까 다행이네.",
-    mangaNote: "만화 2화 2p: 사복 반바지에 티셔츠를 입고 얼음주머니를 툭 던져주는 츤데레 모모.",
-    expression: "momo-gentle",
-    effect: "",
-    sfx: ""
-  },
-  {
-    id: 32,
-    chapter: "제2화: 그게 바로 외계인이잖아",
-    sceneTitle: "신사 결계의 안전지대",
-    bg: "/assets/segye_occult/01_vol1_extra1_locker_hide.jpg",
-    speaker: "아야세 모모",
-    speakerType: "momo",
-    text: "여긴 우리 할머니 신사야. 입구에 대대로 내려오는 강력한 결계 부적이 붙어 있어서 악령도 외계인도 함부로 못 들어와.",
-    thought: "밖으로 나갔다간 너 또 터보 할멈 저주로 폭주할 테니까 말이지.",
-    mangaNote: "만화 2화 3p: 신사 마당의 도리이와 결계 부적을 가리키는 모모.",
-    expression: "momo-confident",
-    effect: "",
-    sfx: ""
-  },
-  {
-    id: 33,
-    chapter: "제2화: 그게 바로 외계인이잖아",
-    sceneTitle: "화장실 가려던 오카룬의 이변",
-    bg: "/assets/segye_occult/01_vol1_extra1_locker_hide.jpg",
-    speaker: "오카룬 (타카쿠라 켄)",
-    speakerType: "okarun",
-    text: "아야세 씨, 살려주셔서 정말 감사합니다... 저, 화장실 좀 다녀오겠습니다... 으응? 어라...?",
-    thought: "걸을 때마다 가랑이 사이가 뭔가... 너무 가볍고 이상한데...? 통풍이 왜 이렇게 잘 되지...?",
-    mangaNote: "만화 2화 4p: 일어서서 바지 앞섶을 만지작거리며 동공지진을 일으키는 오카룬.",
-    expression: "okarun-sweat",
-    effect: "",
-    sfx: ""
-  },
-  {
-    id: 34,
-    chapter: "제2화: 그게 바로 외계인이잖아",
-    sceneTitle: "사라진 바나나(킨타마)의 충격!!",
-    bg: "/assets/segye_occult/01_vol1_extra1_locker_hide.jpg",
-    speaker: "오카룬 (타카쿠라 켄)",
-    speakerType: "okarun",
-    text: "어?! 어어어?! 어어어어어어어?!?!?! 없어요!! 없습니다아아아아-!!!!",
-    thought: "매끈해... 아무것도 없어... 내 바나나가... 내 소중한 킨타마(불알)가 통째로 사라졌다고오오오!!",
-    mangaNote: "만화 2화 5p: 바지 속으로 손을 집어넣었다가 핏기가 싹 가시며 절규하는 오카룬의 멘붕 컷!",
-    expression: "okarun-crying",
-    effect: "shake-heavy",
-    sfx: "scream"
-  },
-  {
-    id: 35,
-    chapter: "제2화: 그게 바로 외계인이잖아",
-    sceneTitle: "모모의 극대노 & 경악",
-    bg: "/assets/segye_occult/01_vol1_extra1_locker_hide.jpg",
-    speaker: "아야세 모모",
-    speakerType: "momo",
-    text: "꺄아아아아악!! 대낮부터 바지에 손 넣고 무슨 짓이야, 이 변태 새끼야!!",
-    thought: "미쳤어, 진짜 미쳤어!! 내 앞에서 거시기 만지면서 소리를 지르고 난리야!!",
-    mangaNote: "만화 2화 6p: 베개를 오카룬의 얼굴에 풀스윙으로 집어던지는 모모.",
-    expression: "momo-angry",
-    effect: "shake-light",
-    sfx: "punch"
-  },
-  {
-    id: 36,
-    chapter: "제2화: 그게 바로 외계인이잖아",
-    sceneTitle: "오카룬의 피눈물 고백",
-    bg: "/assets/segye_occult/01_vol1_extra1_locker_hide.jpg",
-    speaker: "오카룬 (타카쿠라 켄)",
-    speakerType: "okarun",
-    text: "변태가 아닙니다!! 제 바나나가 진짜로 사라졌단 말입니다!! 터보 할멈 놈이 '거시기 빨게 해줘' 하더니 진짜로 뜯어갔어요!!",
-    thought: "난 이제 남자가 아니야... 인간으로 살아갈 수 없어... 흑흑흑...",
-    mangaNote: "만화 2화 7p: 바닥에 이마를 찧으며 피눈물을 흘리는 오카룬.",
-    expression: "okarun-crying",
-    effect: "",
-    sfx: ""
-  },
-
-  // ==========================================
-  // CHOICE 3: 모모의 반응 (킨타마 소실 확인)
-  // ==========================================
-  {
-    id: 37,
-    chapter: "제2화: 그게 바로 외계인이잖아",
-    sceneTitle: "플레이어 선택의 순간: 모모의 확인",
-    bg: "/assets/segye_occult/01_vol1_extra1_locker_hide.jpg",
-    speaker: "아야세 모모",
-    speakerType: "momo",
-    text: "너무나 절박하게 우는 오카룬을 보며, 모모는 당황하여 뺨을 붉힌다.",
-    thought: "설마 진짜로... 터보 할멈한테 거시기를 뺏겼다고...?!",
-    mangaNote: "플레이어 인터랙티브 분기: 손가락 틈새 훔쳐보기 vs 당찬 위로와 등짝 스매싱",
-    expression: "momo-blush",
-    choice: {
-      prompt: "모모는 절망하는 오카룬에게 어떻게 반응할까요?",
-      options: [
-        {
-          text: "\"거, 거짓말하지 마! ...잠깐 슬쩍만 볼 테니까 가만히 있어봐! (손가락 틈새로 빼꼼)\"",
-          reactionText: "으아악!! 진짜로... 아무것도 없이 매끈하잖아?! 이 녀석 어떡해!!",
-          reactionThought: "얼굴 빨개져서 미치겠네... 근데 진짜 없잖아?! 평생 고자로 살면 어떡해!!",
-          delta: "💖 원작 100% 코믹 재현! 모모 부끄러움 맥스! 호감도 +25"
-        },
-        {
-          text: "\"등짝 찰싹 때리며! '바보야, 기죽지 마! 내가 그 터보 할멈 엉덩이를 걷어차서 반드시 되찾아줄 테니까!!'\"",
-          reactionText: "아, 아야세 씨... 절 위해 제 바나나를 되찾아주시는 겁니까...?!",
-          reactionThought: "아야세 씨는 천사인가...? 내 인생의 구원자야...!",
-          delta: "⚡ 최고의 듬직한 파트너십! 신뢰도 +30 상승"
-        }
-      ]
-    }
-  },
-
-  {
-    id: 38,
-    chapter: "제2화: 그게 바로 외계인이잖아",
-    sceneTitle: "결계의 틈: 부적이 떨어지다!",
-    bg: "/assets/segye_occult/01_vol1_ep3_tunnel_chase.jpg",
-    speaker: "나레이션",
-    speakerType: "narration",
-    text: "휘이이이잉—! 갑자기 차가운 돌풍이 불어 닥치며, 신사 도리이에 붙어 있던 강력한 퇴마 결계 부적 한 장이 펄럭이며 땅으로 떨어졌다!",
-    thought: "",
-    mangaNote: "만화 2화 8p: 결계 부적이 떨어지며 신사 주변의 공기가 뒤틀리는 불길한 컷.",
-    expression: "momo-shock",
-    effect: "shake-light",
-    sfx: "wind"
-  },
-  {
-    id: 39,
-    chapter: "제2화: 그게 바로 외계인이잖아",
-    sceneTitle: "3m 플랫우즈 몬스터 강림!!",
-    bg: "/assets/segye_occult/01_vol1_ep3_tunnel_chase.jpg",
-    speaker: "나레이션",
-    speakerType: "narration",
-    text: "쿠구구구궁— 콰아아앙!! 하늘이 보랏빛으로 갈라지며, 신사 마당 한가운데 3m가 넘는 거대한 괴물이 쿵! 하고 착지했다! 면사포를 쓴 스모 선수 형상의 외계인, '플랫우즈 몬스터'였다!",
-    thought: "",
-    mangaNote: "만화 2화 9~10p: 마당에 착지한 거대 플랫우즈 몬스터의 위압적인 풀샷!",
-    expression: "flatwoods-monster",
-    effect: "shake-heavy",
-    sfx: "explosion"
-  },
-  {
-    id: 40,
-    chapter: "제2화: 그게 바로 외계인이잖아",
-    sceneTitle: "검은 독안개 살포",
-    bg: "/assets/segye_occult/01_vol1_ep3_tunnel_chase.jpg",
-    speaker: "플랫우즈 몬스터",
-    speakerType: "monster",
-    text: "쉬이이이이익—!! (치명적인 검은 독안개를 마당 전체로 뿜어낸다!)",
-    thought: "",
-    mangaNote: "만화 2화 11p: 마당을 가득 채우는 치명적인 독가스 연기.",
-    expression: "flatwoods-monster",
-    effect: "flash-green",
-    sfx: "gas"
-  },
-  {
-    id: 41,
-    chapter: "제2화: 그게 바로 외계인이잖아",
-    sceneTitle: "모모의 마비와 위기",
-    bg: "/assets/segye_occult/01_vol1_ep3_tunnel_chase.jpg",
-    speaker: "아야세 모모",
-    speakerType: "momo",
-    text: "쿨럭! 콜록콜록...! 독가스야... 몸이 마비돼서 손가락 하나 안 움직여...!",
-    thought: "안 돼... 초능력 손을 쓸 힘도 안 들어가... 저 괴물이 다가오고 있어...!",
-    mangaNote: "만화 2화 12p: 마루에 쓰러져 기침을 토하는 모모와 다가오는 3m 외계인의 거구.",
-    expression: "momo-crying",
-    effect: "shake-light",
-    sfx: ""
-  },
-  {
-    id: 42,
-    chapter: "제2화: 그게 바로 외계인이잖아",
-    sceneTitle: "오카룬의 부분 요괴화 각성",
-    bg: "/assets/segye_occult/01_vol1_ep3_tunnel_chase.jpg",
-    speaker: "오카룬 (타카쿠라 켄)",
-    speakerType: "okarun",
-    text: "아야세 씨를... 건드리지 마라아아아-!!!!",
-    thought: "아야세 씨가 날 구해줬어. 날 믿어줬어. 이번엔 내가 아야세 씨를 지킬 차례야!! 터보 할멈의 힘이든 뭐든 다 써주마!!",
-    mangaNote: "만화 2화 13p: 터보 저주를 의지력으로 끌어올려 백발과 날카로운 이빨의 부분 요괴화 상태로 각성하는 오카룬!",
-    expression: "okarun-berserk",
-    effect: "flash-red",
-    sfx: "screamer"
-  },
-  {
-    id: 43,
-    chapter: "제2화: 그게 바로 외계인이잖아",
-    sceneTitle: "작전 제안: 초능력 손의 고삐!",
-    bg: "/assets/segye_occult/01_vol1_ep3_tunnel_chase.jpg",
-    speaker: "오카룬 (타카쿠라 켄)",
-    speakerType: "okarun",
-    text: "아야세 씨! 초능력 손으로 제 목(턱끈)을 쥐고 조종해 주세요!! 제 몸을 탄환 삼아 저 녀석에게 돌진하겠습니다!!",
-    thought: "내 몸의 스피드는 시속 100km! 아야세 씨의 손이 조준해주면 절대 빗나가지 않습니다!",
-    mangaNote: "만화 2화 14p: 낮은 스모 자세(돗시리)를 잡고 모모를 돌아보며 외치는 오카룬의 결의!",
-    expression: "okarun-determined",
-    effect: "",
-    sfx: ""
-  },
-  {
-    id: 44,
-    chapter: "제2화: 그게 바로 외계인이잖아",
-    sceneTitle: "모모의 고삐 쥐기 & 전력 신뢰",
-    bg: "/assets/segye_occult/01_vol1_ep3_tunnel_chase.jpg",
-    speaker: "아야세 모모",
-    speakerType: "momo",
-    text: "알았어, 오카룬!! 널 믿을게!! 내 염동력 손으로 고삐 꽉 쥐고 있을 테니까, 시원하게 날려버려, 파트너!!!!",
-    thought: "이 녀석, 눈빛이 완전히 바뀌었어... 진짜 믿음직스럽잖아!",
-    mangaNote: "만화 2화 15p: 마루에서 거대 염동력 손을 펼쳐 오카룬의 목덜미를 고삐처럼 움켜쥐는 모모!",
-    expression: "momo-determined",
-    effect: "flash-white",
-    sfx: "magic"
-  },
-  {
-    id: 45,
-    chapter: "제2화: 그게 바로 외계인이잖아",
-    sceneTitle: "시속 100km 초고속 스모 태클 작렬!!",
-    bg: "/assets/segye_occult/01_vol1_ep3_tunnel_chase.jpg",
-    speaker: "나레이션",
-    speakerType: "narration",
-    text: "도도도도동— 콰아아아아앙!! 시속 100km의 맹렬한 가속력과 모모의 초능력 손이 합체된 초고속 스모 태클이 플랫우즈 몬스터의 명치에 정확히 꽂혔다! 3m 거구의 외계인이 담장을 뚫고 허공으로 솟구쳤다!",
-    thought: "",
-    mangaNote: "만화 2화 16~17p 더블 스프레드: 광각 왜곡 로우앵글로 괴물의 복부를 뚫어버릴 듯 작렬하는 오카룬의 호쾌한 스모 박치기!",
-    expression: "okarun-berserk",
-    effect: "shake-heavy",
-    sfx: "explosion"
-  },
-  {
-    id: 46,
-    chapter: "제2화: 그게 바로 외계인이잖아",
-    sceneTitle: "괴물 격퇴와 논바닥 추락",
-    bg: "/assets/segye_occult/01_vol1_ep3_tunnel_chase.jpg",
-    speaker: "나레이션",
-    speakerType: "narration",
-    text: "푸화아아악! 담장 밖 저 멀리 논바닥으로 처박힌 플랫우즈 몬스터는 흙탕물을 뒤집어쓴 채 비명을 지르며 도망쳤다!",
-    thought: "",
-    mangaNote: "만화 2화 18p: 논바닥에 거꾸로 처박혀 다리를 버둥거리는 괴물의 코믹 격퇴 컷.",
-    expression: "flatwoods-monster",
-    effect: "",
-    sfx: "splash"
-  },
-  {
-    id: 47,
-    chapter: "제2화: 그게 바로 외계인이잖아",
-    sceneTitle: "결계 부적 복구",
-    bg: "/assets/segye_occult/01_vol1_extra2_talisman_cut.jpg",
-    speaker: "아야세 모모",
-    speakerType: "momo",
-    text: "지금이야!! (도리이 기둥으로 달려가 떨어진 결계 부적을 찰싹 붙인다!) 에잇! 절대 못 들어오게 꽁꽁 묶여라!!",
-    thought: "휴... 황금빛 결계가 다시 작동했어. 이제 안으로 못 들어와!",
-    mangaNote: "만화 2화 19p: 결계 부적을 다시 붙이며 안도하는 모모의 뒷모습.",
-    expression: "momo-confident",
-    effect: "flash-white",
-    sfx: "talisman"
-  },
-  {
-    id: 48,
-    chapter: "제2화: 그게 바로 외계인이잖아",
-    sceneTitle: "탈진한 오카룬과 수건 닦아주기",
-    bg: "/assets/segye_occult/01_vol1_epilogue.jpg",
-    speaker: "오카룬 (타카쿠라 켄)",
-    speakerType: "okarun",
-    text: "하아... 하아... 아야세 씨... 해치웠... 군요... 털썩.",
-    thought: "온몸의 뼈마디가 부서질 것 같아... 하지만 아야세 씨를 지켰어...",
-    mangaNote: "만화 2화 20p: 인간 모습으로 돌아와 툇마루에 쓰러지듯 눕는 오카룬.",
-    expression: "okarun-tired",
-    effect: "",
-    sfx: ""
-  },
-  {
-    id: 49,
-    chapter: "제2화: 그게 바로 외계인이잖아",
-    sceneTitle: "모모의 진심 어린 온기",
-    bg: "/assets/segye_occult/01_vol1_epilogue.jpg",
-    speaker: "아야세 모모",
-    speakerType: "momo",
-    text: "수고했어, 오카룬. 너 진짜 대단하더라... 자, 흙먼지 묻었잖아. 가만히 있어, 닦아줄 테니까.",
-    thought: "날 지키겠다고 목숨 걸고 돌진하는 모습... 솔직히 좀 멋있었어.",
-    mangaNote: "만화 2화 21p: 보송보송한 면 수건으로 오카룬의 뺨과 이마를 정성껏 닦아주는 모모의 다정한 얼굴.",
-    expression: "momo-gentle",
-    effect: "",
-    sfx: ""
-  },
-  {
-    id: 50,
-    chapter: "제2화: 그게 바로 외계인이잖아",
-    sceneTitle: "마지막 결의: 바나나 탈환 100km 결전!",
-    bg: "/assets/segye_occult/01_vol1_epilogue.jpg",
-    speaker: "아야세 모모",
-    speakerType: "momo",
-    text: "겁먹지 마, 오카룬. 네 소중한 거시기, 내가 반드시 되찾아줄 테니까! 터보 할멈이 시속 100km로 달리면, 우리도 100km로 달려서 엉덩이를 걷어차 주자고! 넌 내 최고의 파트너니까!",
-    thought: "너랑 손잡고 있으니까 알겠어. 네 소중한 것도, 네 목숨도... 내가 끝까지 함께 지켜줄 거야.",
-    mangaNote: "만화 2화 22p 라스트 컷: 툇마루에서 굳게 손을 맞잡으며 서로를 바라보고 웃는 모모와 오카룬. 1권 에피소드 1 대단원의 막!",
-    expression: "momo-smile",
-    effect: "flash-white",
-    sfx: "heartbeat"
-  },
-  {
-    id: 51,
-    chapter: "제2화: 그게 바로 외계인이잖아",
-    sceneTitle: "에피소드 1 클리어!",
-    bg: "/assets/segye_occult/01_vol1_epilogue.jpg",
-    speaker: "나레이션",
-    speakerType: "narration",
-    text: "축하합니다! 단다단 제1권 에피소드 1 (1화~2화: 그것이 사랑의 시작이었어 & 그게 바로 외계인이잖아) 라이트노벨 게임 클리어!\n\n다음 에피소드 2: 〈3화~5화 동안 미녀 영매사 세이코의 특훈 & 화장실의 신 결계 훈련〉으로 이어집니다!",
-    thought: "",
-    mangaNote: "🎉 EPISODE 1 COMPLETE!",
-    expression: "momo-smile",
-    effect: "",
-    sfx: "fanfare"
+  4: {
+    title: "에피소드 4: 〈사라진 황금 구슬, 옥상 라멘 썸, 아크로바틱 사라사라, 198cm 은발 미남 지진의 등장〉",
+    range: "9화~13화",
+    desc: "터널 결전 후 거시기는 돌아왔지만 사라진 황금 구슬 1개?! 옥상 컵라면 어깨 기대기 썸, 구슬을 주운 미소녀 아이라와 빨간 원피스 요괴 아크로바틱 사라사라와의 빗속 사당 사투, 그리고 교문을 뒤흔든 198cm 은발 미남 지진의 등장으로 대단원의 1권 완편!",
+    badge: "단다단 원작 9화~13화 · 1권 피날레",
+    script: [
+      {
+        id: 1,
+        chapter: "제9화: 사라진 황금 구슬",
+        sceneTitle: "거시기는 돌아왔는데... 구슬이 하나 없다?!",
+        bg: "/assets/manga/23_missing_golden_ball.jpg",
+        speaker: "오카룬 (타카쿠라 켄)",
+        speakerType: "okarun",
+        text: "으아아아악!! 아야세 씨!! 소중한 바나나는 돌아왔는데... 황금 구슬 2개 중 1개가 보이지 않습니다아아아-!!",
+        thought: "어디선가 떨어뜨린 게 분명해... 킨타마 하나가 없으면 난 반쪽짜리 인간이란 말입니다...!",
+        mangaNote: "만화 9화 1p: 학교 옥상에서 바지를 확인하고 경악하며 소리치는 오카룬의 코믹 컷.",
+        expression: "okarun-crying",
+        effect: "shake-heavy",
+        sfx: "scream"
+      },
+      {
+        id: 2,
+        chapter: "제9화: 사라진 황금 구슬",
+        sceneTitle: "모모의 풋 웃음과 위로",
+        bg: "/assets/manga/23_missing_golden_ball.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "푸하하하! 진짜 못 살아! 바나나 돌아온 것만 해도 감지덕지해야지! 구슬 하나쯤은 어디 학교 주변에 떨어졌겠지, 내가 같이 찾아줄게!",
+        thought: "진짜 하루라도 조용할 날이 없네, 이 바보 오타쿠는. 그래도 귀여워 죽겠어.",
+        mangaNote: "만화 9화 2p: 컵라면을 들고 배를 잡고 웃는 모모의 사랑스러운 얼굴.",
+        expression: "momo-laugh",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 3,
+        chapter: "제9화: 사라진 황금 구슬",
+        sceneTitle: "노을빛 옥상 어깨 기대기 썸",
+        bg: "/assets/manga/24_rooftop_shoulder_lean.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "...서늘한 밤바람 춥다. 10분만 이러고 있자. ...내 어깨 빌려줄 사람, 세상에서 너밖에 없으니까 가만히 있어, 바보야.",
+        thought: "어깨 진짜 단단하고 따뜻해... 이대로 시간이 영원히 멈췄으면 좋겠다.",
+        mangaNote: "만화 9화 3p: 노을 지는 학교 옥상 벤치에서, 모모가 오카룬의 단단한 어깨 위로 조용히 머리를 기대는 설레는 썸 컷!",
+        expression: "momo-blush",
+        effect: "flash-white",
+        sfx: "heartbeat"
+      },
+      {
+        id: 4,
+        chapter: "제9화: 사라진 황금 구슬",
+        sceneTitle: "두근거리는 오카룬의 심장",
+        bg: "/assets/manga/24_rooftop_shoulder_lean.jpg",
+        speaker: "오카룬 (타카쿠라 켄)",
+        speakerType: "okarun",
+        text: "아, 아야세 씨... 심장 뛰는 소리가 들릴 것 같습니다... 가만히... 있겠습니다.",
+        thought: "아야세 씨의 머리카락에서 샴푸 향기가 나... 숨도 못 쉬겠어. 너무 행복해...",
+        mangaNote: "만화 9화 4p: 얼굴이 새빨개진 채 가만히 어깨를 내어주는 오카룬의 순수한 클로즈업 컷.",
+        expression: "okarun-blush",
+        effect: "",
+        sfx: ""
+      },
+      {
+        id: 5,
+        chapter: "제10화: 시라토리 아이라와 사라사라",
+        sceneTitle: "구슬을 주운 자칭 미소녀 전사 아이라",
+        bg: "/assets/manga/25_aira_intro_ball.jpg",
+        speaker: "시라토리 아이라",
+        speakerType: "aira",
+        text: "오호호호! 이 황금 구슬의 성스러운 빛... 역시 나는 신에게 선택받은 미소녀 전사였어! 아야세 모모, 네가 악마라는 걸 내 영력이 꿰뚫어 보고 있단다!",
+        thought: "이 황금 구슬을 손에 넣은 뒤로 괴이한 영들이 보이기 시작했어. 모모 녀석, 악마의 하수인임에 틀림없어!",
+        mangaNote: "만화 10화 1~2p: 손에 오카룬의 황금 구슬을 쥐고 도도하게 포즈를 취하는 자칭 미소녀 전사 시라토리 아이라의 첫 등장!",
+        expression: "aira-smug",
+        effect: "",
+        sfx: "sparkle"
+      },
+      {
+        id: 6,
+        chapter: "제10화: 시라토리 아이라와 사라사라",
+        sceneTitle: "아크로바틱 사라사라의 습격!",
+        bg: "/assets/manga/26_acrobatic_sarasa_abduct.jpg",
+        speaker: "아크로바틱 사라사라",
+        speakerType: "sarasa",
+        text: "내 딸... 내 딸이야아아아-!! (빨간 원피스를 휘날리며 관절을 꺾어 옥상 너머로 아이라를 낚아채 도약한다!)",
+        thought: "",
+        mangaNote: "만화 10화 3p: 옥상을 뛰어넘으며 아이라를 품에 안고 유괴해 달아나는 빨간 원피스의 장신 요괴 아크로바틱 사라사라의 호러 컷!",
+        expression: "sarasa-creep",
+        effect: "shake-heavy",
+        sfx: "screamer"
+      },
+      {
+        id: 7,
+        chapter: "제11화~12화: 빗속 사당 사투",
+        sceneTitle: "쏟아지는 폭우 속 목숨 건 격투",
+        bg: "/assets/manga/27_rain_shrine_battle.jpg",
+        speaker: "오카룬 (타카쿠라 켄)",
+        speakerType: "okarun",
+        text: "아야세 씨와 아이라를... 다치게 두지 않습니다아아!! 터보 질주우우우-!!",
+        thought: "몸이 찢어지더라도 저 괴물의 공격을 내가 막아내야 해!",
+        mangaNote: "만화 11~12p: 폭우가 쏟아지는 사당에서 피투성이가 되면서도 모모와 아이라를 감싸 안으며 돌진하는 오카룬의 비장한 투혼!",
+        expression: "okarun-berserk",
+        effect: "shake-heavy",
+        sfx: "punch"
+      },
+      {
+        id: 8,
+        chapter: "제11화~12화: 빗속 사당 사투",
+        sceneTitle: "사라사라의 슬픈 성불과 눈물의 붕대",
+        bg: "/assets/manga/28_sarasa_salvation_tears.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "다쳤으면 말을 했어야지, 바보야아아... 네가 잘못되면 난 진짜 어떡하라고... 흐흑... 평생 네 상처 내가 감싸줄 테니까 약속해, 다신 다치지 마...",
+        thought: "피 흘리는 거 보는데 가슴이 찢어지는 줄 알았어... 나 얘 없으면 이제 평생 못 살아...",
+        mangaNote: "만화 12화 4p: 빗물이 갠 사당 다다미방에서, 눈물을 뚝뚝 흘리며 오카룬의 피투성이 팔에 붕대를 감아주는 모모의 애절한 진심 컷!",
+        expression: "momo-crying",
+        effect: "flash-white",
+        sfx: "tear"
+      },
+      {
+        id: 9,
+        chapter: "제13화: 1권 피날레 라스트",
+        sceneTitle: "단골 라멘집 팔짱 데이트",
+        bg: "/assets/manga/29_street_ramen_arm_link.jpg",
+        speaker: "나레이션",
+        speakerType: "narration",
+        text: "사라사라 사건을 해결한 뒤, 모모는 오카룬의 팔에 제 팔을 꼬옥 얽어맨 채 단골 라멘집으로 이끌었다. 붉은 제등 아래서 마주 보며 웃던 그 밤, 두 사람은 세상 누구보다 단단한 영혼의 파트너가 되었다.",
+        thought: "",
+        mangaNote: "만화 13화 1p: 골목 라멘집 앞에서 사랑스럽게 팔짱을 꼭 끼고 웃는 모모와 오카룬의 달콤한 데이트 투샷!",
+        expression: "momo-smile",
+        effect: "",
+        sfx: "heartbeat"
+      },
+      {
+        id: 10,
+        chapter: "제13화: 1권 피날레 라스트",
+        sceneTitle: "198cm 은발 미남 지진의 깜짝 등장!",
+        bg: "/assets/manga/30_jiji_grand_entrance.jpg",
+        speaker: "엔죠지 진 (지진)",
+        speakerType: "jiji",
+        text: "와하하하! 모모오오! 오랜만이다!! 잘 지냈냐?! 내가 돌아왔다고오오-!!",
+        thought: "",
+        mangaNote: "만화 1권 피날레 라스트 스프레드: 198cm의 압도적인 피지컬에 찰랑이는 실크 은발을 풀어헤치고 조각 같은 얼굴로 호탕하게 웃으며 교문 앞을 마비시킨 3학년 꽃미남 엔죠지 진(지진)의 화려한 등장 컷!",
+        expression: "jiji-smile",
+        effect: "flash-white",
+        sfx: "fanfare"
+      },
+      {
+        id: 11,
+        chapter: "제13화: 1권 피날레 라스트",
+        sceneTitle: "모모의 귓속말: \"내 눈엔 네가 백 배 더 잘생겼어\"",
+        bg: "/assets/manga/30_jiji_grand_entrance.jpg",
+        speaker: "아야세 모모",
+        speakerType: "momo",
+        text: "야, 오카룬. 뭘 그렇게 넋 놓고 쳐다보고 있어? 키만 쓸데없이 크고 시끄러운 은발 원숭이일 뿐이거든? ...내 눈엔 네가 백 배는 더 잘생겼으니까, 기죽지 말고 얼른 들어가자.",
+        thought: "질투하는 표정 봐... 귀여워 미치겠네. 텐겐... 아니 지진한테 절대 안 뺏길 거니까 걱정 마, 내 바보 파트너!",
+        mangaNote: "만화 1권 에필로그 라스트 컷: 주눅 든 오카룬의 옷깃을 잡아당기며 귓가에 속삭이고 윙크하는 모모! 새로운 라이벌의 등장과 거대한 오컬트 삼각 로맨스를 알리며 제1권 대단원의 막!",
+        expression: "momo-wink",
+        effect: "flash-white",
+        sfx: "heartbeat"
+      },
+      {
+        id: 12,
+        chapter: "제13화: 1권 피날레 라스트",
+        sceneTitle: "단다단 제1권 완편 클리어!",
+        bg: "/assets/manga/30_jiji_grand_entrance.jpg",
+        speaker: "나레이션",
+        speakerType: "narration",
+        text: "🎉 축하합니다! 단다단 원작 정통 스토리 제1권 (1화부터 13화까지) 완편 라이트노벨 게임 클리어!!\n\n모모와 오카룬의 유대는 이제 누구도 끊을 수 없습니다. 다음 제2권: 〈지진의 저주받은 폐가 & 거대 지렁이 요괴 사투〉로 이어집니다!",
+        thought: "",
+        mangaNote: "🎉 CONGRATULATIONS! VOLUME 1 COMPLETE!",
+        expression: "momo-smile",
+        effect: "",
+        sfx: "fanfare"
+      }
+    ]
   }
-];
+};
 
-function buildGameHtml() {
-  const scriptJson = JSON.stringify(dandadanEpisode1Script);
+function buildFullGameHtml() {
+  const episodesJson = JSON.stringify(episodesData);
 
   return `<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>단다단 라이트노벨 게임: 에피소드 1 (1화~2화 원작 완전판)</title>
+  <title>단다단 라이트노벨 게임 (1화~13화 완편 플레이어)</title>
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -814,7 +1394,6 @@ function buildGameHtml() {
       overflow-x: hidden;
     }
 
-    /* Cinematic 16:9 Viewport */
     .game-stage-container {
       aspect-ratio: 16 / 9;
       max-height: 85vh;
@@ -824,7 +1403,6 @@ function buildGameHtml() {
       box-shadow: 0 0 50px rgba(236, 72, 153, 0.25), 0 0 100px rgba(6, 182, 212, 0.15);
     }
 
-    /* Screen Shake Effects */
     .shake-light {
       animation: shakeLightAnim 0.3s cubic-bezier(.36,.07,.19,.97) both;
     }
@@ -849,16 +1427,9 @@ function buildGameHtml() {
       100% { transform: translate(0, 0) rotate(0deg); }
     }
 
-    /* Flash Animations */
-    .flash-white {
-      animation: flashWhiteAnim 0.4s ease-out;
-    }
-    .flash-red {
-      animation: flashRedAnim 0.5s ease-out;
-    }
-    .flash-green {
-      animation: flashGreenAnim 0.6s ease-out;
-    }
+    .flash-white { animation: flashWhiteAnim 0.4s ease-out; }
+    .flash-red { animation: flashRedAnim 0.5s ease-out; }
+    .flash-green { animation: flashGreenAnim 0.6s ease-out; }
 
     @keyframes flashWhiteAnim {
       0% { background-color: rgba(255, 255, 255, 0.9); }
@@ -873,56 +1444,59 @@ function buildGameHtml() {
       100% { background-color: transparent; }
     }
 
-    /* Custom Scrollbar for Log */
-    .custom-scroll::-webkit-scrollbar {
-      width: 6px;
-    }
-    .custom-scroll::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.5);
-    }
-    .custom-scroll::-webkit-scrollbar-thumb {
-      background: #ec4899;
-      border-radius: 4px;
-    }
+    .custom-scroll::-webkit-scrollbar { width: 6px; }
+    .custom-scroll::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.5); }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #ec4899; border-radius: 4px; }
 
-    /* Blinking Arrow */
     @keyframes bounceArrow {
       0%, 100% { transform: translateY(0); opacity: 0.3; }
       50% { transform: translateY(6px); opacity: 1; }
     }
-    .next-arrow {
-      animation: bounceArrow 1s infinite ease-in-out;
+    .next-arrow { animation: bounceArrow 1s infinite ease-in-out; }
+
+    .dialogue-glass {
+      background: linear-gradient(180deg, rgba(16, 11, 29, 0.88) 0%, rgba(9, 6, 18, 0.98) 100%);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.12);
     }
 
-    /* Glassmorphism Dialogue Box */
-    .dialogue-glass {
-      background: linear-gradient(180deg, rgba(16, 11, 29, 0.85) 0%, rgba(9, 6, 18, 0.96) 100%);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    .active-ep-tab {
+      background: linear-gradient(135deg, #ec4899, #8b5cf6) !important;
+      color: white !important;
+      border-color: transparent !important;
+      box-shadow: 0 4px 12px rgba(236, 72, 153, 0.4);
     }
   </style>
 </head>
 <body class="min-h-screen text-slate-100 flex flex-col justify-between">
 
   <!-- Top Navigation Header -->
-  <header class="bg-[#100a20]/90 backdrop-blur border-b border-white/10 px-4 py-2.5 flex items-center justify-between z-50">
+  <header class="bg-[#100a20]/95 backdrop-blur border-b border-white/10 px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 z-50">
     <div class="flex items-center gap-3">
       <a href="/preview.html" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 flex items-center gap-1.5 transition">
-        <i class="fa-solid fa-arrow-left"></i>
+        <i class="fa-solid fa-book-open"></i>
         <span>소설 뷰어로</span>
       </a>
       <div class="h-4 w-px bg-white/20"></div>
       <h1 class="text-sm sm:text-base font-extrabold text-white flex items-center gap-2">
         <span class="px-2 py-0.5 rounded text-[11px] font-black bg-gradient-to-r from-pink-500 to-purple-600 text-white tracking-wider">VISUAL NOVEL</span>
-        <span>단다단: 그것이 사랑의 시작이었어</span>
+        <span id="header-ep-title" class="truncate max-w-[200px] sm:max-w-md">단다단: 그것이 사랑의 시작이었어</span>
       </h1>
     </div>
 
+    <!-- Episode Switcher Buttons -->
+    <div class="flex items-center gap-1.5 bg-black/40 p-1 rounded-2xl border border-white/10 text-xs">
+      <button onclick="changeEpisode(1)" id="ep-btn-1" class="px-2.5 py-1 rounded-xl font-bold transition active-ep-tab">1화~2화</button>
+      <button onclick="changeEpisode(2)" id="ep-btn-2" class="px-2.5 py-1 rounded-xl font-bold transition text-slate-300 hover:text-white">3화~5화</button>
+      <button onclick="changeEpisode(3)" id="ep-btn-3" class="px-2.5 py-1 rounded-xl font-bold transition text-slate-300 hover:text-white">6화~8화</button>
+      <button onclick="changeEpisode(4)" id="ep-btn-4" class="px-2.5 py-1 rounded-xl font-bold transition text-slate-300 hover:text-white">9화~13화</button>
+    </div>
+
     <!-- Stats & QoL Bar -->
-    <div class="flex items-center gap-3">
-      <div class="hidden md:flex items-center gap-3 bg-black/40 px-3 py-1 rounded-xl border border-white/10 text-xs">
+    <div class="flex items-center gap-2.5">
+      <div class="hidden lg:flex items-center gap-3 bg-black/40 px-3 py-1 rounded-xl border border-white/10 text-xs">
         <div class="flex items-center gap-1.5 text-pink-400 font-bold">
           <i class="fa-solid fa-heart animate-pulse"></i>
           <span>모모 호감도:</span>
@@ -962,26 +1536,19 @@ function buildGameHtml() {
 
       <!-- Layer 3: Manga Director Note Banner (Top) -->
       <div class="absolute top-3 left-3 right-3 flex items-center justify-between z-20 pointer-events-none">
-        <div class="bg-black/80 backdrop-blur border border-pink-500/30 px-3.5 py-1.5 rounded-xl text-xs text-pink-300 flex items-center gap-2 shadow-lg">
+        <div class="bg-black/85 backdrop-blur border border-pink-500/30 px-3.5 py-1.5 rounded-xl text-xs text-pink-300 flex items-center gap-2 shadow-lg">
           <span class="w-2 h-2 rounded-full bg-pink-500 animate-ping"></span>
           <span class="font-extrabold text-pink-400" id="chapter-label">제1화: 그것이 사랑의 시작이었어</span>
           <span class="text-slate-400 text-[11px] hidden sm:inline" id="scene-title-label">· 방과 후 복도의 결별</span>
         </div>
 
-        <div class="bg-black/80 backdrop-blur border border-white/10 px-3 py-1.5 rounded-xl text-[11px] text-slate-300 flex items-center gap-1.5 shadow-lg">
+        <div class="bg-black/85 backdrop-blur border border-white/10 px-3 py-1.5 rounded-xl text-[11px] text-slate-300 flex items-center gap-1.5 shadow-lg">
           <span class="text-purple-400 font-bold">🎬 원작 연출:</span>
-          <span id="manga-note-label" class="truncate max-w-[200px] sm:max-w-xs text-slate-200"></span>
+          <span id="manga-note-label" class="truncate max-w-[180px] sm:max-w-xs text-slate-200"></span>
         </div>
       </div>
 
-      <!-- Layer 4: Character Expression Sprite (Center-Right) -->
-      <div id="character-sprite-container" class="absolute inset-0 flex items-end justify-center sm:justify-end sm:pr-12 pointer-events-none z-15">
-        <div id="character-badge" class="mb-48 sm:mb-56 px-3 py-1 rounded-full text-xs font-black bg-pink-500 text-white shadow-lg border border-white/30 hidden">
-          <!-- Emotion text -->
-        </div>
-      </div>
-
-      <!-- Layer 5: Interactive Dialogue Box (Bottom) -->
+      <!-- Layer 4: Interactive Dialogue Box (Bottom) -->
       <div class="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 z-40">
         
         <!-- Controls Bar directly above dialogue box -->
@@ -1018,18 +1585,14 @@ function buildGameHtml() {
             <!-- Speaker Badge with Color Coding -->
             <div class="flex items-center justify-between mb-2">
               <div class="flex items-center gap-2">
-                <span id="speaker-name" class="px-3 py-1 rounded-lg text-xs sm:text-sm font-black tracking-wide shadow-md">
-                  <!-- 아야세 모모 -->
-                </span>
+                <span id="speaker-name" class="px-3 py-1 rounded-lg text-xs sm:text-sm font-black tracking-wide shadow-md"></span>
                 <span id="speaker-mood" class="text-[11px] text-slate-400 font-medium hidden sm:inline"></span>
               </div>
               <span class="text-[11px] text-slate-500 font-mono" id="dialogue-counter">1 / 51</span>
             </div>
 
             <!-- Dialogue Text with Typewriter Effect -->
-            <p id="dialogue-text" class="text-sm sm:text-base font-medium text-white leading-relaxed pl-1 tracking-wide">
-              <!-- Typed here -->
-            </p>
+            <p id="dialogue-text" class="text-sm sm:text-base font-medium text-white leading-relaxed pl-1 tracking-wide"></p>
           </div>
 
           <!-- Bottom: Inner Thought & Next Indicator -->
@@ -1048,23 +1611,19 @@ function buildGameHtml() {
 
       </div>
 
-      <!-- Layer 6: Modal Overlay for Interactive Choices -->
+      <!-- Layer 5: Modal Overlay for Interactive Choices -->
       <div id="choice-modal" class="absolute inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex flex-col items-center justify-center p-6">
         <div class="max-w-lg w-full bg-[#150f29] border border-pink-500/40 rounded-3xl p-6 shadow-2xl animate-fade-in">
           <div class="flex items-center gap-2 mb-2 text-pink-400 text-xs font-bold">
             <i class="fa-solid fa-gamepad"></i>
             <span>운명의 분기점 (선택지)</span>
           </div>
-          <h3 id="choice-prompt" class="text-base sm:text-lg font-bold text-white mb-5 leading-snug">
-            <!-- Choice prompt -->
-          </h3>
-          <div id="choice-options-list" class="space-y-3">
-            <!-- Choice buttons injected here -->
-          </div>
+          <h3 id="choice-prompt" class="text-base sm:text-lg font-bold text-white mb-5 leading-snug"></h3>
+          <div id="choice-options-list" class="space-y-3"></div>
         </div>
       </div>
 
-      <!-- Layer 7: Backlog Modal -->
+      <!-- Layer 6: Backlog Modal -->
       <div id="log-modal" class="absolute inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex flex-col p-6">
         <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
           <h3 class="text-sm sm:text-base font-bold text-white flex items-center gap-2">
@@ -1075,9 +1634,7 @@ function buildGameHtml() {
             <i class="fa-solid fa-xmark mr-1"></i>닫기
           </button>
         </div>
-        <div id="log-content" class="flex-1 overflow-y-auto space-y-4 pr-2 custom-scroll text-xs sm:text-sm">
-          <!-- Populated via JS -->
-        </div>
+        <div id="log-content" class="flex-1 overflow-y-auto space-y-4 pr-2 custom-scroll text-xs sm:text-sm"></div>
       </div>
 
     </div>
@@ -1085,27 +1642,22 @@ function buildGameHtml() {
   </main>
 
   <!-- Bottom Navigation / Chapter Jump Footer -->
-  <footer class="bg-[#100a20]/90 backdrop-blur border-t border-white/10 px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-400">
-    <div class="flex items-center gap-2">
-      <span class="font-bold text-white">챕터 바로가기:</span>
-      <button onclick="jumpToScene(0)" class="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-pink-500/20 hover:text-pink-300 border border-white/10 transition">1화: 복도 내기</button>
-      <button onclick="jumpToScene(18)" class="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-pink-500/20 hover:text-pink-300 border border-white/10 transition">1화: 폐병원 세르포</button>
-      <button onclick="jumpToScene(26)" class="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-pink-500/20 hover:text-pink-300 border border-white/10 transition">1화: 턱 잡기 명장면</button>
-      <button onclick="jumpToScene(29)" class="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-pink-500/20 hover:text-pink-300 border border-white/10 transition">2화: 킨타마 소실</button>
-      <button onclick="jumpToScene(38)" class="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-pink-500/20 hover:text-pink-300 border border-white/10 transition">2화: 100km 스모 결전</button>
+  <footer class="bg-[#100a20]/95 backdrop-blur border-t border-white/10 px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-400">
+    <div id="chapter-jump-container" class="flex flex-wrap items-center gap-2">
+      <!-- Jump buttons dynamically populated based on current episode -->
     </div>
 
     <div class="flex items-center gap-2">
-      <span class="text-pink-400 font-extrabold">단다단 원작 제1권 (1화~2화) 정통 라이트노벨 게임</span>
+      <span class="text-pink-400 font-extrabold">단다단 원작 정통 스토리 라이트노벨 게임</span>
     </div>
   </footer>
 
   <!-- Web Audio Synthesizer & Game Engine Script -->
   <script>
-    // Injected Game Script
-    const script = ${scriptJson};
+    const allEpisodes = ${episodesJson};
 
-    // State
+    let currentEpNum = 1;
+    let script = allEpisodes[1].script;
     let currentIndex = 0;
     let isTyping = false;
     let typewriterTimer = null;
@@ -1120,7 +1672,7 @@ function buildGameHtml() {
       battleSync: 50
     };
 
-    // Web Audio Synthesizer Engine
+    // Web Audio Synthesizer
     let audioCtx = null;
     function initAudio() {
       if (!audioCtx) {
@@ -1135,7 +1687,6 @@ function buildGameHtml() {
         const now = audioCtx.currentTime;
 
         if (type === 'type') {
-          // Soft typewriter click
           const osc = audioCtx.createOscillator();
           const gain = audioCtx.createGain();
           osc.type = 'triangle';
@@ -1146,8 +1697,7 @@ function buildGameHtml() {
           gain.connect(audioCtx.destination);
           osc.start(now);
           osc.stop(now + 0.04);
-        } else if (type === 'punch') {
-          // Heavy impact
+        } else if (type === 'punch' || type === 'slap') {
           const osc = audioCtx.createOscillator();
           const gain = audioCtx.createGain();
           osc.type = 'sawtooth';
@@ -1160,7 +1710,6 @@ function buildGameHtml() {
           osc.start(now);
           osc.stop(now + 0.25);
         } else if (type === 'explosion') {
-          // Bass rumble explosion
           const osc = audioCtx.createOscillator();
           const gain = audioCtx.createGain();
           osc.type = 'square';
@@ -1173,7 +1722,6 @@ function buildGameHtml() {
           osc.start(now);
           osc.stop(now + 0.6);
         } else if (type === 'heartbeat') {
-          // Romantic/Tense double beat
           const osc1 = audioCtx.createOscillator();
           const gain1 = audioCtx.createGain();
           osc1.type = 'sine';
@@ -1185,8 +1733,7 @@ function buildGameHtml() {
           gain1.connect(audioCtx.destination);
           osc1.start(now);
           osc1.stop(now + 0.12);
-        } else if (type === 'magic' || type === 'talisman') {
-          // High chime
+        } else if (type === 'magic' || type === 'talisman' || type === 'chime' || type === 'sparkle') {
           const osc = audioCtx.createOscillator();
           const gain = audioCtx.createGain();
           osc.type = 'sine';
@@ -1198,10 +1745,21 @@ function buildGameHtml() {
           gain.connect(audioCtx.destination);
           osc.start(now);
           osc.stop(now + 0.3);
+        } else if (type === 'fanfare') {
+          [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + i * 0.1);
+            gain.gain.setValueAtTime(0.2, now + i * 0.1);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.1 + 0.35);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now + i * 0.1);
+            osc.stop(now + i * 0.1 + 0.35);
+          });
         }
-      } catch (e) {
-        // Audio error silent fallback
-      }
+      } catch (e) {}
     }
 
     function toggleSound() {
@@ -1227,120 +1785,98 @@ function buildGameHtml() {
       }
     }
 
-    // Speaker Styling
     const speakerStyles = {
-      'momo': {
-        name: '아야세 모모',
-        class: 'bg-gradient-to-r from-pink-500 to-rose-600 text-white border border-pink-400/50'
-      },
-      'okarun': {
-        name: '오카룬 (타카쿠라 켄)',
-        class: 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white border border-cyan-400/50'
-      },
-      'demon-okarun': {
-        name: '요괴 오카룬 (폭주)',
-        class: 'bg-gradient-to-r from-red-600 to-purple-800 text-white border border-red-500/50 animate-pulse'
-      },
-      'turbo': {
-        name: '터보 할멈 (쇼타 터널 괴이)',
-        class: 'bg-gradient-to-r from-purple-800 to-red-950 text-red-200 border border-red-500/40'
-      },
-      'serpo': {
-        name: '세르포 성인 (클론 외계인)',
-        class: 'bg-gradient-to-r from-emerald-600 to-teal-800 text-emerald-100 border border-emerald-400/50'
-      },
-      'monster': {
-        name: '플랫우즈 몬스터 (3m 스모 외계인)',
-        class: 'bg-gradient-to-r from-amber-700 to-red-900 text-amber-100 border border-amber-500/50'
-      },
-      'delinquent': {
-        name: '복도 불량배',
-        class: 'bg-slate-700 text-slate-200 border border-slate-500/30'
-      },
-      'narration': {
-        name: '나레이션',
-        class: 'bg-gradient-to-r from-purple-600/80 to-indigo-700/80 text-purple-100 border border-purple-400/30'
-      }
+      'momo': { name: '아야세 모모', class: 'bg-gradient-to-r from-pink-500 to-rose-600 text-white border border-pink-400/50' },
+      'okarun': { name: '오카룬 (타카쿠라 켄)', class: 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white border border-cyan-400/50' },
+      'demon-okarun': { name: '요괴 오카룬 (폭주)', class: 'bg-gradient-to-r from-red-600 to-purple-800 text-white border border-red-500/50 animate-pulse' },
+      'turbo': { name: '터보 할멈 (쇼타 터널 괴이)', class: 'bg-gradient-to-r from-purple-800 to-red-950 text-red-200 border border-red-500/40' },
+      'seiko': { name: '아야세 세이코 (할머니)', class: 'bg-gradient-to-r from-amber-500 to-rose-600 text-white border border-amber-300/50' },
+      'serpo': { name: '세르포 성인 (클론 외계인)', class: 'bg-gradient-to-r from-emerald-600 to-teal-800 text-emerald-100 border border-emerald-400/50' },
+      'monster': { name: '플랫우즈 몬스터 (3m 스모 외계인)', class: 'bg-gradient-to-r from-amber-700 to-red-900 text-amber-100 border border-amber-500/50' },
+      'aira': { name: '시라토리 아이라', class: 'bg-gradient-to-r from-yellow-400 to-pink-500 text-white border border-yellow-300/50' },
+      'sarasa': { name: '아크로바틱 사라사라', class: 'bg-gradient-to-r from-rose-900 to-red-950 text-rose-200 border border-rose-500/50' },
+      'jiji': { name: '엔죠지 진 (지진)', class: 'bg-gradient-to-r from-slate-200 to-indigo-300 text-slate-900 border border-indigo-400/50 font-black' },
+      'delinquent': { name: '복도 불량배', class: 'bg-slate-700 text-slate-200 border border-slate-500/30' },
+      'narration': { name: '나레이션', class: 'bg-gradient-to-r from-purple-600/80 to-indigo-700/80 text-purple-100 border border-purple-400/30' }
     };
+
+    function changeEpisode(epNum) {
+      if (!allEpisodes[epNum]) return;
+      currentEpNum = epNum;
+      script = allEpisodes[epNum].script;
+      currentIndex = 0;
+
+      // Update ep tabs
+      document.querySelectorAll('[id^=\"ep-btn-\"]').forEach(btn => btn.classList.remove('active-ep-tab'));
+      const activeBtn = document.getElementById('ep-btn-' + epNum);
+      if (activeBtn) activeBtn.classList.add('active-ep-tab');
+
+      document.getElementById('header-ep-title').textContent = allEpisodes[epNum].title;
+
+      renderChapterJumpBar();
+      renderCurrentScene();
+    }
+
+    function renderChapterJumpBar() {
+      const container = document.getElementById('chapter-jump-container');
+      const jumps = {
+        1: [
+          { name: '1화: 복도 내기', idx: 0 },
+          { name: '1화: 폐병원 세르포', idx: 18 },
+          { name: '1화: 턱 잡기 명장면', idx: 26 },
+          { name: '2화: 킨타마 소실', idx: 29 },
+          { name: '2화: 100km 스모 결전', idx: 38 }
+        ],
+        2: [
+          { name: '3화: 세이코 등장', idx: 0 },
+          { name: '3화: 배트 홈런', idx: 4 },
+          { name: '4화: 결계 훈련', idx: 9 },
+          { name: '4화: 툇마루 라면 썸', idx: 11 },
+          { name: '5화: 터널 출진', idx: 15 }
+        ],
+        3: [
+          { name: '6화: 터널 100km 질주', idx: 0 },
+          { name: '7화: 거대 대게 요괴', idx: 4 },
+          { name: '7화: 손깍지 부스터', idx: 6 },
+          { name: '8화: 신사 결계 대폭발', idx: 8 },
+          { name: '8화: 마스코트 정화', idx: 9 }
+        ],
+        4: [
+          { name: '9화: 사라진 황금 구슬', idx: 0 },
+          { name: '9화: 옥상 어깨 기대기', idx: 2 },
+          { name: '10화: 아이라 등장', idx: 4 },
+          { name: '11~12화: 사라사라 빗속 사투', idx: 6 },
+          { name: '13화: 은발 미남 지진 등장', idx: 9 }
+        ]
+      };
+
+      const curJumps = jumps[currentEpNum] || [];
+      container.innerHTML = '<span class=\"font-bold text-white\">주요 씬 바로가기:</span>' + curJumps.map(j => \`
+        <button onclick=\"jumpToScene(\${j.idx})\" class=\"px-2.5 py-1 rounded-lg bg-white/5 hover:bg-pink-500/20 hover:text-pink-300 border border-white/10 transition\">\${j.name}</button>
+      \`).join('');
+    }
 
     function renderCurrentScene() {
       const scene = script[currentIndex];
       if (!scene) return;
 
-      // Update counters & headers
       document.getElementById('chapter-label').textContent = scene.chapter;
       document.getElementById('scene-title-label').textContent = '· ' + scene.sceneTitle;
       document.getElementById('manga-note-label').textContent = scene.mangaNote || '';
       document.getElementById('dialogue-counter').textContent = (currentIndex + 1) + ' / ' + script.length;
 
-      // Background Image with Auto-detect for /assets/manga/ user uploads
+      // Background Image Auto-detect logic
       const bgLayer = document.getElementById('bg-layer');
-      const mangaMapping = {
-        1: '/assets/manga/01_kick.jpg',
-        2: '/assets/manga/01_kick.jpg',
-        3: '/assets/manga/01_kick.jpg',
-        4: '/assets/manga/01_kick.jpg',
-        5: '/assets/manga/01_kick.jpg',
-        6: '/assets/manga/02_argue.jpg',
-        7: '/assets/manga/02_argue.jpg',
-        8: '/assets/manga/02_argue.jpg',
-        9: '/assets/manga/02_argue.jpg',
-        10: '/assets/manga/02_argue.jpg',
-        11: '/assets/manga/02_argue.jpg',
-        12: '/assets/manga/02_argue.jpg',
-        13: '/assets/manga/02_argue.jpg',
-        14: '/assets/manga/02_argue.jpg',
-        15: '/assets/manga/02_argue.jpg',
-        16: '/assets/manga/03_turbo.jpg',
-        17: '/assets/manga/03_turbo.jpg',
-        18: '/assets/manga/03_turbo.jpg',
-        19: '/assets/manga/04_serpo_abduction.jpg',
-        20: '/assets/manga/04_serpo_abduction.jpg',
-        21: '/assets/manga/04_serpo_abduction.jpg',
-        22: '/assets/manga/04_serpo_abduction.jpg',
-        23: '/assets/manga/04_serpo_abduction.jpg',
-        24: '/assets/manga/05_jaw_grab.jpg',
-        25: '/assets/manga/05_jaw_grab.jpg',
-        26: '/assets/manga/05_jaw_grab.jpg',
-        27: '/assets/manga/05_jaw_grab.jpg',
-        28: '/assets/manga/05_jaw_grab.jpg',
-        29: '/assets/manga/05_jaw_grab.jpg',
-        30: '/assets/manga/06_banana_shock.jpg',
-        31: '/assets/manga/06_banana_shock.jpg',
-        32: '/assets/manga/06_banana_shock.jpg',
-        33: '/assets/manga/06_banana_shock.jpg',
-        34: '/assets/manga/06_banana_shock.jpg',
-        35: '/assets/manga/06_banana_shock.jpg',
-        36: '/assets/manga/06_banana_shock.jpg',
-        37: '/assets/manga/06_banana_shock.jpg',
-        38: '/assets/manga/07_sumo_tackle.jpg',
-        39: '/assets/manga/07_sumo_tackle.jpg',
-        40: '/assets/manga/07_sumo_tackle.jpg',
-        41: '/assets/manga/07_sumo_tackle.jpg',
-        42: '/assets/manga/07_sumo_tackle.jpg',
-        43: '/assets/manga/07_sumo_tackle.jpg',
-        44: '/assets/manga/07_sumo_tackle.jpg',
-        45: '/assets/manga/07_sumo_tackle.jpg',
-        46: '/assets/manga/07_sumo_tackle.jpg',
-        47: '/assets/manga/07_sumo_tackle.jpg',
-        48: '/assets/manga/08_epilogue.jpg',
-        49: '/assets/manga/08_epilogue.jpg',
-        50: '/assets/manga/08_epilogue.jpg',
-        51: '/assets/manga/08_epilogue.jpg'
-      };
-
-      const customManga = mangaMapping[scene.id];
-      if (customManga) {
+      if (scene.bg) {
         const testImg = new Image();
         testImg.onload = () => {
-          bgLayer.style.backgroundImage = 'url(' + customManga + ')';
+          bgLayer.style.backgroundImage = 'url(' + scene.bg + ')';
         };
         testImg.onerror = () => {
-          if (scene.bg) bgLayer.style.backgroundImage = 'url(' + scene.bg + ')';
+          // Fallback to high-res thematic background if user hasn't added this specific cut yet
+          bgLayer.style.backgroundImage = 'url(/assets/segye_occult/01_vol1_prologue.jpg)';
         };
-        testImg.src = customManga;
-      } else if (scene.bg) {
-        bgLayer.style.backgroundImage = 'url(' + scene.bg + ')';
+        testImg.src = scene.bg;
       }
 
       // Screen Effects (Shake / Flash)
@@ -1355,16 +1891,10 @@ function buildGameHtml() {
       if (scene.effect === 'flash-red') flashOverlay.classList.add('flash-red');
       if (scene.effect === 'flash-green') flashOverlay.classList.add('flash-green');
 
-      // Sound Effect Trigger
-      if (scene.sfx) {
-        playSound(scene.sfx);
-      }
+      if (scene.sfx) playSound(scene.sfx);
 
-      // Speaker Name & Style
-      const speakerConfig = speakerStyles[scene.speakerType] || {
-        name: scene.speaker,
-        class: 'bg-slate-700 text-white'
-      };
+      // Speaker Name
+      const speakerConfig = speakerStyles[scene.speakerType] || { name: scene.speaker, class: 'bg-slate-700 text-white' };
       const speakerEl = document.getElementById('speaker-name');
       speakerEl.textContent = scene.speaker;
       speakerEl.className = 'px-3 py-1 rounded-lg text-xs sm:text-sm font-black tracking-wide shadow-md ' + speakerConfig.class;
@@ -1379,12 +1909,9 @@ function buildGameHtml() {
         thoughtContainer.classList.add('hidden');
       }
 
-      // Typewriter Text
       startTypewriter(scene.text);
 
-      // Check for Choice
       if (scene.choice) {
-        // Show choice modal after text is typed
         setTimeout(() => {
           showChoiceModal(scene.choice);
         }, 600);
@@ -1418,7 +1945,6 @@ function buildGameHtml() {
       isTyping = false;
       document.getElementById('dialogue-text').textContent = fullText;
 
-      // Auto play trigger
       if (autoPlay && !script[currentIndex].choice) {
         clearTimeout(autoTimer);
         autoTimer = setTimeout(() => {
@@ -1430,15 +1956,11 @@ function buildGameHtml() {
     function onDialogueBoxClick() {
       initAudio();
       const scene = script[currentIndex];
-      if (scene.choice && document.getElementById('choice-modal').classList.contains('hidden') === false) {
-        return; // Wait for player choice
-      }
+      if (scene.choice && document.getElementById('choice-modal').classList.contains('hidden') === false) return;
 
       if (isTyping) {
-        // Complete current line instantly
         finishTypewriter(scene.text);
       } else {
-        // Advance to next
         nextDialogue();
       }
     }
@@ -1447,6 +1969,13 @@ function buildGameHtml() {
       if (currentIndex < script.length - 1) {
         currentIndex++;
         renderCurrentScene();
+      } else {
+        // If at end of episode, prompt next episode
+        if (currentEpNum < 4) {
+          if (confirm('축하합니다! 에피소드 ' + currentEpNum + '을 완료하셨습니다! 다음 에피소드 ' + (currentEpNum + 1) + '로 바로 이동하시겠습니까?')) {
+            changeEpisode(currentEpNum + 1);
+          }
+        }
       }
     }
 
@@ -1489,14 +2018,13 @@ function buildGameHtml() {
       }
     }
 
-    // Choice Modal
     function showChoiceModal(choiceData) {
       const modal = document.getElementById('choice-modal');
       document.getElementById('choice-prompt').textContent = choiceData.prompt;
       const list = document.getElementById('choice-options-list');
       list.innerHTML = '';
 
-      choiceData.options.forEach((opt, idx) => {
+      choiceData.options.forEach((opt) => {
         const btn = document.createElement('button');
         btn.className = 'w-full text-left p-4 rounded-2xl bg-white/5 hover:bg-pink-500/20 border border-white/10 hover:border-pink-500/60 transition group flex flex-col gap-1.5';
         btn.innerHTML = \`
@@ -1514,7 +2042,6 @@ function buildGameHtml() {
       document.getElementById('choice-modal').classList.add('hidden');
       playSound('magic');
 
-      // Update stats
       if (opt.delta.includes('호감도')) {
         stats.momoHeart = Math.min(100, stats.momoHeart + 20);
         document.getElementById('stat-heart').textContent = stats.momoHeart + '%';
@@ -1524,11 +2051,9 @@ function buildGameHtml() {
         document.getElementById('stat-sync').textContent = stats.battleSync + '%';
       }
 
-      // Advance
       nextDialogue();
     }
 
-    // Backlog Modal
     function openLogModal(e) {
       if (e) e.stopPropagation();
       const modal = document.getElementById('log-modal');
@@ -1558,15 +2083,15 @@ function buildGameHtml() {
       document.getElementById('log-modal').classList.add('hidden');
     }
 
-    // Save & Load
     function quickSave(e) {
       if (e) e.stopPropagation();
       localStorage.setItem('dandadan_vn_save', JSON.stringify({
+        epNum: currentEpNum,
         index: currentIndex,
         stats: stats,
         timestamp: new Date().toLocaleString()
       }));
-      alert('💾 현재 대사(# ' + (currentIndex + 1) + ')가 퀵 세이브 슬롯에 저장되었습니다!');
+      alert('💾 현재 위치(에피소드 ' + currentEpNum + ' · 대사 #' + (currentIndex + 1) + ')가 퀵 세이브 슬롯에 저장되었습니다!');
     }
 
     function quickLoad(e) {
@@ -1577,15 +2102,17 @@ function buildGameHtml() {
         return;
       }
       const data = JSON.parse(dataStr);
+      if (data.epNum && data.epNum !== currentEpNum) {
+        changeEpisode(data.epNum);
+      }
       currentIndex = data.index || 0;
       stats = data.stats || stats;
       document.getElementById('stat-heart').textContent = stats.momoHeart + '%';
       document.getElementById('stat-sync').textContent = stats.battleSync + '%';
       renderCurrentScene();
-      alert('📂 저장된 시점(# ' + (currentIndex + 1) + ' · ' + data.timestamp + ')을 불러왔습니다!');
+      alert('📂 저장된 시점(에피소드 ' + data.epNum + ' · 대사 #' + (currentIndex + 1) + ' · ' + data.timestamp + ')을 불러왔습니다!');
     }
 
-    // Keyboard controls
     window.addEventListener('keydown', (e) => {
       if (e.code === 'Space' || e.code === 'Enter') {
         onDialogueBoxClick();
@@ -1596,9 +2123,8 @@ function buildGameHtml() {
       }
     });
 
-    // Start Game
     window.addEventListener('DOMContentLoaded', () => {
-      renderCurrentScene();
+      changeEpisode(1);
     });
   </script>
 
@@ -1607,10 +2133,9 @@ function buildGameHtml() {
 `;
 }
 
-// Write to public/game.html
-fs.writeFileSync(path.join(publicDir, 'game.html'), buildGameHtml(), 'utf8');
-console.log('Successfully wrote public/game.html');
+// Compile and write files
+fs.writeFileSync(path.join(publicDir, 'game.html'), buildFullGameHtml(), 'utf8');
+console.log('Successfully wrote public/game.html with all 4 episodes!');
 
-// Write to brain artifact directory
-fs.writeFileSync(path.join(brainDir, 'game.html'), buildGameHtml(), 'utf8');
-console.log('Successfully wrote brain/game.html');
+fs.writeFileSync(path.join(brainDir, 'game.html'), buildFullGameHtml(), 'utf8');
+console.log('Successfully wrote brain/game.html with all 4 episodes!');
