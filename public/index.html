@@ -21,12 +21,14 @@
     <div class="nav-actions">
       <div class="view-tabs">
         <button class="tab-btn active" id="tabProfileBtn" onclick="switchView('profile')">프로필 상세</button>
-        <button class="tab-btn" id="tabChatBtn" onclick="switchView('chat')">💬 시뮬레이션 채팅</button>
+        <a href="/game.html" target="_blank" class="tab-btn" style="border-color:rgba(236,72,153,0.8); color:#ffffff; background:linear-gradient(135deg, #ec4899, #8b5cf6); font-weight:800; text-decoration:none; display:inline-flex; align-items:center; gap:4px; box-shadow:0 0 12px rgba(236,72,153,0.4);">
+          <span>🎮 단다단 라노벨 게임 (1~2화)</span>
+        </a>
         <a href="/gallery.html" target="_blank" class="tab-btn" style="border-color:rgba(236,72,153,0.5); color:#f472b6; background:rgba(236,72,153,0.12); font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
-          <span>🖼️ 21종 화보 갤러리</span>
+          <span>🖼️ 22종 화보 갤러리</span>
         </a>
         <a href="/preview.html" target="_blank" class="tab-btn" style="border-color:rgba(168,85,247,0.5); color:#c084fc; background:rgba(168,85,247,0.12); font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
-          <span>📖 1~4권 장편 에피소드</span>
+          <span>📖 1~4권 장편 소설</span>
         </a>
         <button class="tab-btn" id="tabBuilderBtn" onclick="switchView('builder')">캐릭터 설정 편집</button>
         <button class="tab-btn" id="navApiKeyBtn" onclick="openApiKeyModal()" style="border-color:rgba(56,189,248,0.4); color:#38bdf8;">

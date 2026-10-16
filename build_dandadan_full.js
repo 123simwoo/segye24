@@ -385,11 +385,14 @@ function generateHtml(isPublic) {
       </div>
 
       <div class="flex items-center gap-2.5 self-end md:self-auto">
+        <a href="/game.html" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white font-extrabold text-xs hover:opacity-95 shadow-lg shadow-pink-500/30 flex items-center gap-1.5 animate-pulse">
+          <span>🎮 라노벨 게임 플레이 (1~2화)</span>
+        </a>
         <a href="${galleryUrl}" class="px-3.5 py-2 rounded-xl border border-pink-500/40 bg-pink-500/10 text-pink-300 font-bold text-xs hover:bg-pink-500/20 transition flex items-center gap-1.5">
           <span>🖼️ 22종 화보 갤러리</span>
         </a>
         <a href="${webAppUrl}" target="_blank" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold text-xs hover:opacity-90 transition shadow-md flex items-center gap-1.5">
-          <span>💬 실시간 AI 대화 웹앱</span>
+          <span>💬 AI 대화</span>
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
         </a>
       </div>
