@@ -91,6 +91,28 @@
       border-color: transparent !important;
       box-shadow: 0 4px 12px rgba(236, 72, 153, 0.4);
     }
+
+    /* Vertical Pan Animation for tall manga panels */
+    @keyframes verticalPanAnim {
+      0% {
+        background-position: 50% 0%;
+      }
+      18% {
+        background-position: 50% 0%;
+      }
+      82% {
+        background-position: 50% 100%;
+      }
+      100% {
+        background-position: 50% 100%;
+      }
+    }
+
+    .vertical-pan {
+      background-size: cover !important;
+      animation: verticalPanAnim 14s ease-in-out infinite alternate !important;
+      will-change: background-position;
+    }
   </style>
 </head>
 <body class="min-h-screen text-slate-100 flex flex-col justify-between">
@@ -166,6 +188,7 @@
         </div>
 
         <div class="bg-black/85 backdrop-blur border border-white/10 px-3 py-1.5 rounded-xl text-[11px] text-slate-300 flex items-center gap-1.5 shadow-lg">
+          <span id="pan-indicator" class="hidden px-2 py-0.5 rounded text-[10px] font-bold bg-pink-500/80 text-white animate-pulse"><i class="fa-solid fa-arrows-up-down mr-1"></i>세로 파노라마 연출</span>
           <span class="text-purple-400 font-bold">🎬 원작 연출:</span>
           <span id="manga-note-label" class="truncate max-w-[180px] sm:max-w-xs text-slate-200"></span>
         </div>
@@ -491,16 +514,36 @@
       document.getElementById('manga-note-label').textContent = scene.mangaNote || '';
       document.getElementById('dialogue-counter').textContent = (currentIndex + 1) + ' / ' + script.length;
 
-      // Background Image Auto-detect logic
+      // Background Image Auto-detect & Vertical Pan logic
       const bgLayer = document.getElementById('bg-layer');
+      const stage = document.getElementById('game-stage');
+      const panIndicator = document.getElementById('pan-indicator');
       if (scene.bg) {
         const testImg = new Image();
         testImg.onload = () => {
           bgLayer.style.backgroundImage = 'url(' + scene.bg + ')';
+          
+          // Check if image is taller than stage aspect ratio (16:9 = ~1.777)
+          const stageRatio = (stage && stage.clientHeight > 0) ? (stage.clientWidth / stage.clientHeight) : (16 / 9);
+          const imgRatio = testImg.naturalWidth / testImg.naturalHeight;
+          
+          // If image is taller/narrower than the screen (e.g. 3:4, 1:1, 4:3), enable smooth vertical pan
+          if (imgRatio < stageRatio - 0.08) {
+            bgLayer.classList.remove('vertical-pan');
+            void bgLayer.offsetWidth; // trigger reflow to smoothly start from top
+            bgLayer.classList.add('vertical-pan');
+            if (panIndicator) panIndicator.classList.remove('hidden');
+          } else {
+            bgLayer.classList.remove('vertical-pan');
+            bgLayer.style.backgroundPosition = 'center center';
+            if (panIndicator) panIndicator.classList.add('hidden');
+          }
         };
         testImg.onerror = () => {
           // Fallback to high-res thematic background if user hasn't added this specific cut yet
           bgLayer.style.backgroundImage = 'url(/assets/segye_occult/01_vol1_prologue.jpg)';
+          bgLayer.classList.remove('vertical-pan');
+          if (panIndicator) panIndicator.classList.add('hidden');
         };
         testImg.src = scene.bg;
       }
